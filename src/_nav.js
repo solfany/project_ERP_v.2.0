@@ -1,9 +1,11 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
+import React from 'react';
+import CIcon from '@coreui/icons-react';
 import {
   cilBell,
   cilCalculator,
+  cilCalendarCheck,
   cilChartPie,
+  cilClipboard,
   cilCursor,
   cilDescription,
   cilDrop,
@@ -12,8 +14,8 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
-} from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+} from '@coreui/icons';
+import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react';
 
 const _nav = [
   {
@@ -41,6 +43,30 @@ const _nav = [
     name: 'Typography',
     to: '/theme/typography',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: '근무일정',
+    to: '/calendar',
+    icon: <CIcon icon={cilCalendarCheck} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavGroup,
+    name: '출퇴근기록',
+    to: '/attend_manage',
+    icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: '출결입력',
+        to: '/attend_manage/attendInput',
+      },
+      {
+        component: CNavItem,
+        name: '출결기록',
+        to: '/attend_manage/attendRecord',
+      },
+    ],
   },
   {
     component: CNavTitle,
@@ -292,6 +318,6 @@ const _nav = [
     href: 'https://coreui.io/react/docs/templates/installation/',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
   },
-]
+];
 
-export default _nav
+export default _nav;
