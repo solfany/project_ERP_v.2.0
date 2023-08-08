@@ -1,0 +1,39 @@
+.icon-box {
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.modal-title {
+    font-size: 25px;
+}
+
+.modalScheduleTitle {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-body {
+    padding-top: 0px;
+}
+
+.modal-header .close {
+    position: absolute;
+    top: -2px;
+    right: 2px;
+}
+
+/* .red-circle {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    vertical-align: middle;
+    padding: 5px;
+    font-size: 60px;
+    color: red;
+    transition: 0.2s;
+    background-color: white;
+    border: 3px solid red;
+} */
