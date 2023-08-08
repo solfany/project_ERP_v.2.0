@@ -1,0 +1,18 @@
+.month {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.month h1 {
+  margin: 0;
+}
+
+.month select {
+  margin-left: 10px;
+  padding: 0 5px;
+  font-size: 20px;
+  border-style: none;
+}
