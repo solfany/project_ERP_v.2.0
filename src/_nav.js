@@ -88,8 +88,8 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: "직원관리",
-    to: "/employee/EmployeeManagement",
+    name: "회사관리",
+    to: "/staff/StaffManagement",
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {

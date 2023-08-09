@@ -86,9 +86,10 @@ const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
 const Toasts = React.lazy(() => import("./views/notifications/toasts/Toasts"));
 const Widgets = React.lazy(() => import("./views/widgets/Widgets"));
 
-const EmployeeManagement = React.lazy(() =>
-  import("./views/employee/EmployeeManagement")
+const staffManagement = React.lazy(() => 
+import("./views/staff/StaffManagement")
 );
+
 const TimeManagementSystem = React.lazy(() =>
   import("./views/TimeManagementSystem/TimeManagementSystem")
 );
@@ -186,9 +187,9 @@ const routes = [
   { path: "/widgets", name: "Widgets", element: Widgets },
 
   {
-    path: "/employee/EmployeeManagement",
-    name: "employee",
-    element: EmployeeManagement,
+    path: "/staff/staffManagement",
+    name: "staff",
+    element: staffManagement,
   },
   {
     path: "/TimeManagementSystem/TimeManagementSystem",
