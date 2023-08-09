@@ -1,18 +1,15 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 //import React, { useEffect, useState } from "react";
 
 import "./Map.css";
 
-import {
-  Table,
-} from "reactstrap";
+import { Table } from "reactstrap";
 
-import Vacation from "./VacationModal"
+import Vacation from "./VacationModal";
 import baseData from "./MapArray";
 //import { Route } from "react-router-dom";
 import { message } from "antd";
 import { useSelector } from "react-redux";
-
 
 //휴가 신청란의 기본 table 값
 const Options = [
@@ -27,15 +24,25 @@ const Options = [
   { id: 9, name: "취소", value: "" },
 ];
 const TableSub = Options.map((parameter, index) => (
-  <th style={{fontSize:'16px', textAlign:'center', fontFamily : 'Poppins', whiteSpace:'nowrap'}} key={index}>{parameter.name}</th>
+  <th
+    style={{
+      fontSize: "16px",
+      textAlign: "center",
+      fontFamily: "Poppins",
+      whiteSpace: "nowrap",
+    }}
+    key={index}
+  >
+    {parameter.name}
+  </th>
 ));
 
 function Map() {
-  const onRemove = (name) =>{
-    const up = data.filter((item)=>item.name !== name)
+  const onRemove = (name) => {
+    const up = data.filter((item) => item.name !== name);
     setData(up);
-    message.success('success')
-  }
+    message.success("success");
+  };
   const [data, setData] = useState(baseData);
   const init = useSelector((state) => state.init);
   const userObj = useSelector((state) => state.userObj);
@@ -50,42 +57,48 @@ function Map() {
   // }, [init, userObj, history]);
   return (
     <>
-    {/* {init && userObj && */}
-    <div className="content">
-      <div className="card" style={{minHeight: '600px', padding: '0 10px'}}>
-      <div className="calendarHead">
-      <h2 className="calendarTitle">휴가 관리</h2>
-      <div className="Mmodal_btn">
-        <Vacation data={data} setData={setData} onRemove={onRemove} ></Vacation>
+      {/* {init && userObj && */}
+      <div className="content">
+        <div className="card" style={{ minHeight: "600px", padding: "0 10px" }}>
+          <div className="calendarHead">
+            <h2 className="calendarTitle">휴가 관리</h2>
+            <div className="Mmodal_btn">
+              <Vacation
+                data={data}
+                setData={setData}
+                onRemove={onRemove}
+              ></Vacation>
+            </div>
+          </div>
+          <Table style={{ whiteSpace: "nowrap" }}>
+            <thead>
+              <tr>{TableSub}</tr>
+            </thead>
+            <tbody>
+              <tr scope="row"></tr>
+              {data.map((data) => (
+                <tr key={data.name}>
+                  <td>{data.code}</td>
+                  <td>{data.name}</td>
+                  <td>{data.teamName}</td>
+                  <td>{data.position}</td>
+                  <td>{data.etc}</td>
+                  <td>{data.vacationType}</td>
+                  <td>{data.day}</td>
+                  <td>{data.reason}</td>
+                  <td>
+                    <button className="red" onClick={() => onRemove(data.name)}>
+                      삭제1
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot></tfoot>
+          </Table>
         </div>
-    </div>
-      <Table style={{ whiteSpace: 'nowrap', }}>
-        <thead>
-          <tr>{TableSub}</tr>
-        </thead>
-        <tbody>
-          <tr scope="row"></tr>
-          {data.map((data) => (
-            <tr key={data.name}>
-              <td>{data.code}</td>
-              <td>{data.name}</td>
-              <td>{data.teamName}</td>
-              <td>{data.position}</td>
-              <td>{data.etc}</td>
-              <td>{data.vacationType}</td>
-              <td>{data.day}</td>
-              <td>{data.reason}</td>
-              <td>
-                <button className="red" onClick={() => onRemove(data.name)}>삭제</button></td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-        </tfoot>
-      </Table>
       </div>
-    </div>
-          {/* } */}
+      {/* } */}
     </>
   );
 }
