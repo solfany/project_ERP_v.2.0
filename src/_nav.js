@@ -68,6 +68,22 @@ const _nav = [
       },
     ],
   },
+  //Map
+  {
+    component: CNavItem,
+    name: "Vacation",
+    to: "/Vacation/Map",
+    icon: <CIcon icon={cilMap} customClassName="nav-icon" />,
+  },
+
+  //Chat
+  {
+    component: CNavItem,
+    name: "Chat",
+    to: "/Chatting/Chat",
+    icon: <CIcon icon={cilTablet} customClassName="nav-icon" />,
+  },
+
   {
     component: CNavTitle,
     name: "Components",

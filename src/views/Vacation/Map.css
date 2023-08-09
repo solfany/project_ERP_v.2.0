@@ -1,0 +1,41 @@
+/* table {
+  width: 100%;
+  font-size: 20px;
+  border: 3px solid blue;
+} */
+
+
+
+li {
+  list-style: none;
+}
+label {
+  /* width: 11%;
+  height: 28px; */
+  color: black;
+}
+button {
+  background: none;
+  border: none;
+}
+
+.Mmodal {
+  padding: 1%;
+
+  text-align: left;
+  /* display: none; */
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* background: white; */
+  color: black;
+  height: 78%;
+}
+.Mmodal_btn {
+  float: right;
+}
+
+

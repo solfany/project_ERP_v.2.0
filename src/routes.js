@@ -2,20 +2,36 @@ import React from "react";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const Colors = React.lazy(() => import("./views/theme/colors/Colors"));
-const Typography = React.lazy(() => import("./views/theme/typography/Typography"));
-const CalendarBoard = React.lazy(() => import("./views/Calendar/CalendarBoard"));
-const Attend_Input = React.lazy(() => import("./views/Attend_Manage/Attend_Manage/Attend_Input"));
-const Attend_Record = React.lazy(() => import("./views/Attend_Manage/Attend_Manage/Attend_Record"));
+const Typography = React.lazy(() =>
+  import("./views/theme/typography/Typography")
+);
+const CalendarBoard = React.lazy(() =>
+  import("./views/Calendar/CalendarBoard")
+);
+const Attend_Input = React.lazy(() =>
+  import("./views/Attend_Manage/Attend_Manage/Attend_Input")
+);
+const Attend_Record = React.lazy(() =>
+  import("./views/Attend_Manage/Attend_Manage/Attend_Record")
+);
 // Base
 const Accordion = React.lazy(() => import("./views/base/accordion/Accordion"));
-const Breadcrumbs = React.lazy(() => import("./views/base/breadcrumbs/Breadcrumbs"));
+const Breadcrumbs = React.lazy(() =>
+  import("./views/base/breadcrumbs/Breadcrumbs")
+);
 const Cards = React.lazy(() => import("./views/base/cards/Cards"));
 const Carousels = React.lazy(() => import("./views/base/carousels/Carousels"));
 const Collapses = React.lazy(() => import("./views/base/collapses/Collapses"));
-const ListGroups = React.lazy(() =>  import("./views/base/list-groups/ListGroups"));
+const ListGroups = React.lazy(() =>
+  import("./views/base/list-groups/ListGroups")
+);
 const Navs = React.lazy(() => import("./views/base/navs/Navs"));
-const Paginations = React.lazy(() => import("./views/base/paginations/Paginations"));
-const Placeholders = React.lazy(() => import("./views/base/placeholders/Placeholders"));
+const Paginations = React.lazy(() =>
+  import("./views/base/paginations/Paginations")
+);
+const Placeholders = React.lazy(() =>
+  import("./views/base/placeholders/Placeholders")
+);
 const Popovers = React.lazy(() => import("./views/base/popovers/Popovers"));
 const Progress = React.lazy(() => import("./views/base/progress/Progress"));
 const Spinners = React.lazy(() => import("./views/base/spinners/Spinners"));
@@ -24,19 +40,39 @@ const Tooltips = React.lazy(() => import("./views/base/tooltips/Tooltips"));
 
 // Buttons
 const Buttons = React.lazy(() => import("./views/buttons/buttons/Buttons"));
-const ButtonGroups = React.lazy(() => import("./views/buttons/button-groups/ButtonGroups"));
-const Dropdowns = React.lazy(() => import("./views/buttons/dropdowns/Dropdowns"));
+const ButtonGroups = React.lazy(() =>
+  import("./views/buttons/button-groups/ButtonGroups")
+);
+const Dropdowns = React.lazy(() =>
+  import("./views/buttons/dropdowns/Dropdowns")
+);
 
 //Forms
-const ChecksRadios = React.lazy(() => import("./views/forms/checks-radios/ChecksRadios"));
-const FloatingLabels = React.lazy(() => import("./views/forms/floating-labels/FloatingLabels"));
-const FormControl = React.lazy(() => import("./views/forms/form-control/FormControl"));
-const InputGroup = React.lazy(() => import("./views/forms/input-group/InputGroup"));
+const ChecksRadios = React.lazy(() =>
+  import("./views/forms/checks-radios/ChecksRadios")
+);
+const FloatingLabels = React.lazy(() =>
+  import("./views/forms/floating-labels/FloatingLabels")
+);
+const FormControl = React.lazy(() =>
+  import("./views/forms/form-control/FormControl")
+);
+const InputGroup = React.lazy(() =>
+  import("./views/forms/input-group/InputGroup")
+);
 const Layout = React.lazy(() => import("./views/forms/layout/Layout"));
 const Range = React.lazy(() => import("./views/forms/range/Range"));
 const Select = React.lazy(() => import("./views/forms/select/Select"));
-const Validation = React.lazy(() => import("./views/forms/validation/Validation"));
+const Validation = React.lazy(() =>
+  import("./views/forms/validation/Validation")
+);
 const Charts = React.lazy(() => import("./views/charts/Charts"));
+
+//Map(Vacation)
+const Map = React.lazy(() => import("./views/Vacation/Map"));
+
+//Chat
+const Chat = React.lazy(() => import("./views/Chatting/Chat"));
 
 // Icons
 // const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
@@ -50,11 +86,21 @@ const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
 const Toasts = React.lazy(() => import("./views/notifications/toasts/Toasts"));
 const Widgets = React.lazy(() => import("./views/widgets/Widgets"));
 
-const EmployeeManagement = React.lazy(() => import("./views/employee/EmployeeManagement"));
-const TimeManagementSystem = React.lazy(() => import("./views/TimeManagementSystem/TimeManagementSystem"));
-const PayManagementSystemCalculator = React.lazy(() => import("./views/PayManagementSystem/PayManagementSystemCalculator"));
-const PayManagementSystemManagement = React.lazy(() => import("./views/PayManagementSystem/PayManagementSystemManagement"));
-const BulletinBoard = React.lazy(() => import("./views/BulletinBoard/BulletinBoard"));
+const EmployeeManagement = React.lazy(() =>
+  import("./views/employee/EmployeeManagement")
+);
+const TimeManagementSystem = React.lazy(() =>
+  import("./views/TimeManagementSystem/TimeManagementSystem")
+);
+const PayManagementSystemCalculator = React.lazy(() =>
+  import("./views/PayManagementSystem/PayManagementSystemCalculator")
+);
+const PayManagementSystemManagement = React.lazy(() =>
+  import("./views/PayManagementSystem/PayManagementSystemManagement")
+);
+const BulletinBoard = React.lazy(() =>
+  import("./views/BulletinBoard/BulletinBoard")
+);
 
 // ========================================================
 // ========================================================
@@ -78,6 +124,12 @@ const routes = [
     name: "출결 기록",
     element: Attend_Record,
   },
+  //Map
+  { path: "/Vacation/Map", name: "Map", element: Map },
+
+  //Chat
+  { path: "/Chatting/Chat", name: "Chat", element: Chat },
+
   { path: "/base", name: "Base", element: Cards, exact: true },
   { path: "/base/accordion", name: "Accordion", element: Accordion },
   { path: "/base/breadcrumbs", name: "Breadcrumbs", element: Breadcrumbs },
@@ -145,7 +197,7 @@ const routes = [
     name: "TimeManagementSystem",
     element: TimeManagementSystem,
   },
-{
+  {
     path: "/PayManagementSystem/PayManagementSystemCalculator",
     name: "PayManagementSystemCalculator",
     element: PayManagementSystemCalculator,
@@ -154,11 +206,12 @@ const routes = [
     path: "/PayManagementSystem/PayManagementSystemManagement",
     name: "PayManagementSystemManagement",
     element: PayManagementSystemManagement,
-  },{
+  },
+  {
     path: "/BulletinBoard/BulletinBoard",
     name: "BulletinBoard",
     element: BulletinBoard,
-  }
+  },
 ];
 
 export default routes;

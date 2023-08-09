@@ -1,0 +1,43 @@
+const baseData = [
+  {
+    code: "m021",
+    name: "조정원",
+    teamName: "개발팀",
+    position: "사원",
+    etc: "2023-05-18 ~ 2023-05-19",
+    vacationType: "월차",
+    day: "1일",
+    reason: "개인 사정",
+  },
+  {
+    code: "m005",
+    name: "김솔비",
+    teamName: "회계팀",
+    position: "부장",
+    etc: "2023-05-21 ~ 2023-05-22",
+    vacationType: "월차",
+    day: "1일",
+    reason: "병가",
+  },
+  {
+    code: "m043",
+    name: "김자겸",
+    teamName: "인사팀",
+    position: "대리",
+    etc: "2023-05-26 ~ 2023-05-27",
+    vacationType: "월차",
+    day: "1일",
+    reason: "감자농사",
+  },
+  {
+    code: "m032",
+    name: "홍준이",
+    teamName: "경영팀",
+    position: "과장",
+    etc: "2023-05-28 ~ 2023-05-30",
+    vacationType: "월차",
+    day: "2일",
+    reason: "고용노동부",
+  },
+];
+export default baseData;
