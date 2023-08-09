@@ -35,18 +35,18 @@ const _nav = [
     component: CNavTitle,
     name: "Theme",
   },
-  {
-    component: CNavItem,
-    name: "Colors",
-    to: "/theme/colors",
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: "Typography",
-    to: "/theme/typography",
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: "Colors",
+  //   to: "/theme/colors",
+  //   icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavItem,
+  //   name: "Typography",
+  //   to: "/theme/typography",
+  //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: "근무일정",
@@ -85,6 +85,42 @@ const _nav = [
     name: "사내 메신저",
     to: "/Chatting/Chat",
     icon: <CIcon icon={cilTablet} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "직원관리",
+    to: "/employee/EmployeeManagement",
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "근태관리",
+    to: "/TimeManagementSystem/TimeManagementSystem",
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavGroup,
+    name: "급여관리",
+    to: "/PayManagementSystem",
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: "급여계산기",
+        to: "/PayManagementSystem/PayManagementSystemCalculator",
+      },
+      {
+        component: CNavItem,
+        name: "급여정산",
+        to: "/PayManagementSystem/PayManagementSystemManagement",
+      },
+    ],
+  },
+  {
+    component: CNavItem,
+    name: "게시판",
+    to: "/BulletinBoard/BulletinBoard",
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
 
   {
@@ -234,6 +270,7 @@ const _nav = [
       },
       {
         component: CNavItem,
+
         name: "Validation",
         to: "/forms/validation",
       },
@@ -243,42 +280,6 @@ const _nav = [
     component: CNavItem,
     name: "Charts",
     to: "/charts",
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: "직원관리",
-    to: "/employee/EmployeeManagement",
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: "근태관리",
-    to: "/TimeManagementSystem/TimeManagementSystem",
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavGroup,
-    name: "급여관리",
-    to: "/PayManagementSystem",
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: "급여계산기",
-        to: "/PayManagementSystem/PayManagementSystemCalculator",
-      },
-      {
-        component: CNavItem,
-        name: "급여정산",
-        to: "/PayManagementSystem/PayManagementSystemManagement",
-      },
-    ],
-  },
-  {
-    component: CNavItem,
-    name: "게시판",
-    to: "/BulletinBoard/BulletinBoard",
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   // {
