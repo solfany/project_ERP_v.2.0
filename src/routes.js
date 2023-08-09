@@ -124,10 +124,8 @@ const routes = [
     name: "출결 기록",
     element: Attend_Record,
   },
-  //Map
   { path: "/Vacation/Map", name: "Map", element: Map },
 
-  //Chat
   { path: "/Chatting/Chat", name: "Chat", element: Chat },
 
   { path: "/base", name: "Base", element: Cards, exact: true },

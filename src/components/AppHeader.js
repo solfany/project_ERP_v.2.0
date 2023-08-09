@@ -1,6 +1,6 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   CContainer,
   CHeader,
@@ -10,24 +10,24 @@ import {
   CHeaderToggler,
   CNavLink,
   CNavItem,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from "@coreui/icons";
 
-import { AppBreadcrumb } from './index'
-import { AppHeaderDropdown } from './header/index'
-import { logo } from 'src/assets/brand/logo'
+import { AppBreadcrumb } from "./index";
+import { AppHeaderDropdown } from "./header/index";
+import { logo } from "src/assets/brand/logo";
 
 const AppHeader = () => {
-  const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const dispatch = useDispatch();
+  const sidebarShow = useSelector((state) => state.sidebarShow);
 
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
         <CHeaderToggler
           className="ps-1"
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+          onClick={() => dispatch({ type: "set", sidebarShow: !sidebarShow })}
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
@@ -73,7 +73,7 @@ const AppHeader = () => {
         <AppBreadcrumb />
       </CContainer>
     </CHeader>
-  )
-}
+  );
+};
 
-export default AppHeader
+export default AppHeader;

@@ -9,11 +9,14 @@ import {
   cilCursor,
   cilDescription,
   cilDrop,
+  cilMap,
+  cilMobileLandscape,
   cilNotes,
   cilPencil,
   cilPuzzle,
   cilSpeedometer,
   cilStar,
+  cilTablet,
 } from "@coreui/icons";
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
@@ -71,7 +74,7 @@ const _nav = [
   //Map
   {
     component: CNavItem,
-    name: "Vacation",
+    name: "휴가일정",
     to: "/Vacation/Map",
     icon: <CIcon icon={cilMap} customClassName="nav-icon" />,
   },
@@ -79,7 +82,7 @@ const _nav = [
   //Chat
   {
     component: CNavItem,
-    name: "Chat",
+    name: "사내 메신저",
     to: "/Chatting/Chat",
     icon: <CIcon icon={cilTablet} customClassName="nav-icon" />,
   },
