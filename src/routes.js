@@ -69,6 +69,7 @@ const Validation = React.lazy(() =>
 const Charts = React.lazy(() => import("./views/charts/Charts"));
 
 //Map(Vacation)
+//Map에 대한 변수에 대한 경로를 지정해 import
 const Map = React.lazy(() => import("./views/Vacation/Map"));
 
 //Chat
@@ -86,8 +87,8 @@ const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
 const Toasts = React.lazy(() => import("./views/notifications/toasts/Toasts"));
 const Widgets = React.lazy(() => import("./views/widgets/Widgets"));
 
-const staffManagement = React.lazy(() => 
-import("./views/staff/StaffManagement")
+const staffManagement = React.lazy(() =>
+  import("./views/staff/StaffManagement")
 );
 
 const TimeManagementSystem = React.lazy(() =>
@@ -125,9 +126,11 @@ const routes = [
     name: "출결 기록",
     element: Attend_Record,
   },
-  { path: "/Vacation/Map", name: "Map", element: Map },
+  //해당 경로에 있는 요소 map을 import해서 route로 지정?
+  //react는 잘 모르겠다
+  { path: "/Vacation/Map", name: "휴가일정", element: Map },
 
-  { path: "/Chatting/Chat", name: "Chat", element: Chat },
+  { path: "/Chatting/Chat", name: "사내 메신저", element: Chat },
 
   { path: "/base", name: "Base", element: Cards, exact: true },
   { path: "/base/accordion", name: "Accordion", element: Accordion },

@@ -75,7 +75,7 @@ const _nav = [
   {
     component: CNavItem,
     name: "휴가일정",
-    to: "/Vacation/Map",
+    to: "/Vacation/Map", //경로
     icon: <CIcon icon={cilMap} customClassName="nav-icon" />,
   },
 
