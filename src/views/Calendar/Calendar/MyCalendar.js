@@ -8,6 +8,7 @@ import CustomButton from './../../../components/Button/CustomButton';
 import 'moment/locale/ko';
 import './calendar.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import axios from 'axios';
 
 moment.locale('ko');
 const localizer = momentLocalizer(moment); // or globalizeLocalizer
@@ -17,15 +18,17 @@ const allViews = Object.keys(Views).map((k) => Views[k]);
 const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [messageApi, contextHolder] = message.useMessage();
+
 
   const handleSelectEvent = (event) => {
     setSelectedEvent({
+      id: event.id,
+      empNum: event.empNum,
       title: event.title,
-      name: event.name,
+      name: event.empName,
       start: event.start,
       end: event.end,
-      desc: event.desc,
+      desc: event.description,
     });
     setShowModal(true);
   };
@@ -38,30 +41,39 @@ const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
     toggleModal();
   };
 
-  const showMessage = () => {
-    message.config({
-      top: 125, // 메시지가 나타날 위치 (상단으로부터의 거리)
-      duration: 4, // 메시지가 보여질 시간 (초 단위)
-      maxCount: 3, // 동시에 보여질 최대 메시지 수
-      rtl: false, // RTL (오른쪽에서 왼쪽) 모드 활성화 여부
-      prefixCls: 'my-message', // 커스텀 클래스명 프리픽스
-    });
-
-    message.error(' 일정이 성공적으로 삭제되었습니다. ');
-  };
-
   const handleDeleteEvent = () => {
-    const index = events.findIndex(
-      (event) =>
-        event.title === selectedEvent.title &&
-        event.start === selectedEvent.start
-    );
-    const newEvents = [...events];
-    newEvents.splice(index, 1);
-    setEvents(newEvents);
-    toggleModal();
-    showMessage();
+    if (selectedEvent) {
+      axios.delete(`/api/calendarevents/delete/${selectedEvent.id}`)
+        .then(response => {
+          // 삭제 성공 시, 이벤트 리스트 업데이트
+          const updatedEvents = events.filter(event => event.id !== selectedEvent.id);
+          setEvents(updatedEvents);
+          setSelectedEvent(null); // 선택한 이벤트 초기화
+          toggleModal();
+          message.success('일정이 삭제되었습니다.');
+        })
+        .catch(error => {
+          message.error('일정을 삭제하는 도중 에러가 발생했습니다.')
+          console.error('Error deleting event:', error);
+        });
+    }
   };
+
+
+
+  // const handleDeleteEvent = () => {
+  //   const index = events.findIndex(
+  //     (event) =>
+  //       event.title === selectedEvent.title &&
+  //       event.start === selectedEvent.start
+  //   );
+  //   const newEvents = [...events];
+  //   newEvents.splice(index, 1);
+  //   setEvents(newEvents);
+  //   toggleModal();
+  //   showMessage();
+  // };
+
 
   return (
     <div className="content">
@@ -72,7 +84,7 @@ const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
           }`}
           style={{ height: '700px' }}
         >
-          {contextHolder}
+          
           <Calendar
             events={events}
             localizer={localizer}
@@ -86,21 +98,13 @@ const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
       </div>
       <Modal isOpen={showModal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>일정</ModalHeader>
-        <ModalBody>
+        <ModalBody style={{paddingTop: '30px'}}>
           {selectedEvent && (
             <Table hover bordered>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
               <tbody>
-                <tr>
+                <tr >
                   <td>작성자</td>
-                  <td>{selectedEvent.name}</td>
+                  <td colSpan={3}>{selectedEvent.name}</td>
                 </tr>
                 <tr>
                   <td>시작날짜</td>

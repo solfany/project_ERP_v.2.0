@@ -15,6 +15,7 @@ import {
   Input,
 } from 'reactstrap';
 import { message } from 'antd';
+import axios from 'axios';
 
 function RunModal({ events, setEvents, className }) {
   const [startDate, setStartDate] = useState(null);
@@ -24,10 +25,13 @@ function RunModal({ events, setEvents, className }) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-  const sendData = (e) => {
+
+
+  const sendData = async (e) => {
     e.preventDefault();
 
     const name = e.target.elements.Name.value;
+    const empNum = e.target.elements.empNum.value;
     const desc = e.target.elements.desc.value;
     const date = moment(startDate).format('YYYY-MM-DD');
     const endDay = moment(endDate).format('YYYY-MM-DD');
@@ -35,24 +39,15 @@ function RunModal({ events, setEvents, className }) {
     const endTime = moment(selectedEndTime, 'HH:mm').format('HH:mm');
 
     // 필드가 모두 채워져 있는지 확인
-    if (!name || !desc || !date || !startTime || !endTime || !endDay) {
+    if (!name || !empNum || !desc || !date || !startTime || !endTime || !endDay) {
       toggle();
       return message.error('모든 필드를 입력해주세요.');
     }
 
-    // const showMessage = () => {
-    //   message.config({
-    //     top: 125, // 메시지가 나타날 위치 (상단으로부터의 거리)
-    //     duration: 4, // 메시지가 보여질 시간 (초 단위)
-    //     maxCount: 3, // 동시에 보여질 최대 메시지 수
-    //     rtl: false, // RTL (오른쪽에서 왼쪽) 모드 활성화 여부
-    //     prefixCls: 'my-message', // 커스텀 클래스명 프리픽스
-    //   });
-    // };
-
     const newEvent = {
-      title: name + ' ' + desc,
-      name: name,
+      title: name + ' - ' + desc,
+      empNum: empNum,
+      empName: name, // 이전에 name이었던 것을 empName으로 변경
       start: new Date(
         startDate.year(),
         startDate.month(),
@@ -67,13 +62,36 @@ function RunModal({ events, setEvents, className }) {
         selectedEndTime.hour(),
         selectedEndTime.minute()
       ),
-      desc: desc,
+      description: desc,
     };
 
-    setEvents([...events, newEvent]);
-    toggle();
+    axios.get('/api/calendarevents')
+      .then(response => {
+        setEvents(response.data)
+        message.success('데이터를 성공적으로 갱신하였습니다.');
+      })
 
-    return message.success(' 일정이 성공적으로 등록되었습니다. ');
+    try {
+
+      // newEvent 객체를 axios.post 요청을 통해 서버로 전달, 응답결과를 response에 저장
+      const response = await axios.post('/api/calendarevents/add', newEvent);
+
+      // newEvent 를 반영한 데이터베이스를 가져오기 위해 events 갱신
+      axios.get('/api/calendarevents')
+      .then(updatedEvents => { setEvents(updatedEvents.data)})
+
+      message.success(response.data);
+      toggle();
+    } catch (error) {
+      console.error(error);
+      if (error.response) {
+        // 서버에서 에러 응답을 보낸 경우
+        console.error("Server error response:", error.response.data);
+      } else {
+        // 요청 자체가 실패한 경우
+        console.error("Request failed:", error.message);
+      }
+    }
   };
 
   return (
@@ -87,7 +105,7 @@ function RunModal({ events, setEvents, className }) {
 
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={toggle}>일정 작성</ModalHeader>
-        <ModalBody>
+        <ModalBody style={{paddingTop: '20px'}}>
           <form onSubmit={sendData}>
             <Row>
               <Col md={6}>
@@ -97,6 +115,17 @@ function RunModal({ events, setEvents, className }) {
                     id="Name"
                     name="Name"
                     placeholder="작성자"
+                    type="text"
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup>
+                  <Label for="empNum">사원번호</Label>
+                  <Input
+                    id="empNum"
+                    name="empNum"
+                    placeholder="사원번호"
                     type="text"
                   />
                 </FormGroup>
