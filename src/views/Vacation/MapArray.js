@@ -7,7 +7,7 @@ const baseData = [
     etc: "2023-05-18 ~ 2023-05-19",
     vacationType: "월차",
     day: "1일",
-    reason: "개인 사정",
+    reason: "휴식",
   },
   {
     code: "m005",

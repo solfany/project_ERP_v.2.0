@@ -1,27 +1,36 @@
-import React, { useState } from 'react';
-import './Map.css';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
-import { message } from 'antd';
+import React, { useState } from "react";
+import "./Map.css";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
+import { message } from "antd";
+
+//axios 추가
+import axios from "axios";
 
 // 모달창
-function Vacation() {
- // function Vacation({ data, setData }) {
-// 모달창 토글 방식
-  const [modal, setModal] = useState(false)
-  const toggle = () => setModal(!modal)
+function Vacation({ data, setData }) {
+  //vacation.js파일이에서 data,setData에 관련된 객체를 모두 사용할 수  있도록 propts로 불러옴
+
+  //하위 newData 같은 경우에 return에서  onchange된 value값을 받아
+  // ...data 즉 data에 대한 모든 기록?에 추가하고 setdata로 변환해서 보여주는 용도 인듯함
+
+  //calendermodel 준이 보기
+
+  // 모달창 토글 방식
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
 
   //모달 선택창
-  const [userId, setUserId] = useState('')
+  const [userId, setUserId] = useState("");
   const onChangeUserId = (e) => {
-    setUserId(e.target.value)
-  }
-  const [teamNameOptionValue, setTeamNameOptionValue] = useState('')
-  const [positionValue, setPositionValue] = useState('')
-  const [vacationTypeValue, setVacationTypeValue] = useState('')
-  const [dayValue, setDayValue] = useState('')
-  const [reasonValue, setReasonValue] = useState('')
-  const [vacationStartValue, setVacationStartValue] = useState(new Date())
-  const [vacationEndValue, setVacationEndValue] = useState(new Date())
+    setUserId(e.target.value);
+  };
+  const [teamNameOptionValue, setTeamNameOptionValue] = useState("");
+  const [positionValue, setPositionValue] = useState("");
+  const [vacationTypeValue, setVacationTypeValue] = useState("");
+  const [dayValue, setDayValue] = useState("");
+  const [reasonValue, setReasonValue] = useState("");
+  const [vacationStartValue, setVacationStartValue] = useState(new Date());
+  const [vacationEndValue, setVacationEndValue] = useState(new Date());
 
   // console.log(
   //   (new Date()),
@@ -30,16 +39,31 @@ function Vacation() {
   // );
 
   //초기값 설정
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setUserId('')
-    setTeamNameOptionValue('')
-    setPositionValue('')
-    setVacationTypeValue('')
-    setDayValue('')
-    setVacationStartValue(new Date())
-    setVacationEndValue(new Date())
-    setReasonValue('')
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const vacaEmpName = e.target.elements.Name.value; //사원번호
+    const vacaName = e.target.elements.empName.value; //이름
+    const vacaDept = e.target.elements.dept.value; //부서명
+    const vacaPosition = e.target.elements.position.value; //직무
+    const vacationType = e.target.elements.vacationType.value; //휴가 종류
+    const vacaDay =
+      (new Date(vacationEndValue) - new Date(vacationStartValue)) /
+        (1000 * 60 * 60 * 24) +
+      ` 일 `; //휴가 일수
+    const vacaEtc = vacationStartValue + ` ~ ` + vacationEndValue; // 휴가 기간
+    const vacaReason = e.target.elements.reason.value; //사유
+
+    //vacaName('')
+
+    setUserId("");
+    setTeamNameOptionValue("");
+    setPositionValue("");
+    setVacationTypeValue("");
+    setDayValue("");
+    setVacationStartValue(new Date());
+    setVacationEndValue(new Date());
+    setReasonValue("");
 
     if (
       !userId ||
@@ -51,26 +75,63 @@ function Vacation() {
       !vacationStartValue ||
       !vacationEndValue
     ) {
-      toggle()
-      return message.error('모두입력하세요')
+      toggle();
+      return message.error("모두입력하세요");
     }
 
+    // const newData = {
+    //   code: '사원번호',
+    //   name: e.target.elements.Name.value, //이름
+    //   teamName: e.target.elements.teamName.value, //부서명
+    //   position: e.target.elements.position.value, //직무
+    //   vacationType: e.target.elements.vacationType.value, //휴가 종류
+    //   day:
+    //     (new Date(vacationEndValue) - new Date(vacationStartValue)) / (1000 * 60 * 60 * 24) +
+    //     ` 일 `, //휴가 일수
+    //   etc: vacationStartValue + ` ~ ` + vacationEndValue, // 휴가 기간
+    //   reason: e.target.elements.reason.value, //사유
+    // }
+
+    //아마도 이 데이터 값이
     const newData = {
-      code: '사원번호',
-      name: e.target.elements.Name.value, //이름
-      teamName: e.target.elements.teamName.value, //부서명
+      empNum: e.target.elements.empNum.value, //사원번호
+      //사원번호는 입력하지 않고도 이름이나 fk값을 받아 자동으로 찾을 수 있어야함
+      name: e.target.elements.empName.value, //이름
+      teamName: e.target.elements.dept.value, //부서명
       position: e.target.elements.position.value, //직무
       vacationType: e.target.elements.vacationType.value, //휴가 종류
       day:
-        (new Date(vacationEndValue) - new Date(vacationStartValue)) / (1000 * 60 * 60 * 24) +
+        (new Date(vacationEndValue) - new Date(vacationStartValue)) /
+          (1000 * 60 * 60 * 24) +
         ` 일 `, //휴가 일수
       etc: vacationStartValue + ` ~ ` + vacationEndValue, // 휴가 기간
       reason: e.target.elements.reason.value, //사유
-    }
-    // setData([...data, newData])
+    };
+    setData([...data, newData]);
     // console.log(data);
     // console.log(newData);
-  }
+
+    //보내기
+
+    //   const response = await axios.post('/api/Vacation/add', newEvent);
+
+    //   // newEvent 를 반영한 데이터베이스를 가져오기 위해 events 갱신
+    //   axios.get('/api/Vacation')
+    //   .then(updatedEvents => { setEvents(updatedEvents.data)})
+
+    //   message.success(response.data);
+    //   toggle();
+    // } catch (error) {
+    //   console.error(error);
+    //   if (error.response) {
+    //     // 서버에서 에러 응답을 보낸 경우
+    //     console.error("Server error response:", error.response.data);
+    //   } else {
+    //     // 요청 자체가 실패한 경우
+    //     console.error("Request failed:", error.message);
+    //   }
+    // }
+  };
 
   return (
     <div>
@@ -86,9 +147,9 @@ function Vacation() {
             <form onSubmit={handleSubmit}>
               <ul>
                 <li>
-                  <Label style={{ width: '70px' }}>이름 : </Label>
+                  <Label style={{ width: "80px" }}>이름 : </Label>
                   <input
-                    type="id"
+                    type="Name"
                     name="Name"
                     placeholder="이름을 입력하세요"
                     value={userId}
@@ -96,7 +157,7 @@ function Vacation() {
                   ></input>
                 </li>
                 <li>
-                  <Label style={{ width: '70px' }}>부서 : </Label>
+                  <Label style={{ width: "80px" }}>부서 : </Label>
                   <select
                     name="teamName"
                     value={teamNameOptionValue}
@@ -111,7 +172,7 @@ function Vacation() {
                   </select>
                 </li>
                 <li>
-                  <Label style={{ width: '70px' }}>직무 : </Label>
+                  <Label style={{ width: "80px" }}>직무 : </Label>
                   <select
                     name="position"
                     value={positionValue}
@@ -127,7 +188,7 @@ function Vacation() {
                   </select>
                 </li>
                 <li>
-                  <Label style={{ width: '70px' }}>휴가 종류 : </Label>
+                  <Label style={{ width: "80px" }}>휴가 종류 : </Label>
                   <select
                     name="vacationType"
                     value={vacationTypeValue}
@@ -141,15 +202,19 @@ function Vacation() {
                   </select>
                 </li>
                 <li>
-                  <Label style={{ width: '70px' }}>휴가 기간 :</Label>
-                  <select name="day" value={dayValue} onChange={(e) => setDayValue(e.target.value)}>
+                  <Label style={{ width: "80px" }}>휴가 기간 :</Label>
+                  <select
+                    name="day"
+                    value={dayValue}
+                    onChange={(e) => setDayValue(e.target.value)}
+                  >
                     <option value="">휴가 기간</option>
                     <option value="휴가 기간 조회">휴가 기간 조회</option>
                     {/* <option value="오후">오후</option> */}
                   </select>
                 </li>
                 <li>
-                  <Label style={{ width: '70px' }}>날짜 입력 :</Label>
+                  <Label style={{ width: "80px" }}>날짜 입력 :</Label>
                   <input
                     type="date"
                     name="dayStart"
@@ -165,14 +230,14 @@ function Vacation() {
                 </li>
 
                 <li>
-                  <label style={{ width: '70px' }}>메모</label>
+                  <label style={{ width: "80px" }}>메모(사유)</label>
                   <textarea
                     name="reason"
                     value={reasonValue}
                     onChange={(e) => {
-                      setReasonValue(e.target.value)
+                      setReasonValue(e.target.value);
                     }}
-                    style={{ width: '95%' }}
+                    style={{ width: "95%" }}
                     placeholder="내용을 입력하세요"
                   ></textarea>
                   <ModalFooter>
@@ -190,7 +255,7 @@ function Vacation() {
         </ModalBody>
       </Modal>
     </div>
-  )
+  );
 }
 
-export default Vacation
+export default Vacation;

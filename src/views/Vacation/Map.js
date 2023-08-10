@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //import React, { useEffect, useState } from "react";
 
 import "./Map.css";
@@ -44,8 +44,10 @@ function Map() {
     message.success("success");
   };
   const [data, setData] = useState(baseData);
-  const init = useSelector((state) => state.init);
-  const userObj = useSelector((state) => state.userObj);
+  //const [newData, setNewData] = useState();
+
+  //const init = useSelector((state) => state.init);
+  //const userObj = useSelector((state) => state.userObj);
   // const history = useHistory();
   // useEffect(() => {
   //   if (init && userObj) {
@@ -55,6 +57,23 @@ function Map() {
   //     history.push('/admin/MainLogin');
   //   }
   // }, [init, userObj, history]);
+
+//여기에는 modal 작업으로 인한 event가 발생해서 보여지는 공간
+
+//1. useEffect 추가 
+//2. event에서 발생하는 곳 추가
+      //->여기서 상위에 있는 useEffect에 있는 data 관련 useData확인
+
+  useEffect(() => {
+    axios.get('/api/vacation')
+    .then(response => {
+      setData(response.data)
+      message.success('데이터 이러면 되는겨?.');
+    })
+    .catch(error => {
+    message.error('데이터 이러면 안되는겨?.');
+    });
+}, []);
   return (
     <>
       {/* {init && userObj && */}
