@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.project.backend.controller.CalendarEventControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-08-11T12:02:08" hostname="gimsolbiui-MacBookAir.local" time="0.207">
+  <properties/>
+  <testcase name="[POST] 일정 추가 - 일정 생성요청을 받으면 일정을 생성한다." classname="com.project.backend.controller.CalendarEventControllerTest" time="0.147"/>
+  <testcase name="[GET] 일정 갱신 - 일정 정보를 요청받았을 때 일정 리스트를 리턴한다." classname="com.project.backend.controller.CalendarEventControllerTest" time="0.05"/>
+  <testcase name="[DELETE] 일정 삭제 - 일정 삭제요청을 받으면 일정을 삭제한다." classname="com.project.backend.controller.CalendarEventControllerTest" time="0.006"/>
+  <system-out><![CDATA[2023-08-11T21:02:07.039+09:00  INFO 57192 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.project.backend.controller.CalendarEventControllerTest]: CalendarEventControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2023-08-11T21:02:07.065+09:00  INFO 57192 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.project.backend.Project03Application for test class com.project.backend.controller.CalendarEventControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.1.2)
+
+2023-08-11T21:02:07.093+09:00  INFO 57192 --- [    Test worker] c.p.b.c.CalendarEventControllerTest      : Starting CalendarEventControllerTest using Java 17.0.8 with PID 57192 (started by kimsoulbee in /Users/kimsoulbee/Desktop/project03)
+2023-08-11T21:02:07.093+09:00  INFO 57192 --- [    Test worker] c.p.b.c.CalendarEventControllerTest      : No active profile set, falling back to 1 default profile: "default"
+2023-08-11T21:02:08.416+09:00  INFO 57192 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2023-08-11T21:02:08.416+09:00  INFO 57192 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2023-08-11T21:02:08.419+09:00  INFO 57192 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2023-08-11T21:02:08.443+09:00  INFO 57192 --- [    Test worker] c.p.b.c.CalendarEventControllerTest      : Started CalendarEventControllerTest in 1.367 seconds (process running for 4.546)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

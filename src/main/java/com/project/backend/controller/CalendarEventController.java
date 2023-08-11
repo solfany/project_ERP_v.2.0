@@ -36,7 +36,7 @@ public class CalendarEventController {
             CalendarEvent createdEvent = calendarEventService.CreateCalendarEvent(calendarEventDto);
             // 이후 추가된 이벤트를 갱신하기 위해 findAll() 메서드 실행
             calendarEventRepository.findAll();
-            
+
             return ResponseEntity.ok("일정이 성공적으로 저장되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("일정을 저장하는 도중 오류가 발생했습니다.");

@@ -25,7 +25,7 @@ public class CalendarEventService {
     }
 
     public CalendarEvent CreateCalendarEvent(CalendarEventDto calendarEventDto) {
-        CalendarEvent calendarEvent = CalendarEventDto.toEntity(calendarEventDto);
+        CalendarEvent calendarEvent = calendarEventDto.toEntity(); // 수정된 부분
         calendarEventRepository.save(calendarEvent);
 
         return calendarEvent;

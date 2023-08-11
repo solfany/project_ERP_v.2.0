@@ -6,9 +6,11 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Getter @Setter
+@Getter
+@Setter
 public class CalendarEventDto {
     private Long id;
+
     private Long empNum;
     private String title;
     private String empName;
@@ -16,29 +18,29 @@ public class CalendarEventDto {
     private Date end;
     private String description;
 
-
-
-    public static CalendarEventDto toDto(CalendarEvent event) {
-        CalendarEventDto dto = new CalendarEventDto();
-        dto.setId(event.getId());
-        dto.setTitle(event.getTitle());
-        dto.setEmpName(event.getEmpName());
-        dto.setStart(event.getStart());
-        dto.setEnd(event.getEnd());
-        dto.setDescription(event.getDescription());
-        return dto;
+    public CalendarEventDto() {
+        // 기본 생성자
     }
 
-    public static CalendarEvent toEntity(CalendarEventDto dto) {
-        CalendarEvent event = new CalendarEvent();
-        event.setTitle(dto.getTitle());
-        event.setEmpNum(dto.getEmpNum());
-        event.setEmpName(dto.getEmpName());
-        event.setStart(dto.getStart());
-        event.setEnd(dto.getEnd());
-        event.setDescription(dto.getDescription());
-        return event;
+    public CalendarEventDto(Long empNum, String title, String empName, Date start, Date end, String description) {
+        this.empNum = empNum;
+        this.title = title;
+        this.empName = empName;
+        this.start = start;
+        this.end = end;
+        this.description = description;
     }
 
-    // 다른 필드나 메소드도 필요하다면 여기에 추가할 수 있습니다.
+
+    // toEntity 메서드 추가
+    public CalendarEvent toEntity() {
+        CalendarEvent entity = new CalendarEvent();
+        entity.setEmpNum(this.empNum);
+        entity.setTitle(this.title);
+        entity.setEmpName(this.empName);
+        entity.setStart(this.start);
+        entity.setEnd(this.end);
+        entity.setDescription(this.description);
+        return entity;
+    }
 }

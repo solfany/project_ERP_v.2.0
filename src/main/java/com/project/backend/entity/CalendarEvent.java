@@ -1,12 +1,9 @@
 package com.project.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
-
 
 @Getter
 @Entity
@@ -36,6 +33,18 @@ public class CalendarEvent {
 
     @Column(nullable = false)
     @Getter @Setter private String description;
+
+    public CalendarEvent() {}
+
+
+    public CalendarEvent(Long empNum, String title, String empName, Date start, Date end, String description) {
+        this.empNum = empNum;
+        this.title = title;
+        this.empName = empName;
+        this.start = start;
+        this.end = end;
+        this.description = description;
+    }
 
 
     public static CalendarEvent CreateCalendarEvent(Long empNum, String title, String empName, Date start, Date end, String description) {

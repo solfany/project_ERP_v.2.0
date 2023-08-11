@@ -1,73 +1,75 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import inputNumberFormat from "./inputNumberFormat";
+import React, { useState, useEffect } from "react";
+import { CAlert, CButton, CContainer,CCol, CRow, } from "@coreui/react";
+import { Button, Form, FormGroup, Input, Col, CardBody } from "reactstrap"; // Remove this line if it's already imported above
+import "./calc.css";
+import "./calc.js";
 
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col,
-  h4,
-} from "reactstrap";
+const PayManagementSystemCalculator = () => {
+  const [hourlyWage, setHourlyWage] = useState('');
+  const [totalPay, setTotalPay] = useState(0);
+  const [pension, setPension] = useState(0);
+  const [healthInsurance, setHealthInsurance] = useState(0);
+  const [jang, setJang] = useState(0);
+  const [employmentInsurance, setEmploymentInsurance] = useState(0);
+  const [jap, setJap] = useState(0);
+  const [miniJap, setMiniJap] = useState(0);
+  const [prevOperand, setPrevOperand] = useState('');
+  const [currentOperand, setCurrentOperand] = useState('');
 
-function PayManagementSystemCalculator() {
-  // 소득세, 국민연금, 건강보험료, 산재보험, 고용보험 계산기
-  const [hourlyWage, setHourlyWage] = useState(0); // 월급 (세전)
-  const [incomeTax, setIncomeTax] = useState(0); // 소득세
-  const [pension, setPension] = useState(0); // 국민연금
-  const [healthInsurance, setHealthInsurance] = useState(0); // 건강보험료
-  const [jang, setJang] = useState(0); //장기요양
-  const [industrialAccidentInsurance, setIndustrialAccidentInsurance] =
-    useState(0); // 산재보험료
-  const [employmentInsurance, setEmploymentInsurance] = useState(0); // 고용보험료
-  const [jap, setJap] = useState(0); //근로소득세
-  const [miniJap, setMinijap] = useState(0); //근로소득세
+  const inputNumberFormat = (number) => {
+    return number.toLocaleString();
+  };
 
-  const [totalPay, setTotalPay] = useState(0); // 총 급여
-  function handleCalculate() {
-    const salary = parseInt(hourlyWage) * 1;
+  const handleNumberClick = (number) => {
+    setCurrentOperand((prev) => prev + number);
+    setHourlyWage((prev) => prev + number);
 
-    const {
-      incomeTax,
-      pension,
-      healthInsurance,
-      jang,
-      employmentInsurance,
-      industrialAccidentInsurance,
-      jap,
-      miniJap,
-    } = calculateTaxesAndInsurance(salary);
+  };
+  // 키패드 값 삭제
+  const handleClearClick = () => {
+    setHourlyWage(''); // Clear hourlyWage as well
+  };
+  // 키패드 하나씩 지움
+  const handleDeleteClick = () => {
+    setHourlyWage((prev) => prev.slice(0, -1)); // Clear hourlyWage as well
+    // You may want to handle deleting from hourlyWage as well, based on your use case
+  };
 
-    setIncomeTax(incomeTax);
-    setPension(pension);
-    setHealthInsurance(healthInsurance);
-    setJang(jang);
-    setEmploymentInsurance(employmentInsurance);
-    setIndustrialAccidentInsurance(industrialAccidentInsurance);
-    setJap(jap);
-    setMinijap(miniJap);
+  // 키패드 이벤트 리스너
+// 해당 부분에서 이슈 발생ㅠㅠㅠ 
+// 클릭 이벤트와 이후 추가된 키보드 입력 이벤트가 충돌하여, 
+// 이후에 적용된 키보드 이벤트가 숫자 1개를 입력시 2개가 출력돠는 이슈 발생으로 
+// useEffect훅을 사용하여 키보드 이벤트를 감지하고 처리하는 부분을 만드는데, 
+// 이때 입력 된 이벤트가 input element에서 발생된것인지 확인하고 
+// e.target.tagName을 사용하여 이벤트가 발생한 요소의 태그 이름을 확인한다. 
+// input 엘리먼트가 아닌 경우에만 해당 키보드 입력 이벤트를 처리하도록 수정했고, 
+// 이렇게 하면 input element에서 키보드 입력 중에는 키보드 이벤트가 처리되지 않으며 다른 요소에서 키보드 입력을 처리할 수 있다. 
+  useEffect(() => {
+    const handleKeyboardInput = (e) => {
+      const key = e.key;
+      if (e.target.tagName !== "INPUT") { // Check if the event target is not an input element
+        if (/^[0-9]$/.test(key)) {
+          handleNumberClick(key);
+        } else if (key === "+" || key === "-" || key === "*" || key === "/" || key === "=") {
+          handleOperatorClick(key);
+        } else if (key === "Enter") {
+          handleCalculate();
+        } else if (key === "Backspace" || key === "Delete") {
+          handleDeleteClick();
+        }
+      }
+    };
+  
+    window.addEventListener("keydown", handleKeyboardInput);
+  
+    return () => {
+      window.removeEventListener("keydown", handleKeyboardInput);
+    };
+  }, []);
+  
+  
 
-    const bTotalPay =
-      salary -
-      incomeTax -
-      pension -
-      healthInsurance -
-      jang -
-      employmentInsurance -
-      industrialAccidentInsurance -
-      jap -
-      miniJap;
-
-    setTotalPay(bTotalPay);
-  }
-
-  function calculateTaxesAndInsurance(salary) {
+  const calculateTaxesAndInsurance = (salary) => {
     // 국민연금 계산
     const pension = Math.floor(salary * 0.045);
 
@@ -89,7 +91,6 @@ function PayManagementSystemCalculator() {
     //지방 소득세
     const miniJap = Math.floor(jap * 0.1);
     return {
-      incomeTax,
       pension,
       healthInsurance,
       employmentInsurance,
@@ -98,78 +99,117 @@ function PayManagementSystemCalculator() {
       jap,
       miniJap,
     };
-  }
+  };
+
+  const handleCalculate = () => {
+    const salary = parseInt(hourlyWage) * 1;
+
+    const {
+      pension: calculatedPension,
+      healthInsurance: calculatedHealthInsurance,
+      jang: calculatedJang,
+      employmentInsurance: calculatedEmploymentInsurance,
+      jap: calculatedJap,
+      miniJap: calculatedMiniJap,
+    } = calculateTaxesAndInsurance(salary);
+
+    setPension(calculatedPension);
+    setHealthInsurance(calculatedHealthInsurance);
+    setJang(calculatedJang);
+    setEmploymentInsurance(calculatedEmploymentInsurance);
+    setJap(calculatedJap);
+    setMiniJap(calculatedMiniJap);
+
+    const bTotalPay =
+      salary -
+      calculatedPension -
+      calculatedHealthInsurance -
+      calculatedJang -
+      calculatedEmploymentInsurance -
+      calculatedJap -
+      calculatedMiniJap;
+    setTotalPay(bTotalPay);
+    
+  };
 
   return (
     <>
-      <div className="d-flex justify-content-around stlye">
-        <Col md="12">
-          <Card>
-            <CardBody>
-              <Form>
-                <FormGroup>
-                  <h1>세금 계산기</h1>
-                  <Card>
-                    <h4>
-                      서비스 이용 안내 회사내부규정과 기타 조건에 따라 실제
-                      월급/연봉과 다를 수 있습니다. 본 계산기는 모의 계산 결과로
-                      법적 효력이 없습니다.
-                    </h4>
-                  </Card>
+              <h1>세금 계산기</h1>
+              <CAlert color="info">
+                서비스 이용 안내 회사내부규정과 기타 조건에 따라 실제
+                월급/연봉과 다를 수 있습니다. 본 계산기는 모의 계산 결과로
+                법적 효력이 없습니다.
+              </CAlert>
+              <CContainer>
+                <CRow>
+                  <CCol xs={12} md={6}>
+              <h5 htmlFor="hourlyWage">월급(세전)을 입력하세요 🤑</h5>
+              <Input
+              className="calcinput"
+                type="number"
+                name="hourlyWage"
+                id="hourlyWage"
+                placeholder="숫자를 입력하세요"
+                value={hourlyWage}
+                onChange={(e) => setHourlyWage(e.target.value)}
+              />
 
-                  <h4 htmlFor="hourlyWage">월급(세전)을 입력하세요</h4>
-                  <Input
-                    type="number"
-                    name="hourlyWage"
-                    id="hourlyWage"
-                    placeholder="월급을 입력하세요"
-                    value={hourlyWage}
-                    onChange={(e) => setHourlyWage(e.target.value)}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <h4 htmlFor="workingHours">
-                    국민연금: {pension.toLocaleString()}원
-                    {/* <소득액(비과세액 제외)에서 4.5%를 공제합니다. 근로자, 기업 각 각 4.5% 씩 부담합니다 " /> */}
-                  </h4>
-                  <h4 htmlFor="workingHours">
-                    건강보험: {healthInsurance.toLocaleString()}원
-                    {/* <ToolTipTool tooltipText="월 소득액(비과세 제외)에서 7.09% 를 공제합니다. 근로자 기업 각각 3.545% 씩 부담합니다" /> */}
-                  </h4>
+              <div className="calc">
+                <div className="result">
+                  <input className="result__inner">
 
-                  <h4 htmlFor="workingHours">
-                    장기요양: {jang.toLocaleString()}원
-                    {/* <ToolTipTool tooltipText="건강보험금액의 12.81%를 공제합니다" /> */}
-                  </h4>
-                  {/* 
-                    <h4 htmlFor="workingHours">
-                      산재보험: {industrialAccidentInsurance.toLocaleString()}
-                      원
-                      <ToolTipTool tooltipText="추가 정보 보기" />
-                    </h4> */}
-                  <h4 htmlFor="workingHours">
-                    고용보험: {employmentInsurance.toLocaleString()}원
-                    {/* <ToolTipTool tooltipText="월 소득액(비과세 제외)에서 0.9% 공제합니다" /> */}
-                  </h4>
-                  <h4 htmlFor="workingHours">
-                    근로소득세 : {jap.toLocaleString()}원
-                    {/* <ToolTipTool tooltipText="급여와 부양가족수에 따라 국세청의 근로소득 간이세액표 자료를 기준으로 공제합니다 " /> */}
-                  </h4>
-                  <h4 htmlFor="workingHours">
-                    지방소득세 : {miniJap.toLocaleString()}원
-                    {/* <ToolTipTool tooltipText="소득세의 10%를 공제합니다." /> */}
-                  </h4>
-                </FormGroup>
-                <Button color="info" onClick={handleCalculate}>
-                  계산하기
-                </Button>
-                <h3>실 급여: {inputNumberFormat(totalPay)}원</h3>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </div>
-    </>
+                </input>
+                <div className="keys">
+                  <div className="keys__inner">
+                    <div className="key__row">
+                     <CRow><CCol xs ={12} id="calcBtn"> <CButton color="warning" variant="outline" onClick={handleClearClick} data-clear className="key"> AC </CButton></CCol></CRow>
+                     <CRow> <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('7')} data-number className="key" >7  </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('8')} data-number className="key">8  </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('9')} data-number className="key">9  </CButton></CCol></CRow>
+                   
+                      <CRow><CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('4')} data-number className="key">4  </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() =>handleNumberClick('5')} data-number className="key">5  </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('6')} data-number className="key">6  </CButton></CCol></CRow>
+                     
+                      <CRow><CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('1')} data-number className="key">1  </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('2')} data-number className="key"id="calcBtn">2  </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('3')} data-number className="key">3  </CButton></CCol></CRow>
+                    
+                      <CRow><CCol xs={4} id="calcBtn"> <CButton color="danger" variant="outline" onClick={handleDeleteClick} data-delete className="key"id="calcBtn">DEL </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="secondary" variant="outline" onClick={() => handleNumberClick('0')} data-number className="key">0  </CButton></CCol>
+                      <CCol xs={4} id="calcBtn"> <CButton color="info" variant="outline" onClick={handleCalculate} className="key"> 계산하기</CButton></CCol></CRow>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </CCol>
+              <CCol xs={12} md={6}>
+            {/* 세금 목록 표시 */}
+            <CContainer>
+            <h5>세금 계산 결과:</h5>
+              <h6>국민연금: {pension.toLocaleString()}원</h6>
+              <h6>건강보험: {healthInsurance.toLocaleString()}원</h6>
+              <h6>장기요양: {jang.toLocaleString()}원</h6>
+              <h6>고용보험: {employmentInsurance.toLocaleString()}원</h6>
+              <h6>근로소득세: {jap.toLocaleString()}원</h6>
+              <h6>지방소득세: {miniJap.toLocaleString()}원</h6>
+
+            <h5>실 급여: {inputNumberFormat(totalPay)}원</h5>
+            </CContainer>
+
+            </CCol>
+            </CRow>
+
+        </CContainer>
+        
+        </>
   );
-}
+};
+
 export default PayManagementSystemCalculator;
+
+
+
+
+                          
