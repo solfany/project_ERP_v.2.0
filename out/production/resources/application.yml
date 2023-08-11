@@ -24,10 +24,3 @@ spring:
     rest:
       base-path: /api
       detection-strategy: annotated
-logging:
-  level:
-    org:
-      springframework: DEBUG
-    com:
-      project:
-        backend: TRACE
