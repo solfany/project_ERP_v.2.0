@@ -1,0 +1,142 @@
+.App {
+  text-align: center;
+}
+
+.movie-container {
+  margin: 0 auto;
+  width: 80%;
+  border: 1px solid #333;
+  padding: 10px 0 30px 0;
+  border-radius: 5px;
+  margin-bottom: 50px;
+}
+
+
+
+
+
+.submit-button {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  padding: 20px;
+  border: none;
+  background: indianred;
+  border-radius: 5px;
+  margin-top: 40px;
+  vertical-align: middle;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+  min-height: 500px;
+}
+
+.BulletinBoardTablelayou{
+  text-align: -webkit-center
+}
+
+/* 게시판 페이지 레이아웃 전체 사이즈  */
+.BullentinBoardContainer{
+  height: 300em;
+}
+
+/* 모달 인풋 위치 조정 */
+.BulletinBoardModalInputSize{
+  margin-bottom: 1em;
+}
+
+/* ======버트======= */
+
+
+.BulletinBoardModalBtn{
+  margin-top: 1em;
+}
+.BulletinBoardPostBtn{
+  text-align: right;
+
+}
+
+/* ============글 페이지 css=========== */
+.BulletinBoardPages-Container{
+  border: 1px solid #333;
+  margin: 0px;
+  padding: 0px;
+}
+.BulletinBoardPages-CCard{
+  padding: 1em 1em 1em 1em;
+
+  /* padding: 2em 2em 2em 2em;  */
+
+}
+
+.BulletinBoardPages-Center{
+  text-align: center;
+  border: 1px solid #4444;
+
+}
+.BulletinBoardPages-userInfo{
+  border: 1px solid #0cffe3;
+
+}
+.BulletinBoardPages-Content{
+  text-align: center;
+  border: 1px solid #5eff00;
+
+}
+.BulletinBoardPages-Buttons{
+  border: 1px solid #0066ff;
+
+}
+/* ======페이지네이션 위치 조정======== */
+.BulletinBoardPages-PageNation {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #0066ff;
+
+}
+
+.BulletinBoardPages-PageNation ul.pagination {
+  margin: 0; /* Optional: Reset margin for the ul element */
+}
+
+.BulletinBoardPages-PageNation ul.pagination li.page-item {
+  display: inline-block;
+  margin: 0 5px; /* Adjust margin as needed */
+}
+
+.BulletinBoardPages-PageNation ul.pagination li.page-item a.page-link {
+  border: 1px solid #dee2e6; /* Optional: Apply border style */
+  padding: 5px 10px; /* Optional: Adjust padding as needed */
+}
+
+.BulletinBoardPages-PageNation ul.pagination li.page-item a.page-link:hover {
+  background-color: #f0f0f0; /* Optional: Apply background color on hover */
+}
+.BulletinBoardPages-Comment{
+  border: 1px solid #0066ff;
+
+}
+
+
+
+.BulletinBoardPages-AddDelBtn{
+  margin: 1em 0em 1em 0em;
+  border: 1px solid #5eff00;
+
+}
+
+.BulletinBoardPages-DelBtn{
+  font-size: small;
+  margin-top: 0.8em;
+}
+.BulletinBoardPages-DelBtn-Layout{
+  /* text-align: right; */
+  border: 1px solid #0066ff;
+}
+.BulletinBoardPages-MainComment{
+  margin: 1em 0em 2em 0em;
+  border: 1px solid #5eff00;
+}
+.BulletinBoardPages-MainCommentBox{
+  margin: 0px;
+}
