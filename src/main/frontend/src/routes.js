@@ -105,7 +105,9 @@ const PayManagementSystemManagement = React.lazy(() =>
 const BulletinBoard = React.lazy(() =>
   import('./views/BulletinBoard/BulletinBoard')
 );
-
+const BulletinBoardPages = React.lazy(() =>
+  import("./views/BulletinBoard/BulletinBoardPages")
+);
 // ========================================================
 // ========================================================
 // ========================================================
@@ -225,6 +227,11 @@ const routes = [
     path: '/BulletinBoard/BulletinBoard',
     name: 'BulletinBoard',
     element: BulletinBoard,
+  },
+  {
+    path: "/BulletinBoard/BulletinBoardPages",
+    name: "BulletinBoardPages",
+    element: BulletinBoardPages,
   },
 ];
 

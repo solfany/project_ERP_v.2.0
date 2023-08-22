@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/project
-    username: root
+    username: roo
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:

@@ -1,8 +1,11 @@
+
 import React, { useState, useEffect } from "react";
-import { CAlert, CButton, CContainer,CCol, CRow, } from "@coreui/react";
+import { CAlert, CButton, CContainer,CCol, CRow, CPopover, CCard} from "@coreui/react";
 import { Button, Form, FormGroup, Input, Col, CardBody } from "reactstrap"; // Remove this line if it's already imported above
+import Swal from 'sweetalert2';
 import "./calc.css";
-import "./calc.js";
+import { Popover } from "@coreui/coreui";
+
 
 const PayManagementSystemCalculator = () => {
   const [hourlyWage, setHourlyWage] = useState('');
@@ -15,7 +18,18 @@ const PayManagementSystemCalculator = () => {
   const [miniJap, setMiniJap] = useState(0);
   const [prevOperand, setPrevOperand] = useState('');
   const [currentOperand, setCurrentOperand] = useState('');
+  const [isActive, setIsActive] = useState(false);
+  const [popoverActive, setPopoverActive] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
+
+
+  const toggleReceipt = () => {
+    setIsActive(prevIsActive => !prevIsActive );
+  };
+
+
+  
   const inputNumberFormat = (number) => {
     return number.toLocaleString();
   };
@@ -35,7 +49,11 @@ const PayManagementSystemCalculator = () => {
     // You may want to handle deleting from hourlyWage as well, based on your use case
   };
 
-  // 키패드 이벤트 리스너
+  
+
+
+
+// 키패드 이벤트 리스너
 // 해당 부분에서 이슈 발생ㅠㅠㅠ 
 // 클릭 이벤트와 이후 추가된 키보드 입력 이벤트가 충돌하여, 
 // 이후에 적용된 키보드 이벤트가 숫자 1개를 입력시 2개가 출력돠는 이슈 발생으로 
@@ -44,28 +62,81 @@ const PayManagementSystemCalculator = () => {
 // e.target.tagName을 사용하여 이벤트가 발생한 요소의 태그 이름을 확인한다. 
 // input 엘리먼트가 아닌 경우에만 해당 키보드 입력 이벤트를 처리하도록 수정했고, 
 // 이렇게 하면 input element에서 키보드 입력 중에는 키보드 이벤트가 처리되지 않으며 다른 요소에서 키보드 입력을 처리할 수 있다. 
-  useEffect(() => {
-    const handleKeyboardInput = (e) => {
-      const key = e.key;
-      if (e.target.tagName !== "INPUT") { // Check if the event target is not an input element
-        if (/^[0-9]$/.test(key)) {
-          handleNumberClick(key);
-        } else if (key === "+" || key === "-" || key === "*" || key === "/" || key === "=") {
-          handleOperatorClick(key);
-        } else if (key === "Enter") {
-          handleCalculate();
-        } else if (key === "Backspace" || key === "Delete") {
-          handleDeleteClick();
-        }
+useEffect(() => {
+  const handleKeyboardInput = (e) => {
+    const key = e.key;
+    if (e.target.tagName !== "INPUT") { // Check if the event target is not an input element
+      if (key === "Backspace" || key === "Delete") {
+        // 백스페이스 또는 딜리트 키 입력 시 숫자 삭제 처리
+        handleDeleteClick();
+      } else {
+        // 숫자 이외의 키 입력 시 아무 작업하지 않음
+        e.preventDefault(); // 입력 무시
       }
-    };
+    } else if (
+      !/^[0-9]$/.test(key) &&
+      key !== "Backspace" && 
+      key !== "Delete" && 
+      key!== "Enter" && 
+      key !== "." &&  
+      key !== "ArrowLeft" &&
+      key !== "ArrowRight" &&
+      key !== "ArrowUp" &&
+      key !== "ArrowDown"
+      ) {
+      // 인풋창에 숫자 입력 시 alert 창 띄우기
+      alert("숫자만 입력 할 수 있습니다.");
+      
+      e.preventDefault(); // 입력 무시
+    } else{
+      // e.preventDefault(); // 입력 무시
+    }
+  };
+
+  window.addEventListener("keydown", handleKeyboardInput);
   
-    window.addEventListener("keydown", handleKeyboardInput);
-  
-    return () => {
-      window.removeEventListener("keydown", handleKeyboardInput);
-    };
-  }, []);
+  return () => {
+    window.removeEventListener("keydown", handleKeyboardInput);
+  };
+}, []);
+
+const handleKeyDown = (event) => {
+  if (event.key === 'Enter') {
+    handleCalculate();
+  }
+};
+
+
+
+
+const showAlert = () => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Alert가 실행되었습니다.', // Alert 제목
+    text: 'Something went wrong!',
+  });
+};
+
+
+// ==========================
+const [title, setTitle] = useState('');
+const PayManagementSystemCalculatorTitle = [
+  " 우측 계산기에 숫자 입력 후, 좌측 명세서에서 확인가능합니다",
+  " 월급여액은 비과세 소득을 제외한 금액이랍니다.",
+  " 명세서를 보면 이미 월급에서 세금이 징수된 것을 확인할 수 있어요. 이걸 ‘원천징수’라 합니다",
+  " 이미 납부한 세금을 다시 계산해 최종적으로 올해 납부할 세금을 확인, 정산하는 게 '연말정산'이에요",
+  " 공제란 세금을 줄이는 걸 의미해요. 공제에는 근로소득공제, 종합소득공제, 세액공제 총 3가지가 있어요.",
+  " 소득공제는 세율을 곱하기 전 단계의 소득 금액을 줄여주는 것, 액공제는 세율을 곱해서 나온 세액에서 일정한 금액을 줄여주는 것입니다."
+];
+useEffect(() => {
+  const randomIndex = Math.floor(Math.random() * PayManagementSystemCalculatorTitle.length);
+  setTitle(PayManagementSystemCalculatorTitle[randomIndex]);
+}, []);
+
+
+// -------------------------------
+
+
   
   
 
@@ -132,33 +203,44 @@ const PayManagementSystemCalculator = () => {
     
   };
 
+
+
+
   return (
     <>
               <h1>세금 계산기</h1>
               <CAlert color="info">
-                서비스 이용 안내 회사내부규정과 기타 조건에 따라 실제
+               서비스 이용 안내 회사내부규정과 기타 조건에 따라 실제
                 월급/연봉과 다를 수 있습니다. 본 계산기는 모의 계산 결과로
-                법적 효력이 없습니다.
+                법적 효력이 없습니다.🥶
               </CAlert>
-              <CContainer>
-                <CRow>
-                  <CCol xs={12} md={6}>
-              <h5 htmlFor="hourlyWage">월급(세전)을 입력하세요 🤑</h5>
-              <Input
-              className="calcinput"
-                type="number"
-                name="hourlyWage"
-                id="hourlyWage"
-                placeholder="숫자를 입력하세요"
-                value={hourlyWage}
-                onChange={(e) => setHourlyWage(e.target.value)}
-              />
+              <CAlert color="warning">💡 알고 계셨나요? 
+                {title}
+              </CAlert>
+
+
+              <CContainer className="PayContainer">
+              <CRow>
+
+              <CCol xs={12} sm={6} >
+                  <h4 className="PayTitle">월급(세전)을 입력하세요. </h4>
+
 
               <div className="calc">
                 <div className="result">
-                  <input className="result__inner">
-
-                </input>
+                  <div className="result__inner">
+                  <Input
+              onKeyDown={handleKeyDown} 
+              className="calcinput"
+              type="number"
+              name="hourlyWage"
+              id="hourlyWage"
+              placeholder="숫자를 입력하세요"
+              value={hourlyWage}
+              onChange={(e) => setHourlyWage(e.target.value)}
+              />
+                </div>
+                
                 <div className="keys">
                   <div className="keys__inner">
                     <div className="key__row">
@@ -182,34 +264,83 @@ const PayManagementSystemCalculator = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              </CCol>
-              <CCol xs={12} md={6}>
+                </div>
+                </CCol>
+
+
+      {/* ======================================================================== */}
+
+
+
+
+            
             {/* 세금 목록 표시 */}
-            <CContainer>
-            <h5>세금 계산 결과:</h5>
-              <h6>국민연금: {pension.toLocaleString()}원</h6>
-              <h6>건강보험: {healthInsurance.toLocaleString()}원</h6>
-              <h6>장기요양: {jang.toLocaleString()}원</h6>
-              <h6>고용보험: {employmentInsurance.toLocaleString()}원</h6>
-              <h6>근로소득세: {jap.toLocaleString()}원</h6>
-              <h6>지방소득세: {miniJap.toLocaleString()}원</h6>
+      <CCol xs={12} md={6}>
+    <h4 className="PayTitle">계산 결과 확인<br/>⤵</h4>
+    <div className="receiptName">
 
-            <h5>실 급여: {inputNumberFormat(totalPay)}원</h5>
-            </CContainer>
+    <article className={`receipt ${isActive ? 'active' : ''}`}>
+    <section class="receipt__half upper">
 
-            </CCol>
-            </CRow>
+      
+		<p className="sm">2023년 기준 명세</p>
+    <div className= "receipt__content">
+      
+    {/* CPopover 과 button, css(pointer-event) error 이슈... 
+    명세 디자인을 하다 보니 기존 세금 컨텐츠를 일시적으로 
+    가려두고 버튼을 눌렀을 때만 보이게 작업을 진행을 원했고, 
+    작업을 하다보니 닫기 버튼을 눌렀을 때 가려져 있던 컨텐츠와 버튼 이벤트가 출동하여 이슈가 발생. 
+    그래서 해결책으로 receipt__content 부분에 pointer-event를 통해 none값을 주었고, 해당 값을 주자 CPopover(팝오버)
+    즉, 마우스오버 까지 none 값으로 노출이 안되는 상황 발생. 
+    해결 방법으로는 pointer-event 값을 none 값을 안준 나머지 css에 auto 값을 주어 
+    닫기 버튼을 눌렀을 때 세금 명세 컨텐츠는 마우스 이벤트 none 으로 막고 
+    그 이외에 상황엔 마우스 hover시에 정상작동 하도록 하나하나 지정해주었다.   */}
 
-        </CContainer>
+      
+      <CRow>
+        <CCol xs={6}><CPopover content="월 소득액(비과세액 제외)에서 4.5%를 공제합니다. 근로자, 기업 각 각 4.5% 씩 부담합니다 " placement="left"  trigger={['hover', 'focus']} id="popover-content" > 
+        <span className="d-inline-block"      // 팝오버를 보이도록 상태 업데이트
+> 국민연금 </span>
+        </CPopover></CCol><CCol xs={6} className="rightCol"> ₩ {pension.toLocaleString()}</CCol>
         
+        <CCol xs={6}><CPopover content="월 소득액(비과세 제외)에서 7.09% 를 공제합니다. 근로자 기업 각각 3.545% 씩 부담합니다" placement="left" trigger={['hover', 'focus']}id="popover-content"> 
+        <span className="d-inline-block" >건강보험</span>
+        </CPopover></CCol><CCol xs={6} className="rightCol"> ₩ {healthInsurance.toLocaleString()}</CCol>
+        
+        <CCol xs={6}><CPopover content="건강보험금액의 12.81%를 공제합니다" placement="left" trigger={['hover', 'focus']}id="popover-content"> 
+        <span className="d-inline-block" > 장기요양 </span>
+        </CPopover></CCol><CCol xs={6} className="rightCol"> ₩ {jang.toLocaleString()}</CCol>
+        
+        <CCol xs={6}><CPopover content="월 소득액(비과세 제외)에서 0.9% 공제합니다" placement="left" trigger={['hover', 'focus']}id="popover-content"> 
+        <span className="d-inline-block" > 고용보험 </span>
+        </CPopover></CCol><CCol xs={6}className="rightCol" > ₩ {employmentInsurance.toLocaleString()}</CCol>
+        
+        <CCol xs={6}><CPopover content="급여와 부양가족수에 따라 국세청의 근로소득 간이세액표 자료를 기준으로 공제합니다 " placement="left" trigger={['hover', 'focus']} id="popover-content"> 
+        <span className="d-inline-block" > 근로소득세 </span>
+        </CPopover></CCol><CCol xs={6} className="rightCol"> ₩ {jap.toLocaleString()}</CCol>
+        
+        <CCol xs={6}><CPopover content="소득세의 10%를 공제합니다." placement="left" trigger={['hover', 'focus']}id="popover-content"> 
+        <span className="d-inline-block" > 지방소득세 </span>
+        </CPopover></CCol><CCol xs={6}className="rightCol" > ₩ {miniJap.toLocaleString()}</CCol>
+        <p className="smP">🔔 각 항목 별 마우스 오버시 상세정보 확인 가능합니다.</p> 
+      </CRow>
+      </div>
+  <hr/>
+  <h4> ₩ {inputNumberFormat(totalPay)} </h4><br/>
+  </section>
+  <section className={`receipt__half lower ${isActive ? 'active' : ''}`} >
+  <button className="toBtn" onClick={toggleReceipt}>
+          {isActive ? '닫기' : '열기'}
+        </button>
+      </section>
+    </article>
+    </div>
+
+    </CCol>
+            </CRow>
+        </CContainer>
         </>
   );
 };
-
 export default PayManagementSystemCalculator;
 
-
-
-
-                          
