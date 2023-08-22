@@ -1,0 +1,16 @@
+.input-group {
+    margin-bottom: 15px
+}
+
+.img-div {
+    margin-bottom: 10px
+}
+
+.fieldError {
+    color: #bd2130;
+}
+
+.form-label {
+    display: block;
+    margin-right: 10px;
+}

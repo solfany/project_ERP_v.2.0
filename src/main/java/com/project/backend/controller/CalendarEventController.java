@@ -4,7 +4,6 @@ import com.project.backend.dto.CalendarEventDto;
 import com.project.backend.entity.CalendarEvent;
 import com.project.backend.repository.CalendarEventRepository;
 import com.project.backend.service.CalendarEventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ public class CalendarEventController {
     private final CalendarEventRepository calendarEventRepository;
     private final CalendarEventService calendarEventService;
 
-    @Autowired
+
     public CalendarEventController(CalendarEventRepository calendarEventRepository, CalendarEventService calendarEventService) {
         this.calendarEventRepository = calendarEventRepository;
         this.calendarEventService = calendarEventService;

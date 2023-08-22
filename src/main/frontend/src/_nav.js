@@ -122,7 +122,12 @@ const _nav = [
     to: "/BulletinBoard/BulletinBoard",
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
-
+  {
+    component: CNavItem,
+    name: "포인트샵",
+    to: "/point_shop/point_shop",
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
   {
     component: CNavTitle,
     name: "Components",

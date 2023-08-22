@@ -19,7 +19,6 @@ const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-
   const handleSelectEvent = (event) => {
     setSelectedEvent({
       id: event.id,
@@ -43,37 +42,24 @@ const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
 
   const handleDeleteEvent = () => {
     if (selectedEvent) {
-      axios.delete(`/api/calendarevents/delete/${selectedEvent.id}`)
-        .then(response => {
+      axios
+        .delete(`/api/calendarevents/delete/${selectedEvent.id}`)
+        .then((response) => {
           // 삭제 성공 시, 이벤트 리스트 업데이트
-          const updatedEvents = events.filter(event => event.id !== selectedEvent.id);
+          const updatedEvents = events.filter(
+            (event) => event.id !== selectedEvent.id
+          );
           setEvents(updatedEvents);
           setSelectedEvent(null); // 선택한 이벤트 초기화
           toggleModal();
           message.success('일정이 삭제되었습니다.');
         })
-        .catch(error => {
-          message.error('일정을 삭제하는 도중 에러가 발생했습니다.')
+        .catch((error) => {
+          message.error('일정을 삭제하는 도중 에러가 발생했습니다.');
           console.error('Error deleting event:', error);
         });
     }
   };
-
-
-
-  // const handleDeleteEvent = () => {
-  //   const index = events.findIndex(
-  //     (event) =>
-  //       event.title === selectedEvent.title &&
-  //       event.start === selectedEvent.start
-  //   );
-  //   const newEvents = [...events];
-  //   newEvents.splice(index, 1);
-  //   setEvents(newEvents);
-  //   toggleModal();
-  //   showMessage();
-  // };
-
 
   return (
     <div className="content">
@@ -84,7 +70,6 @@ const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
           }`}
           style={{ height: '700px' }}
         >
-          
           <Calendar
             events={events}
             localizer={localizer}
@@ -98,11 +83,11 @@ const MyCalendar = ({ isWhiteContent, events, setEvents }) => {
       </div>
       <Modal isOpen={showModal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>일정</ModalHeader>
-        <ModalBody style={{paddingTop: '30px'}}>
+        <ModalBody style={{ paddingTop: '30px' }}>
           {selectedEvent && (
             <Table hover bordered>
               <tbody>
-                <tr >
+                <tr>
                   <td>작성자</td>
                   <td colSpan={3}>{selectedEvent.name}</td>
                 </tr>
