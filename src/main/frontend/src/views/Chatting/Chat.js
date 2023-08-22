@@ -62,3 +62,58 @@ const Chat = () => {
 };
 
 export default Chat;
+
+// import React, { useState, useEffect, useRef } from "react";
+// import { Client } from "@stomp/stompjs";
+// import axios from "axios"; // axios 추가
+// import SendMessage from "./SendMessage";
+
+// function Chat() {
+//   const scroll = useRef(null);
+//   const [messages, setMessages] = useState([]);
+//   const client = new Client();
+
+//   useEffect(() => {
+//     client.configure({
+//       brokerURL: "ws:/localhost:8888/ws", // 수정된 주소 형식
+//       onConnect: () => {
+//         client.subscribe('/topic/messages', (message) => { // 수정된 주소 형식
+//           const receivedMessage = JSON.parse(message.body);
+//           setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+//           scroll.current.scrollTop = scroll.current.scrollHeight;
+//         });
+//       },
+//     });
+
+//     client.activate();
+
+//     return () => client.deactivate();
+//   }, []);
+
+//   const sendMessage = (message) => {
+//     // 메시지 전송 함수
+//     axios.post("http://localhost:8888/api/sendMessage", message)
+//       .then(response => {
+//         console.log("Message sent successfully:", response.data);
+//       })
+//       .catch(error => {
+//         console.error("Error sending message:", error);
+//       });
+//   };
+//   return (
+//     <div className="scroll" ref={scroll}>
+//       <div className="msgs">
+//         {messages.map((message, index) => (
+//           <div key={index}>
+//             <p>
+//               {message.sender}: {message.messageContext}
+//             </p>
+//           </div>
+//         ))}
+//       </div>
+//       <SendMessage scroll={scroll} sendMessage={sendMessage} />
+//     </div>
+//   );
+// }
+
+// export default Chat;

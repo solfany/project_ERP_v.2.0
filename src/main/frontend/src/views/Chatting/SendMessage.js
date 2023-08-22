@@ -34,12 +34,12 @@ function SendMessage() {
   return (
     <div>
       {/* <form onSubmit={sendMessage}> */}
-      <form >
+      <form>
         <div className="sendMsg">
-          <input 
-            // placeholder="write messages"
-            // value={msg}
-            // onChange={(e) => setMsg(e.target.value)}
+          <input
+          // placeholder="write messages"
+          // value={msg}
+          // onChange={(e) => setMsg(e.target.value)}
           ></input>
           <button type="submit">send</button>
         </div>
@@ -49,3 +49,50 @@ function SendMessage() {
 }
 
 export default SendMessage;
+// import React, { useState } from "react";
+// import { Client } from "@stomp/stompjs";
+// import axios from "axios"; // axios 추가
+
+// function SendMessage({ scroll }) {
+//   const [msg, setMsg] = useState("");
+//   const client = new Client();
+
+//   const sendMessage = () => {
+//     if (msg.trim() === "") return;
+
+//     const message = {
+//       sender: "보내는_사람_이름",
+//       messageContext: msg,
+//     };
+
+//     // axios를 사용하여 CORS 정책을 지원하며 백엔드 서버로 메시지를 전송
+//     axios
+//       .post("http://localhost:8888/api/sendMessage", message)
+//       .then((response) => {
+//         console.log("Message sent successfully:", response.data);
+//         client.publish({
+//           destination: "/app/sendMessage",
+//           body: JSON.stringify(message),
+//         });
+//         setMsg("");
+//       })
+//       .catch((error) => {
+//         console.error("Error sending message:", error);
+//       });
+//   };
+
+//   return (
+//     <div>
+//       <div className="sendMsg">
+//         <input
+//           placeholder="메시지를 입력하세요"
+//           value={msg}
+//           onChange={(e) => setMsg(e.target.value)}
+//         />
+//         <button onClick={sendMessage}>전송</button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default SendMessage;
