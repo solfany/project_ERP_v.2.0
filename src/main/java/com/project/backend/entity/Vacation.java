@@ -1,7 +1,6 @@
 package com.project.backend.entity;
 import java.time.LocalDate;
 
-import com.project.backend.dto.MemberDto;
 import com.project.backend.dto.VacationDto;
 
 import jakarta.persistence.Column;
