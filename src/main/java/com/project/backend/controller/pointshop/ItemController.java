@@ -59,7 +59,7 @@ public class ItemController {
 
 
     //상품 상세 페이지 진입 및 수정을 위한 데이터 전송
-    @GetMapping(value = "/item/{itemId}")
+    @GetMapping(value = "/{itemId}")
     public ResponseEntity<ItemFormDto> getItemDetails(@PathVariable("itemId") Long itemId) {
         try {
             ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
@@ -70,7 +70,7 @@ public class ItemController {
     }
 
     //상품 수정 진행
-    @PutMapping(value = "/item/{itemId}")
+    @PutMapping(value = "/{itemId}")
     public ResponseEntity<String> updateItem(@PathVariable("itemId") Long itemId,
                                              @Valid @RequestBody ItemFormDto itemFormDto,
                                              @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList) {

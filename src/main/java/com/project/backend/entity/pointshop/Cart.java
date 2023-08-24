@@ -18,7 +18,7 @@ public class Cart extends BaseEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+//    @JoinColumn(name = "member_id")
     private Member member;
 
     //처음 장바구니에 상품을 담을 때 회원의 장바구니를 생성하는 메소드

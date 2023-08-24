@@ -15,7 +15,8 @@ const Attend_Record = React.lazy(() =>
   import('./views/Attend_Manage/Attend_Manage/Attend_Record')
 );
 const PointShop = React.lazy(() => import('./views/PointShop/PointShop'));
-const PointShopDtl = React.lazy(() => import('./views/PointShop/MainItemDtl'));
+const MainItemDtl = React.lazy(() => import('./views/PointShop/MainItemDtl'));
+const CartPage = React.lazy(() => import('./views/PointShop/CartPage'));
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'));
 const Breadcrumbs = React.lazy(() =>
@@ -106,7 +107,7 @@ const BulletinBoard = React.lazy(() =>
   import('./views/BulletinBoard/BulletinBoard')
 );
 const BulletinBoardPages = React.lazy(() =>
-  import("./views/BulletinBoard/BulletinBoardPages")
+  import('./views/BulletinBoard/BulletinBoardPages')
 );
 // ========================================================
 // ========================================================
@@ -136,9 +137,14 @@ const routes = [
     element: PointShop,
   },
   {
-    path: '/point_shop/point_shop/:itemId',
-    name: '상세 정보',
-    element: PointShopDtl,
+    path: '/point_shop/point_shop/:id',
+    name: '제품 상세정보',
+    element: MainItemDtl,
+  },
+  {
+    path: '/point_shop/point_shop/cart_page',
+    name: '장바구니',
+    element: CartPage,
   },
   //해당 경로에 있는 요소 map을 import해서 route로 지정?
   //react는 잘 모르겠다
@@ -229,8 +235,8 @@ const routes = [
     element: BulletinBoard,
   },
   {
-    path: "/BulletinBoard/BulletinBoardPages",
-    name: "BulletinBoardPages",
+    path: '/BulletinBoard/BulletinBoardPages',
+    name: 'BulletinBoardPages',
     element: BulletinBoardPages,
   },
 ];

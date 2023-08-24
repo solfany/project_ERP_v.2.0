@@ -3,14 +3,18 @@ import { message } from 'antd';
 import axios from 'axios';
 import MainItems from './MainItems';
 import './MainItems.css';
-
 import './PointShop.css';
 import PointShopForm from './PointShopForm';
+import CartIcon from './CartIcon';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCartItemsCount } from 'src/action';
 
 const PointShop = () => {
+  const cartItemsCount = useSelector((state) => state.cartItemsCount); // 상태를 가져옴
+  const dispatch = useDispatch(); // useDispatch를 통해 디스패치 함수를 가져옴
+
   const [items, setItems] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const [filterMenuActive, setFilterMenuActive] = useState(false);
   const [isGridActive, setIsGridActive] = useState(true);
 
   message.config({
@@ -20,10 +24,6 @@ const PointShop = () => {
     rtl: false, // RTL (오른쪽에서 왼쪽) 모드 활성화 여부
     prefixCls: 'my-message', // 커스텀 클래스명 프리픽스
   });
-
-  const handleFilterClick = () => {
-    setFilterMenuActive((prev) => !prev);
-  };
 
   const handleGridClick = () => {
     setIsGridActive(true);
@@ -113,7 +113,7 @@ const PointShop = () => {
         >
           <div className="products-header">
             <div className="product-cell image">
-              Items
+              제품명
               <button className="sort-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -128,24 +128,9 @@ const PointShop = () => {
                 </svg>
               </button>
             </div>
-            <div className="product-cell category">
-              Category
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
+
             <div className="product-cell status-cell">
-              Status
+              판매상태
               <button className="sort-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +146,7 @@ const PointShop = () => {
               </button>
             </div>
             <div className="product-cell sales">
-              Sales
+              판매량
               <button className="sort-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +162,7 @@ const PointShop = () => {
               </button>
             </div>
             <div className="product-cell stock">
-              Stock
+              재고현황
               <button className="sort-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +178,7 @@ const PointShop = () => {
               </button>
             </div>
             <div className="product-cell price">
-              Price
+              가격
               <button className="sort-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -208,12 +193,34 @@ const PointShop = () => {
                 </svg>
               </button>
             </div>
+            <div className="product-cell category">
+              상세보기
+              <button className="sort-button">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-more-vertical"
+                >
+                  <circle cx="12" cy="12" r="1" />
+                  <circle cx="12" cy="5" r="1" />
+                  <circle cx="12" cy="19" r="1" />
+                </svg>
+              </button>
+            </div>
           </div>
           {items.map((item) => (
-            <MainItems key={item.id} {...item} />
+            <MainItems key={item.id} {...item} isGridActive={isGridActive} />
           ))}
         </div>
       </div>
+      <CartIcon cartItemsCount={cartItemsCount} />
     </div>
   );
 };

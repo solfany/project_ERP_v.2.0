@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");
 
+@font-face {
+    font-family: 'SUIT-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 
 
 :root {
@@ -54,7 +60,7 @@
 }
 
 .app-content {
-    font-family: "Poppins", sans-serif;
+    font-family: 'SUIT-Regular', sans-serif;
     padding: 16px;
     background-color: var(--app-bg);
     height: 100%;
@@ -334,6 +340,15 @@
     align-items: center;
 }
 
+.tableView .product-cell {
+    justify-content: center;
+}
+
+.tableView .products-row .product-cell.image {
+    justify-content: flex-start;
+}
+
+
 .tableView .product-cell img {
     width: 32px;
     height: 32px;
@@ -500,18 +515,18 @@
 
 .gridView .products-row .cell-more-button {
     border: none;
-    padding: 0;
+    padding: 8px;
     border-radius: 4px;
     position: absolute;
-    top: 16px;
+    top: 30px;
     right: 16px;
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    background-color: rgba(16, 24, 39, 0.7);
+    background-color: #52a8ff;
+    width: 66px;
+    height: 28px;
     color: #fff;
     cursor: pointer;
     display: none;
