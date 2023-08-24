@@ -1,6 +1,5 @@
 import React, { Component, Suspense } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import MainItemDtl from './views/PointShop/MainItemDtl';
 import './scss/style.scss';
 
 const loading = (
@@ -24,10 +23,6 @@ class App extends Component {
       <HashRouter>
         <Suspense fallback={loading}>
           <Routes>
-            <Route
-              path="/point_shop/point_shop/:itemId"
-              component={MainItemDtl}
-            />
             <Route exact path="/login" name="Login Page" element={<Login />} />
             <Route
               exact

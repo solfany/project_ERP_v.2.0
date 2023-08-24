@@ -1,17 +1,23 @@
-import { createStore } from 'redux'
-
+import { createStore } from 'redux';
+import { UPDATE_CART_ITEMS_COUNT } from './action';
 const initialState = {
   sidebarShow: true,
-}
+  cartItemsCount: 0,
+};
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
+const changeState = (state = initialState, action) => {
+  switch (action.type) {
     case 'set':
-      return { ...state, ...rest }
+      return { ...state, ...action.payload };
+    case UPDATE_CART_ITEMS_COUNT:
+      return {
+        ...state,
+        cartItemsCount: action.payload,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-const store = createStore(changeState)
-export default store
+const store = createStore(changeState);
+export default store;
