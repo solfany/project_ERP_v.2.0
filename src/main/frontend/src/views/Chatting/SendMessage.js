@@ -101,16 +101,16 @@ import React, { useState } from "react";
 function SendMessage({ scroll, stompClient }) {
   const [msg, setMsg] = useState("");
 
-  const sendMessage = (e) => {
-    e.preventDefault();
+  // const sendMessage = (e) => {
+  //   e.preventDefault();
 
-    if (stompClient) {
-      stompClient.send("/app/chat/send", {}, JSON.stringify({ messageContext: msg }));
-    }
+  //   if (stompClient) {
+  //     stompClient.send("/app/chat/send", {}, JSON.stringify({ messageContext: msg }));
+  //   }
 
-    setMsg(""); // 메시지 입력 필드 초기화
-    scroll.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  };
+  //   setMsg(""); // 메시지 입력 필드 초기화
+  //   scroll.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  // };
   
   return (
     <div>

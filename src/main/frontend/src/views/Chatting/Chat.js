@@ -119,8 +119,8 @@
 // // export default Chat;
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+// import SockJS from "sockjs-client";
+// import Stomp from "stompjs";
 
 import SendMessage from "./SendMessage";
 
@@ -131,27 +131,27 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [stompClient, setStompClient] = useState(null);
 
-  useEffect(() => {
-    // WebSocket 연결
-    const socket = new SockJS("/ws"); // 서버의 WebSocket 엔드포인트
-    const stomp = Stomp.over(socket);
-    
-    stomp.connect({}, () => {
-      setStompClient(stomp);
+  // useEffect(() => {
+  //   // WebSocket 연결
+  //   const socket = new SockJS("/ws"); // 서버의 WebSocket 엔드포인트
+  //   const stomp = Stomp.over(socket);
 
-      // 채팅 메시지를 구독
-      stomp.subscribe("/topic/chat", (message) => {
-        const newMessage = JSON.parse(message.body);
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-      });
-    });
+  //   stomp.connect({}, () => {
+  //     setStompClient(stomp);
 
-    return () => {
-      if (stompClient) {
-        stompClient.disconnect();
-      }
-    };
-  }, []);
+  //     // 채팅 메시지를 구독
+  //     stomp.subscribe("/topic/chat", (message) => {
+  //       const newMessage = JSON.parse(message.body);
+  //       setMessages((prevMessages) => [...prevMessages, newMessage]);
+  //     });
+  //   });
+
+  //   return () => {
+  //     if (stompClient) {
+  //       stompClient.disconnect();
+  //     }
+  //   };
+  // }, []);
 
   return (
     <div className="scroll" ref={scroll}>

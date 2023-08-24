@@ -14,11 +14,11 @@
 --    (1, '김솔비 - 중요한 클라이언트와의 미팅', '김솔비', '2023-08-30 09:30:00', '2023-08-30 17:00:00', '중요한 클라이언트와의 미팅');
 
 --------------vacation 기본 제공-----------
---INSERT INTO vacation 
---(emp_name, dept, position, vaca_type, vaca_start, vaca_end, vaca_reason) 
---VALUES 
---('김솔비', '개발팀', '사원', '특별 휴가', CURRENT_DATE, CURRENT_DATE, '꽈당'),
---('홍준이', '개발팀', '사원', '휴가', CURRENT_DATE, CURRENT_DATE, '정모'),
---('김자겸', '개발팀', '사원', '일반 휴가', CURRENT_DATE, CURRENT_DATE, '생일'),
---('조정원', '개발팀', '사원', '병가', CURRENT_DATE, CURRENT_DATE, '턱 날아감');
+INSERT INTO vacation 
+(emp_name, dept, position, vaca_type, vaca_start, vaca_end, vaca_reason) 
+VALUES 
+('김솔비', '개발팀', '사원', '특별 휴가', CURRENT_DATE, CURRENT_DATE, '꽈당'),
+('홍준이', '개발팀', '사원', '휴가', CURRENT_DATE, CURRENT_DATE, '정모'),
+('김자겸', '개발팀', '사원', '일반 휴가', CURRENT_DATE, CURRENT_DATE, '생일'),
+('조정원', '개발팀', '사원', '병가', CURRENT_DATE, CURRENT_DATE, '턱 날아감');
  
