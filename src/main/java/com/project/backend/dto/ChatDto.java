@@ -31,4 +31,14 @@ public class ChatDto {
 
     // 생성자, 게터, 세터 등 필요한 메서드 추가
 	
+    public ChatDto() {
+    }
+
+    public ChatDto(String chatRoomId, String sender, String receiver, String messageContext, LocalDateTime sendDateTime) {
+        this.chatRoomId = chatRoomId;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.messageContext = messageContext;
+        this.sendDateTime = sendDateTime;
+    }
 }

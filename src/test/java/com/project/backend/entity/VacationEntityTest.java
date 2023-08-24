@@ -20,7 +20,7 @@ import jakarta.persistence.PersistenceContext;
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class VacationTest {
+public class VacationEntityTest {
 	@Autowired
 	VacationRepository vacationRepository;
 
