@@ -6,10 +6,9 @@ import lombok.Data;
 @Data
 public class StaffDto {
 	
-	private String empNum;
+	private Long empNum;
 	private String empId;
 	private String empPwd;
-	private String empPwdCheck;
 	private String dept;
 	private String position;
 	private String empName;

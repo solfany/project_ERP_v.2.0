@@ -67,13 +67,13 @@ public class StaffController {
 		return staffService.saveStaff(staff);
 	}
 	
-	@DeleteMapping("/staff/{id}")
-	public ResponseEntity<?> deleteStaff(@PathVariable Long id) {
+	@DeleteMapping("/staff/{empNum}")
+	public ResponseEntity<?> deleteStaff(@PathVariable Long empNum) {
 		// staffService.deleteStaffById()를 호출하여 주어진 id에 해당하는 Staff 삭제
         // 삭제가 성공적으로 이루어지면 HttpStatus.OK 반환
         // 삭제 과정에서 예외 발생 시 HttpStatus.INTERNAL_SERVER_ERROR 반환
 		try {
-			staffService.deleteStaffById(id);
+			staffService.deleteStaffById(empNum);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

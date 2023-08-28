@@ -24,14 +24,13 @@ public class StaffService  {
 	
 	@Autowired
 	public StaffService(StaffRepository staffRepository, PasswordEncoder passwordEncoder) {
-//	public StaffService(StaffRepository staffRepository) {
 		this.staffRepository = staffRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public Staff registerStaff(StaffDto staffDto) {
         Staff staff = new Staff();
-        staff.setEmpNum(staffDto.getEmpNum());
+        //staff.setEmpNum(staffDto.getEmpNum());
         staff.setEmpId(staffDto.getEmpId());
         staff.setEmpPwd(passwordEncoder.encode(staffDto.getEmpPwd()));
         staff.setDept(staffDto.getDept());
@@ -50,10 +49,6 @@ public class StaffService  {
 
         return staffRepository.save(staff);
     }
-	
-//	public Staff getStaffByUsername(String username) {
-//		return staffRepository.findByEmpId(username);
-//	}
 	
 	public boolean authenticate(String empId, String empPwd) {
 	    Staff staff = staffRepository.findByEmpId(empId);
@@ -76,8 +71,8 @@ public class StaffService  {
 	}
 	
 	
-	public void deleteStaffById(Long id) {
-		staffRepository.deleteById(id);
+	public void deleteStaffById(Long empNum) {
+		staffRepository.deleteById(empNum);
 	}
 }
 

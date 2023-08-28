@@ -43,7 +43,7 @@ const StaffManagement = () => {
     //const submitButton = e.currentTarget;
     try {
       const staffDto = {
-        empNum,
+        //empNum,
         empId,
         empPwd,
         dept,
@@ -86,9 +86,9 @@ const StaffManagement = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (empNum) => {
     try {
-      await axios.delete(`/api/staff/${id}`);
+      await axios.delete(`/api/staff/${empNum}`);
       fetchStaffs(); // 직원 리스트 갱신
     } catch (error) {
       console.error("삭제 불가", error);
@@ -133,7 +133,7 @@ const StaffManagement = () => {
                   </CTableHead>
                   <CTableBody>
                     {staffs.map((staff) => (
-                      <CTableRow key={staff.id}>
+                      <CTableRow key={staff.empNum}>
                         <CTableDataCell>{staff.empNum}</CTableDataCell>
                         <CTableDataCell>{staff.empId}</CTableDataCell>
                         <CTableDataCell>{staff.dept}</CTableDataCell>
@@ -149,7 +149,7 @@ const StaffManagement = () => {
                           <Button
                             color="danger"
                             size="sm"
-                            onClick={() => handleDelete(staff.id)}
+                            onClick={() => handleDelete(staff.empNum)}
                             >
                               삭제
                             </Button>
@@ -171,7 +171,7 @@ const StaffManagement = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          {/* <Form.Group className="mb-3">
               <Form.Label>사원번호</Form.Label>
               <Form.Control
                 type="text"
@@ -179,7 +179,7 @@ const StaffManagement = () => {
                 value={empNum}
                 onChange={(e) => setEmpNum(e.target.value)}
               />
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group className="mb-3">
               <Form.Label>아이디</Form.Label>
               <Form.Control

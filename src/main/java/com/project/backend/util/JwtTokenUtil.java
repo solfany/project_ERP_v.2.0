@@ -20,7 +20,7 @@ public class JwtTokenUtil {
 
     public String generateToken(Staff staff) {
         return Jwts.builder()
-                .setSubject(staff.getId().toString())
+                .setSubject(staff.getEmpNum().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(secretKey)

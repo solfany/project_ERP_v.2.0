@@ -27,23 +27,22 @@ import lombok.ToString;
 @ToString(exclude = "empPwd")
 public class Staff {
 	
+
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@Column(name = "id")
+//	private Long id;
+	
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	
-	private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "emp_num", nullable = false)
-    private String empNum;
+    private Long empNum;
 
     @Column(name = "emp_id")
     private String empId;
     
     @Column(name = "emp_pwd", nullable = false)
     private String empPwd;
-    
-//    @Column(name = "emp_pwdCk")
-//    private String empPwdCheck;
    
     @Column(name = "dept")
     private String dept;
@@ -72,16 +71,11 @@ public class Staff {
     @Column(name = "account_number")
     private String accountNumber;
     
-//    public boolean matchPassword(String rawPassword) {
-//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        return passwordEncoder.matches(rawPassword, this.empPwd);
-//    }
     //비밀번호 인코딩 설정
     public void setEmpPwd(String empPwd) {
     	if (empPwd != null) {
     		this.empPwd = empPwd;
-    	//PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    	//this.empPwd = passwordEncoder.encode(empPwd);
+    	
     } else {
     	throw new IllegalArgumentException("Password cannot be null");
     }
@@ -96,7 +90,6 @@ public class Staff {
         staff.setEmpNum(staffDto.getEmpNum());
         staff.setEmpId(staffDto.getEmpId());
         staff.setEmpPwd(staffDto.getEmpPwd());
-//        staff.setEmpPwdCheck(staffDto.getEmpPwdCheck());
         staff.setDept(staffDto.getDept());
         staff.setPosition(staffDto.getPosition());
         staff.setEmpName(staffDto.getEmpName());
