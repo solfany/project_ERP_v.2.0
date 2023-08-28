@@ -1,6 +1,10 @@
+// npm install react-router-dom
+//npm install jsonwebtoken
+
 import React, { useState } from 'react';
 import axios from 'axios';
-// import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+
 import {
   CButton,
   CCard,
@@ -18,19 +22,46 @@ import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginMessage, setLoginMessage] = useState('');
 
+  const navigate = useNavigate();
+  const [loginMessage, setLoginMessage] = useState('');
+  const [empId, setEmpId] = useState('');
+  const [empPwd, setEmpPwd] = useState('');
+ 
   const handleLogin = async () => {
+
+   
     try {
-      const response = await axios.post('/api/login', { username, password })
-      setLoginMessage(response.data)
-    } catch (error) {
-      console.error('로그인 에러', error)
-      setLoginMessage('로그인중에 에러가 발생했습니다.')
-    }
-  }
+      const loginData = {
+        empId: empId,
+        empPwd: empPwd
+      };
+
+      const response = await axios.post('/api/login', loginData);
+
+      if (response.status === 200) {
+        //로그인 성공
+        const token = response.data;
+        console.log('로그인 성공');
+        // 토큰을 로컬 스토리지에 저장
+        localStorage.setItem('token', token);
+
+        // 토큰을 axios 요청의 헤더에 추가
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        // 이제 인증된 요청을 보낼 수 있습니다.
+        
+        // 로그인 성공 시 리다이렉션
+        navigate('/Dashboard'); 
+      } else {
+        //로그인 실패
+        console.log('로그인 실패')
+        setLoginMessage('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
+      }
+    } catch (error){
+        console.error('로그인 에러: ', error)
+    };
+     
+  };
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -49,8 +80,8 @@ const Login = () => {
                       <CFormInput
                         placeholder="아이디"
                         autoComplete="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={empId}
+                        onChange={(e) => setEmpId(e.target.value)}
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -60,9 +91,9 @@ const Login = () => {
                       <CFormInput
                         type="password"
                         placeholder="비밀번호"
-                        autoComplete="current-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="password"
+                        value={empPwd}
+                        onChange={(e) => setEmpPwd(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
@@ -72,7 +103,7 @@ const Login = () => {
                         </CButton>
                       </CCol>
                     </CRow>
-                    <p className="mt-3">{loginMessage}</p>
+                   <p className="mt-3">{loginMessage}</p>
                   </CForm>
                 </CCardBody>
               </CCard>

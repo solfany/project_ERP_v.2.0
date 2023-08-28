@@ -345,11 +345,11 @@ const _nav = [
     name: "Pages",
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: "Login",
-        to: "/login",
-      },
+      // {
+      //   component: CNavItem,
+      //   name: "Login",
+      //   to: "/login",
+      // },
       {
         component: CNavItem,
         name: "Register",
@@ -372,6 +372,12 @@ const _nav = [
     name: "Docs",
     href: "https://coreui.io/react/docs/templates/installation/",
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "로그인",
+    to: "/login/Login",
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
 ];
 

@@ -90,8 +90,9 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'));
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 
 const staffManagement = React.lazy(() =>
-  import('./views/staff/StaffManagement')
+import('./views/staff/StaffManagement')
 );
+const Login = React.lazy(() => import('./views/login/Login'));
 
 const TimeManagementSystem = React.lazy(() =>
   import('./views/TimeManagementSystem/TimeManagementSystem')
@@ -207,6 +208,11 @@ const routes = [
     path: '/staff/staffManagement',
     name: 'staff',
     element: staffManagement,
+  },
+  {
+    path: '/login/Login',
+    name: 'login',
+    element: Login,
   },
   {
     path: '/TimeManagementSystem/TimeManagementSystem',
