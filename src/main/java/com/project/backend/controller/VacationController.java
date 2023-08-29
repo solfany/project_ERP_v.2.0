@@ -18,7 +18,7 @@ import com.project.backend.service.VacationService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000") // 허용할 오리진을 지정
+//@CrossOrigin(origins = "http://localhost:3000") // 허용할 오리진을 지정
 public class VacationController {
 	
 	//빈 객체 생성

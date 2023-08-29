@@ -33,6 +33,14 @@ spring:
     jpa:
       repositories:
         enabled: true
+    
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
 
 cloud:
   aws:
