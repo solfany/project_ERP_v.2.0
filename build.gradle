@@ -1,7 +1,10 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.2'
+    //id 'org.springframework.boot' version '2.7.14'
     id 'io.spring.dependency-management' version '1.1.2'
+    //id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    //id "io.freefair.lombok" version "6.1.0"
 }
 
 group = 'com.project.backend'
@@ -24,12 +27,16 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security:'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
+    
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -37,8 +44,14 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test:5.7.8'
 
-    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.1.1'
-
+	//Jwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+	//implementation group: 'io.jsonwebtoken',name:'jjwt',version:'0.9.1'
+	//Jwt
+	
+	
 // 섬네일레이터 : https://mvnrepository.com/artifact/net.coobird/thumbnailator
     implementation 'net.coobird:thumbnailator:0.4.19'
 

@@ -1,5 +1,5 @@
-package com.project.backend.config.pointshop;
-
+//package com.project.backend.config.pointshop;
+//
 //public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 //
 //    @Override

@@ -1,6 +1,7 @@
-package com.project.backend.config.pointshop;
+package com.project.backend.config;
 
 
+//8/22 사용중인 코드
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests.anyRequest().permitAll()
                 );
+//                .formLogin(login -> login
+//                		.loginPage("/login")
+//                		.loginProcessingUrl("/login")
+//                		.usernameParameter("empId")
+//                		.passwordParameter("empPwd")
+//                		.defaultSuccessUrl("/dashboard", true)
+//                		.permitAll()
+//                		);
+                		
+        
 
         return http.build();
     }
@@ -48,5 +59,6 @@ public class SecurityConfig {
                     .addFilter(corsFilter);
 
         }
+        
     }
 }

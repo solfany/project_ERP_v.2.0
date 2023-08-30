@@ -8,9 +8,11 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-const staffManagement = () => {
+
+const StaffManagement = () => {
   const [empNum, setEmpNum] = useState(''); // 사원번호
   const [empId, setEmpId] = useState(''); //아이디
+  const [empPwd, setEmpPwd] = useState(''); //패스워드
   const [dept, setDept] = useState(''); // 부서 
   const [position, setPosition] = useState(''); // 직급
   const [empName, setEmpName] = useState('');//이름
@@ -18,14 +20,14 @@ const staffManagement = () => {
   const [phoneNumber, setPhoneNumber] = useState(''); // 연락처
   const [address, setAddress] = useState(''); // 주소
   const [bankName, setBankName] = useState(''); // 은행명
-  const [email, setEmail] = useState(''); // 은행명
+  const [email, setEmail] = useState(''); // 이메일주소
   const [accountNumber, setAccountNumber] = useState(''); // 계좌번호
   const [staffs, setStaffs] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   const fetchStaffs = async () => {
     try {
-      const response = await axios.get('/api/staffs');
+      const response = await axios.get('/api/staff');
       setStaffs(response.data);
     } catch (error) {
       console.error('Error fetching staffs:', error);
@@ -36,24 +38,31 @@ const staffManagement = () => {
     fetchStaffs();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    //e.preventDefault();
+    //const submitButton = e.currentTarget;
     try {
-      await axios.post('/api/staffs', { 
-        empNum,
-        position,
+      const staffDto = {
+        //empNum,
         empId,
+        empPwd,
         dept,
+        position,
         empName,
         birthDate,
         phoneNumber,
         address,
         email,
         bankName,
-        accountNumber 
-      });
+        accountNumber
+      };
+
+      // 요청 보내기 전에 버튼 비활성화
+      //submitButton.setAttribute('disabled', 'true');
+      await axios.post('/api/register', staffDto);
       setEmpNum('');
       setEmpId('');
+      setEmpPwd('');
       setDept('');
       setPosition('');
       setEmpName('');
@@ -65,10 +74,29 @@ const staffManagement = () => {
       setAccountNumber('');
       fetchStaffs();
       setShowModal(false); // Hide the modal after successful submission
+
+      //처리 완료 후 버튼 다시 활성화
+      //submitButton.removeAttribute('disabled');
+
+      // fetchStaffs();
+      // setShowModal(false);
     } catch (error) {
       console.error('Error adding staffs:', error);
+      // submitButton.removeAttribute('disabled'); //처리 실패시에도 버튼 활성화
     }
   };
+
+  const handleDelete = async (empNum) => {
+    try {
+      await axios.delete(`/api/staff/${empNum}`);
+      fetchStaffs(); // 직원 리스트 갱신
+    } catch (error) {
+      console.error("삭제 불가", error);
+    }
+  };
+
+
+
 
   return (
     <div>
@@ -100,22 +128,32 @@ const staffManagement = () => {
                       <CTableHeaderCell>이메일주소</CTableHeaderCell>
                       <CTableHeaderCell>은행명</CTableHeaderCell>
                       <CTableHeaderCell>계좌번호</CTableHeaderCell>
+                      <CTableHeaderCell>삭제</CTableHeaderCell>
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
-                    {staffs.map((staffs) => (
-                      <CTableRow key={staffs.id}>
-                        <CTableDataCell>{staffs.empNum}</CTableDataCell>
-                        <CTableDataCell>{staffs.empId}</CTableDataCell>
-                        <CTableDataCell>{staffs.dept}</CTableDataCell>
-                        <CTableDataCell>{staffs.position}</CTableDataCell>
-                        <CTableDataCell>{staffs.empName}</CTableDataCell>
-                        <CTableDataCell>{staffs.birthDate}</CTableDataCell>
-                        <CTableDataCell>{staffs.phoneNumber}</CTableDataCell>
-                        <CTableDataCell>{staffs.address}</CTableDataCell>
-                        <CTableDataCell>{staffs.email}</CTableDataCell>
-                        <CTableDataCell>{staffs.bankName}</CTableDataCell>
-                        <CTableDataCell>{staffs.accountNumber}</CTableDataCell>
+                    {staffs.map((staff) => (
+                      <CTableRow key={staff.empNum}>
+                        <CTableDataCell>{staff.empNum}</CTableDataCell>
+                        <CTableDataCell>{staff.empId}</CTableDataCell>
+                        <CTableDataCell>{staff.dept}</CTableDataCell>
+                        <CTableDataCell>{staff.position}</CTableDataCell>
+                        <CTableDataCell>{staff.empName}</CTableDataCell>
+                        <CTableDataCell>{staff.birthDate}</CTableDataCell>
+                        <CTableDataCell>{staff.phoneNumber}</CTableDataCell>
+                        <CTableDataCell>{staff.address}</CTableDataCell>
+                        <CTableDataCell>{staff.email}</CTableDataCell>
+                        <CTableDataCell>{staff.bankName}</CTableDataCell>
+                        <CTableDataCell>{staff.accountNumber}</CTableDataCell>
+                        <CTableDataCell>
+                          <Button
+                            color="danger"
+                            size="sm"
+                            onClick={() => handleDelete(staff.empNum)}
+                            >
+                              삭제
+                            </Button>
+                          </CTableDataCell>
                       </CTableRow>
                     ))}
                   </CTableBody>
@@ -149,6 +187,15 @@ const staffManagement = () => {
                 placeholder="아이디"
                 value={empId}
                 onChange={(e) => setEmpId(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+            <Form.Label>패스워드</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="패스워드"
+                value={empPwd}
+                onChange={(e) => setEmpPwd(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -192,6 +239,15 @@ const staffManagement = () => {
               <Form.Control
                 type="text"
                 placeholder="연락처"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>주소</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="주소"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
@@ -238,4 +294,4 @@ const staffManagement = () => {
   );
 };
 
-export default staffManagement;
+export default StaffManagement;
