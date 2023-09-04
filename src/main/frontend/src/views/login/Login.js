@@ -1,5 +1,5 @@
 // npm install react-router-dom
-//npm install jsonwebtoken
+//npm install @reduxjs/toolkit
 
 import React, { useState } from 'react';
 import axios from 'axios';

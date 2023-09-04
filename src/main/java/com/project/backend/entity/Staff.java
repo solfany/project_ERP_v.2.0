@@ -67,12 +67,12 @@ public class Staff {
 	@Column(name = "account_number")
 	private String accountNumber;
 
-	@Column(name = "role")
-	private String role;
-
-	public String getRole() {
-		return role;
-	}
+//	@Column(name = "role")
+//	private String role;
+//
+//	public String getRole() {
+//		return role;
+//	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "t_user_authority", joinColumns = {
