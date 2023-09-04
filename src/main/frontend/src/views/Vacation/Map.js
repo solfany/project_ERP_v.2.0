@@ -101,23 +101,29 @@ import VacationModal from "./VacationModal"; // 수정된 부분
 import axios from "axios";
 
 const Options = [
-  { id: 0, empName: "직원 이름", value: "" },
-  { id: 1, dept: "부서", value: "" },
-  { id: 2, position: "직무", value: "" },
-  { id: 3, vacaType: "휴가 종류", value: "" },
-  { id: 4, vacaStart: "휴가 시작", value: "" },
-  { id: 5, vacaEnd: "휴가 종료", value: "" },
-  { id: 6, vacaReason: "휴가 사유", value: "" },
+  { id: 0, empName: "사원번호 ", value: "" },
+  { id: 1, empName: "직원 이름", value: "" },
+  { id: 2, dept: "부서", value: "" },
+  { id: 3, position: "직무", value: "" },
+  { id: 4, vacaType: "휴가 종류", value: "" },
+  { id: 5, vacaStart: "휴가 시작", value: "" },
+  { id: 6, vacaEnd: "휴가 종료", value: "" },
+  { id: 7, vacaEtc: "휴가 일수", value: "" },
+  //휴가 샘플 옵션
+  { id: 8, vacaReason: "휴가 사유", value: "" },
 ];
 
 const TableSub = Options.map((parameter) => (
   <th key={parameter.id}>
+    {parameter.empNum}
     {parameter.empName}
     {parameter.dept}
     {parameter.position}
     {parameter.vacaType}
     {parameter.vacaStart}
     {parameter.vacaEnd}
+    {parameter.vacaEtc}
+    {/* 휴가 샘플 데이터 */}
     {parameter.vacaReason}
   </th>
 ));
@@ -171,12 +177,15 @@ function Map() {
             {data.map((item) => (
               <tr key={item.id}>
                 {/* ... (Table 데이터 출력 부분 그대로 유지) */}
+                <td>{item.empNum}</td>
                 <td>{item.empName}</td>
                 <td>{item.dept}</td>
                 <td>{item.position}</td>
                 <td>{item.vacaType}</td>
                 <td>{item.vacaStart}</td>
                 <td>{item.vacaEnd}</td>
+                <td>{item.vacaEtc}</td>
+                {/* 딱여기에 휴가 일수 넣어주면되고 */}
                 <td>{item.vacaReason}</td>
                 <td>
                   <button onClick={() => handleDelete(item.id)}>삭제</button>

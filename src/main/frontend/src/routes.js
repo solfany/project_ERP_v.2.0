@@ -92,13 +92,9 @@ const Toasts = React.lazy(() => import("./views/notifications/toasts/Toasts"));
 const Widgets = React.lazy(() => import("./views/widgets/Widgets"));
 
 const staffManagement = React.lazy(() =>
-<<<<<<< HEAD
   import("./views/staff/StaffManagement")
-=======
-import('./views/staff/StaffManagement')
->>>>>>> 31728b097f66209e2451c3c546c66c95d77e411e
 );
-const Login = React.lazy(() => import('./views/login/Login'));
+const Login = React.lazy(() => import("./views/login/Login"));
 
 const TimeManagementSystem = React.lazy(() =>
   import("./views/TimeManagementSystem/TimeManagementSystem")
@@ -226,18 +222,13 @@ const routes = [
     element: staffManagement,
   },
   {
-<<<<<<< HEAD
-    path: "/TimeManagementSystem/TimeManagementSystem",
-    name: "TimeManagementSystem",
-=======
-    path: '/login/Login',
-    name: 'login',
+    path: "/login/Login",
+    name: "login",
     element: Login,
   },
   {
-    path: '/TimeManagementSystem/TimeManagementSystem',
-    name: 'TimeManagementSystem',
->>>>>>> 31728b097f66209e2451c3c546c66c95d77e411e
+    path: "/TimeManagementSystem/TimeManagementSystem",
+    name: "TimeManagementSystem",
     element: TimeManagementSystem,
   },
   {

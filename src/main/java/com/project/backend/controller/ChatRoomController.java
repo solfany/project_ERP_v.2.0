@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.backend.dto.ChatRoom;
+
 import com.project.backend.repository.ChatRoomRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 //@CrossOrigin(origins = "http://localhost:3000") // 허용할 오리진을 지정
 public class ChatRoomController {
 
+//service로 변경
  private final ChatRoomRepository chatRoomRepository;
 
  // 채팅 리스트 화면
@@ -45,9 +46,9 @@ public class ChatRoomController {
  }
  // 채팅방 입장 화면
  @GetMapping("/room/enter/{roomId}")
- public String sendMessage(Model model, @PathVariable String roomId) {
+ public String sendMessage(Model model, @PathVariable Long roomId) {
      model.addAttribute("roomId", roomId);
-     return "/chat/sendMessage";
+     return "/chat/message";
  }
  // 특정 채팅방 조회
  @GetMapping("/room/{roomId}")
@@ -55,4 +56,15 @@ public class ChatRoomController {
  public ChatRoom roomInfo(@PathVariable String roomId) {
      return chatRoomRepository.findRoomById(roomId);
  }
+// @GetMapping("/room/{roomId}/messages")
+// @ResponseBody
+// public List<Chat> getRoomChatMessages(@PathVariable String roomId) {
+//     return chatRoomRepository.getAllChatMessagesByRoomId(roomId);
+// }
+// @PostMapping("/room/{roomId}/message")
+// @ResponseBody
+// public Chat sendRoomChatMessage(@PathVariable String roomId, @RequestBody Chat chat) {
+//     chat.setRoomId(roomId);
+//     return chatRoomRepository.saveChatMessage(chat);
+// }
 }

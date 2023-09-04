@@ -82,7 +82,7 @@ const Chat = () => {
   //   }
   // };
   const enterRoom = (roomId) => {
-    const sender = prompt("대화명을 입력해 주세요.");
+    const sender = prompt("이름을 입력해 주세요.");
     if (sender !== null && sender !== "") {
       localStorage.setItem("wschat.sender", sender);
       localStorage.setItem("wschat.roomId", roomId);
@@ -139,3 +139,103 @@ const Chat = () => {
 };
 
 export default Chat;
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+
+// const Chat = () => {
+//   const [roomName, setRoomName] = useState("");
+//   const [chatrooms, setChatrooms] = useState([]);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     fetchChatRooms();
+//   }, []);
+
+//   const fetchChatRooms = () => {
+//     axios
+//       .get("/chat/rooms")
+//       .then((response) => {
+//         setChatrooms(response.data);
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching chat rooms:", error);
+//       });
+//   };
+
+//   const createChatRoom = () => {
+//     if (roomName === "") {
+//       alert("방 제목을 입력해 주십시오.");
+//       return;
+//     }
+
+//     const params = { name: roomName };
+//     axios
+//       .post("/chat/room", params)
+//       .then((response) => {
+//         alert(response.data.name + "방 개설에 성공하였습니다.");
+//         setRoomName("");
+//         fetchChatRooms();
+//       })
+//       .catch((error) => {
+//         alert("채팅방 개설에 실패하였습니다.");
+//       });
+//   };
+
+//   const enterChatRoom = (roomId) => {
+//     const sender = prompt("이름을 입력해 주세요.");
+//     if (sender !== null && sender.trim() !== "") {
+//       localStorage.setItem("wschat.sender", sender);
+//       localStorage.setItem("wschat.roomId", roomId);
+//       navigate(`/chat/room/enter/${roomId}`);
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <div className="row">
+//         <div className="col-md-12">
+//           <h3>채팅방 리스트</h3>
+//         </div>
+//       </div>
+//       <div className="input-group">
+//         <div className="input-group-prepend">
+//           <label className="input-group-text">방제목</label>
+//         </div>
+//         <input
+//           type="text"
+//           className="form-control"
+//           value={roomName}
+//           onChange={(e) => setRoomName(e.target.value)}
+//           onKeyUp={(e) => {
+//             if (e.key === "Enter") {
+//               createChatRoom();
+//             }
+//           }}
+//         />
+//         <div className="input-group-append">
+//           <button
+//             className="btn btn-primary"
+//             type="button"
+//             onClick={createChatRoom}
+//           >
+//             채팅방 개설
+//           </button>
+//         </div>
+//       </div>
+//       <ul className="list-group">
+//         {chatrooms.map((item) => (
+//           <li
+//             key={item.roomId}
+//             className="list-group-item list-group-item-action"
+//             onClick={() => enterChatRoom(item.roomId)}
+//           >
+//             {item.name}
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// };
+
+// export default Chat;
