@@ -18,6 +18,7 @@ public class CorsConfig implements WebMvcConfigurer {
         config.addAllowedOriginPattern("http://localhost:3000"); // 프론트엔드 애플리케이션의 도메인 및 포트번호
         // 다른 허용할 출처 패턴들을 추가
 //        config.addAllowedOriginPattern("http://localhost:8888");
+        
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/api/**", config);

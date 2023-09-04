@@ -21,4 +21,6 @@ VALUES
 ('홍준이', '개발팀', '사원', '휴가', CURRENT_DATE, CURRENT_DATE, '정모','1일'),
 ('김자겸', '개발팀', '사원', '일반 휴가', CURRENT_DATE, CURRENT_DATE, '생일','1일'),
 ('조정원', '개발팀', '사원', '병가', CURRENT_DATE, CURRENT_DATE, '턱 날아감','1일');
- 
+
+
+INSERT INTO Staff (emp_id, emp_pwd, dept, position, emp_name, birth_date, phone_number, address, email, bank_name, account_number) VALUES ('a01', '1234', 'HR', 'Manager', 'John Doe', '1990-01-15', '+1234567890', '123 Main St, City', 'john.doe@example.com', 'Bank A', '1234567890'), ('a02', '1234', 'IT', 'Developer', 'Jane Smith', '1985-07-22', '+9876543210', '456 Elm St, Town', 'jane.smith@example.com', 'Bank B', '9876543210')

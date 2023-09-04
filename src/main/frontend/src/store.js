@@ -1,23 +1,9 @@
-import { createStore } from 'redux';
-import { UPDATE_CART_ITEMS_COUNT } from './action';
-const initialState = {
-  sidebarShow: true,
-  cartItemsCount: 0,
-};
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './redux/authSlice';
 
-const changeState = (state = initialState, action) => {
-  switch (action.type) {
-    case 'set':
-      return { ...state, ...action.payload };
-    case UPDATE_CART_ITEMS_COUNT:
-      return {
-        ...state,
-        cartItemsCount: action.payload,
-      };
-    default:
-      return state;
-  }
-};
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+  },
+});
 
-const store = createStore(changeState);
-export default store;
