@@ -1,46 +1,17 @@
 // import React, { useState } from "react";
-// //import { db, authService } from "Loginbase";
-// // import firebase from "Loginbase";
-// //import { serverTimestamp } from "firebase/firestore";
-// // import { doc, setDoc } from "firebase/firestore";
-// function SendMessage() {
+
+// function SendMessage({ scroll, stompClient }) {
 //   const [msg, setMsg] = useState("");
-//   //async 함수를 사용해 메시지 전송하는 동작을 처리
-//   // async function sendMessage(e) {
-//   //   e.preventDefault();
-//   //   //로그인된 사용자의 객체를 가져온 뒤, 해당 객체에서 uid, photoURL, email, displayName 속성을 추출
-//   //   const { uid, photoURL, email, displayName} = authService.currentUser;
-
-//   //   //await 함수를 이용해 firestore에 있는 db collection에 message를 접근
-//   //   await db.collection("messages")
-//   //     .add({
-//   //     text: msg,
-//   //     photoURL,
-//   //     uid,
-//   //     email,
-//   //     displayName,
-//   //     // serverTimestamp : Date.now(),
-//   //     createdAt: serverTimestamp(),
-//   //   });
-
-//   //   setMsg("");
-
-//   //   // if (scroll.current) {
-//   //   //   const chatNode = scroll.current;
-//   //   //   chatNode.scrollTop = chatNode.scrollHeight - chatNode.clientHeight;
-//   //   // }
-//   // }
 
 //   return (
 //     <div>
-//       {/* <form onSubmit={sendMessage}> */}
-//       <form>
+//       <form onSubmit={sendMessage}>
 //         <div className="sendMsg">
 //           <input
-//           // placeholder="write messages"
-//           // value={msg}
-//           // onChange={(e) => setMsg(e.target.value)}
-//           ></input>
+//             placeholder="write messages"
+//             value={msg}
+//             onChange={(e) => setMsg(e.target.value)}
+//           />
 //           <button type="submit">send</button>
 //         </div>
 //       </form>
@@ -49,83 +20,289 @@
 // }
 
 // export default SendMessage;
-// // import React, { useState } from "react";
-// // import { Client } from "@stomp/stompjs";
-// // import axios from "axios"; // axios 추가
 
-// // function SendMessage({ scroll }) {
-// //   const [msg, setMsg] = useState("");
-// //   const client = new Client();
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
 
-// //   const sendMessage = () => {
-// //     if (msg.trim() === "") return;
 
-// //     const message = {
-// //       sender: "보내는_사람_이름",
-// //       messageContext: msg,
-// //     };
+// const SendMessage = () => {
+//   const [room, setRoom] = useState({});
+//   const [sender, setSender] = useState("");
+//   const [message, setMessage] = useState("");
+//   const [messages, setMessages] = useState([]);
+//   const [ws, setWs] = useState(null);
 
-// //     // axios를 사용하여 CORS 정책을 지원하며 백엔드 서버로 메시지를 전송
-// //     axios
-// //       .post("http://localhost:8888/api/sendMessage", message)
-// //       .then((response) => {
-// //         console.log("Message sent successfully:", response.data);
-// //         client.publish({
-// //           destination: "/app/sendMessage",
-// //           body: JSON.stringify(message),
-// //         });
-// //         setMsg("");
-// //       })
-// //       .catch((error) => {
-// //         console.error("Error sending message:", error);
-// //       });
-// //   };
+//   useEffect(() => {
+//     const roomId = localStorage.getItem("wschat.roomId");
+//     setSender(localStorage.getItem("wschat.sender"));
+//     findRoom(roomId);
+//     const websocket = connect(roomId);
+//     setWs(websocket);
+//     return () => {
+//       if (websocket) {
+//         websocket.disconnect();
+//       }
+//     };
+//   }, []);
 
-// //   return (
-// //     <div>
-// //       <div className="sendMsg">
-// //         <input
-// //           placeholder="메시지를 입력하세요"
-// //           value={msg}
-// //           onChange={(e) => setMsg(e.target.value)}
-// //         />
-// //         <button onClick={sendMessage}>전송</button>
-// //       </div>
-// //     </div>
-// //   );
-// // }
+//   const findRoom = (roomId) => {
+//     axios
+//       .get(`/chat/room/${roomId}`)
+//       .then((response) => {
+//         setRoom(response.data);
+//       })
+//       .catch((error) => {
+//         console.error("Error fetching chat room:", error);
+//       });
+//   };
 
-// // export default SendMessage;
-import React, { useState } from "react";
+//   const sendMessage = () => {
+//     if (!message) {
+//       return;
+//     }
+//     const messageData = {
+//       type: "TALK",
+//       roomId: room.roomId,
+//       sender,
+//       message,
+//     };
 
-function SendMessage({ scroll, stompClient }) {
-  const [msg, setMsg] = useState("");
+//     ws.send("/pub/chat/message", {}, JSON.stringify(messageData));
+//     setMessage("");
+//   };
 
-  // const sendMessage = (e) => {
-  //   e.preventDefault();
+//   const recvMessage = (recv) => {
+//     const { type, sender: recvSender, message: recvMessage } = recv;
+//     const newMessage = {
+//       type,
+//       sender: type === "ENTER" ? "[알림]" : recvSender,
+//       message: recvMessage,
+//     };
+//     setMessages((prevMessages) => [newMessage, ...prevMessages]);
+//   };
 
-  //   if (stompClient) {
-  //     stompClient.send("/app/chat/send", {}, JSON.stringify({ messageContext: msg }));
-  //   }
+//   const connect = (roomId) => {
+//     const sock = new SockJS("/ws-stomp");
+//     const websocket = Stomp.over(sock);
+//     let reconnect = 0;
 
-  //   setMsg(""); // 메시지 입력 필드 초기화
-  //   scroll.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  // };
-  
+//     websocket.connect(
+//       {},
+//       (frame) => {
+//         websocket.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+//           const recv = JSON.parse(message.body);
+//           recvMessage(recv);
+//         });
+
+//         const enterMessage = {
+//           type: "ENTER",
+//           roomId,
+//           sender,
+//         };
+//         websocket.send("/pub/chat/message", {}, JSON.stringify(enterMessage));
+//       },
+//       (error) => {
+//         if (reconnect++ <= 5) {
+//           setTimeout(() => {
+//             console.log("Connection reconnect");
+//             const newSock = new SockJS("/ws-stomp");
+//             const newWebsocket = Stomp.over(newSock);
+//             setWs(newWebsocket);
+//             connect(roomId);
+//           }, 10 * 1000);
+//         }
+//       }
+//     );
+
+//     return websocket;
+//   };
+
+//   return (
+//     <div className="container">
+//       <div>
+//         <h2>{room.name}</h2>
+//       </div>
+//       <div className="input-group">
+//         <div className="input-group-prepend">
+//           <label className="input-group-text">내용</label>
+//         </div>
+//         <input
+//           type="text"
+//           className="form-control"
+//           value={message}
+//           onChange={(e) => setMessage(e.target.value)}
+//           onKeyDown={(e) => {
+//             if (e.key === "Enter") {
+//               sendMessage();
+//             }
+//           }}
+//         />
+//         <div className="input-group-append">
+//           <button
+//             className="btn btn-primary"
+//             type="button"
+//             onClick={sendMessage}
+//           >
+//             보내기
+//           </button>
+//         </div>
+//       </div>
+//       <ul className="list-group">
+//         {messages.map((msg, index) => (
+//           <li key={index} className="list-group-item">
+//             {msg.sender} - {msg.message}
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// };
+
+// export default SendMessage;
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+
+const SendMessage = () => {
+  const [room, setRoom] = useState({});
+  const [sender, setSender] = useState("");
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [ws, setWs] = useState(null);
+
+  useEffect(() => {
+    const roomId = localStorage.getItem("wschat.roomId");
+    setSender(localStorage.getItem("wschat.sender"));
+    findRoom(roomId);
+    const websocket = connect(roomId);
+    setWs(websocket);
+    return () => {
+      if (websocket) {
+        websocket.disconnect();
+      }
+    };
+  }, []);
+
+  const findRoom = (roomId) => {
+    axios
+      .get(`/chat/room/${roomId}`)
+      .then((response) => {
+        setRoom(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching chat room:", error);
+      });
+  };
+
+  const sendMessage = () => {
+    if (!message) {
+      return;
+    }
+    const messageData = {
+      type: "TALK",
+      roomId: room.roomId,
+      sender,
+      message,
+    };
+
+    ws.send("/pub/chat/message", {}, JSON.stringify(messageData));
+    setMessage("");
+  };
+
+  const recvMessage = (recv) => {
+    const { type, sender: recvSender, message: recvMessage } = recv;
+    const newMessage = {
+      type,
+      sender: type === "ENTER" ? "[알림]" : recvSender,
+      message: recvMessage,
+    };
+    setMessages((prevMessages) => [newMessage, ...prevMessages]);
+  };
+
+  const connect = (roomId) => {
+    const sock = new SockJS("/ws-stomp");
+    const websocket = new Client({
+      webSocketFactory: () => sock,
+      // ...
+    });
+    let reconnect = 0;
+
+    websocket.onConnect = (frame) => {
+      websocket.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+        const recv = JSON.parse(message.body);
+        recvMessage(recv);
+      });
+
+      const enterMessage = {
+        type: "ENTER",
+        roomId,
+        sender,
+      };
+      websocket.publish({
+        destination: "/pub/chat/message",
+        body: JSON.stringify(enterMessage),
+      });
+    };
+
+    websocket.onStompError = (frame) => {
+      if (reconnect++ <= 5) {
+        setTimeout(() => {
+          console.log("Connection reconnect");
+          const newSock = new SockJS("/ws-stomp");
+          const newWebsocket = new Client({
+            webSocketFactory: () => newSock,
+            // ...
+          });
+          setWs(newWebsocket);
+          connect(roomId);
+        }, 10 * 1000);
+      }
+    };
+
+    websocket.activate();
+    return websocket;
+  };
+
   return (
-    <div>
-      <form onSubmit={sendMessage}>
-        <div className="sendMsg">
-          <input
-            placeholder="write messages"
-            value={msg}
-            onChange={(e) => setMsg(e.target.value)}
-          />
-          <button type="submit">send</button>
+    <div className="container">
+      <div>
+        <h2>{room.name}</h2>
+      </div>
+      <div className="input-group">
+        <div className="input-group-prepend">
+          <label className="input-group-text">내용</label>
         </div>
-      </form>
+        <input
+          type="text"
+          className="form-control"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              sendMessage();
+            }
+          }}
+        />
+        <div className="input-group-append">
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={sendMessage}
+          >
+            보내기
+          </button>
+        </div>
+      </div>
+      <ul className="list-group">
+        {messages.map((msg, index) => (
+          <li key={index} className="list-group-item">
+            {msg.sender} - {msg.message}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
 export default SendMessage;
