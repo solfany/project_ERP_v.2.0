@@ -1,15 +1,11 @@
 package com.project.backend.dto;
 
+import lombok.Data;
 
+@Data
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class LoginDto {
-	
-	
-    private String empId;
-    private String empPwd;
+
+	private String empId;
+	private String empPwd;
 }

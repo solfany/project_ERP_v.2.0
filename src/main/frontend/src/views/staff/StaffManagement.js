@@ -39,11 +39,10 @@ const StaffManagement = () => {
   }, []);
 
   const handleSubmit = async () => {
-    //e.preventDefault();
-    //const submitButton = e.currentTarget;
+
     try {
       const staffDto = {
-        //empNum,
+        empNum,
         empId,
         empPwd,
         dept,
@@ -75,14 +74,9 @@ const StaffManagement = () => {
       fetchStaffs();
       setShowModal(false); // Hide the modal after successful submission
 
-      //처리 완료 후 버튼 다시 활성화
-      //submitButton.removeAttribute('disabled');
 
-      // fetchStaffs();
-      // setShowModal(false);
     } catch (error) {
       console.error('Error adding staffs:', error);
-      // submitButton.removeAttribute('disabled'); //처리 실패시에도 버튼 활성화
     }
   };
 
@@ -171,15 +165,6 @@ const StaffManagement = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-          {/* <Form.Group className="mb-3">
-              <Form.Label>사원번호</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="사원번호"
-                value={empNum}
-                onChange={(e) => setEmpNum(e.target.value)}
-              />
-            </Form.Group> */}
             <Form.Group className="mb-3">
               <Form.Label>아이디</Form.Label>
               <Form.Control

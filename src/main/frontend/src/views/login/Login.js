@@ -4,6 +4,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'; // Redux useDispatch 함수 추가
+import { setAccessToken, setRefreshToken } from 'src/redux/authSlice'; // Redux action 함수 추가
 
 import {
   CButton,
@@ -22,46 +24,47 @@ import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
 
 const Login = () => {
-
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // useDispatch를 사용하여 Redux dispatch 함수를 가져옴
   const [loginMessage, setLoginMessage] = useState('');
   const [empId, setEmpId] = useState('');
   const [empPwd, setEmpPwd] = useState('');
- 
-  const handleLogin = async () => {
 
-   
+  const handleLogin = async () => {
     try {
       const loginData = {
         empId: empId,
-        empPwd: empPwd
+        empPwd: empPwd,
       };
 
       const response = await axios.post('/api/login', loginData);
 
       if (response.status === 200) {
-        //로그인 성공
-        const token = response.data;
+        const accessToken = response.headers['authorization'];
+        const refreshToken = response.headers['refreshtoken'];
         console.log('로그인 성공');
-        // 토큰을 로컬 스토리지에 저장
-        localStorage.setItem('token', token);
+        console.log('accessToken:' ,accessToken);
+        console.log('refreshToken:',refreshToken);
 
-        // 토큰을 axios 요청의 헤더에 추가
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        // 이제 인증된 요청을 보낼 수 있습니다.
-        
+        // Redux로 AccessToken 설정
+        dispatch(setAccessToken(accessToken));
+        dispatch(setRefreshToken(refreshToken));
+
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         // 로그인 성공 시 리다이렉션
-        navigate('/Dashboard'); 
+        navigate('/Dashboard');
       } else {
-        //로그인 실패
-        console.log('로그인 실패')
+        console.log('로그인 실패');
         setLoginMessage('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
       }
-    } catch (error){
-        console.error('로그인 에러: ', error)
-    };
-     
+    } catch (error) {
+      console.error('로그인 에러: ', error);
+    }
   };
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>

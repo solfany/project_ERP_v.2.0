@@ -1,6 +1,10 @@
 server:
   port: 8888
 
+jwt:
+  secret: ThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExample
+  #expiration: 86400000
+  
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/project
@@ -22,7 +26,6 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-
   sql:
     init:
       mode: always
