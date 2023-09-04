@@ -4,7 +4,6 @@ import axios from 'axios';
 import MainItems from './MainItems';
 import './MainItems.css';
 import './PointShop.css';
-import CartIcon from './Page/Cart/CartIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import PointShopNav from './PointShopNav';
 import { CTooltip } from '@coreui/react';
@@ -233,7 +232,6 @@ const PointShop = () => {
           ))}
         </div>
       </div>
-      <CartIcon cartItemsCount={cartItemsCount} />
     </div>
   );
 };

@@ -51,16 +51,5 @@ spring:
   freemarker:
     cache: false
 
-cloud:
-  aws:
-    s3:
-      bucketName: project-03
-    credentials:
-      accessKey: AKIAT7D6YZN4ZS2RPMQU
-      secretKey: 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
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
 itemImgLocation: C:/shop/item
 uploadPath: file:///C:/shop/

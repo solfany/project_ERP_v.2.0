@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import './MainItemDtl.css';
 import './../../PointShopNav.css';
 
-import CartIcon from './../Cart/CartIcon';
-import { updateCartItemsCount } from 'src/action';
 import {
   CAccordion,
   CAccordionBody,
@@ -21,7 +19,6 @@ import axios from 'axios';
 const MainItemDtl = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const cartItemsCount = useSelector((state) => state.cartItemsCount); // 상태를 가져옴
   const dispatch = useDispatch(); // useDispatch를 추가
   const [product, setProduct] = useState({
     id: 0,
@@ -35,13 +32,6 @@ const MainItemDtl = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [activeImage, setActiveImage] = useState('');
-  const [selectedQuantity, setSelectedQuantity] = useState(1); // 선택된 수량 상태 추가
-
-  // 수량 변경 함수
-  const handleQuantityChange = (event) => {
-    const newQuantity = parseInt(event.target.value);
-    setSelectedQuantity(newQuantity);
-  };
 
   // 이미지 클릭시 이미지를 교체하는 함수
   const handleImageClick = (imageUrl) => {
@@ -237,12 +227,6 @@ const MainItemDtl = () => {
             </CTooltip>
           </div>
         </div>
-        <CartIcon
-          cartItemsCount={cartItemsCount}
-          updateCartItemsCount={(count) =>
-            dispatch(updateCartItemsCount(count))
-          }
-        />
       </div>
     </div>
   );
