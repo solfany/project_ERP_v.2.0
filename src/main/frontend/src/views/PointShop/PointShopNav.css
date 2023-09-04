@@ -1,0 +1,58 @@
+.point-shop-nav-header {
+    top: 0;
+    right: 0;
+    left: 0;
+    display: block;
+    border-bottom: 1px solid #e3e3e8;
+}
+
+#point-shop-logo {
+    float: left;
+    font-size: 3em;
+    margin: 0;
+    padding: .4em;
+    text-decoration: none;
+    color: #333;
+    border-right: 1px solid #e3e3e8;
+    transition: .5s all;
+}
+
+#point-shop-logo:hover {
+    color: #fafafa;
+    background-color: #333;
+}
+
+.point-shop-nav {
+    float: left;
+}
+
+.point-shop-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 2.2em 2em;
+}
+
+.point-shop-nav ul li {
+    display: inline;
+    padding: 0 .4em;
+}
+
+.point-shop-nav ul li a {
+    color: #333;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    font-weight: 700;
+    padding-bottom: 1.3em;
+    transition: .5s color;
+}
+
+.point-shop-nav ul li a:hover {
+    border-bottom: 3px solid #333;
+    color: #00acee;
+}
+
+#point-shop-nav-current {
+    color: #ff4629;
+    border-bottom: 3px solid #333;
+}

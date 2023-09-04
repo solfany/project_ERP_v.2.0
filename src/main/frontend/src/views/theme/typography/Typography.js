@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Typography = () => {
-  return <></>
-}
+  return <></>;
+};
 
-export default Typography
+export default Typography;

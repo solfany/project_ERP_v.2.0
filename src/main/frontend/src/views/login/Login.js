@@ -101,12 +101,16 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" onClick={handleLogin}>
+                        <CButton
+                          color="primary"
+                          className="px-4"
+                          onClick={handleLogin}
+                        >
                           로그인
                         </CButton>
                       </CCol>
                     </CRow>
-                   <p className="mt-3">{loginMessage}</p>
+                    <p className="mt-3">{loginMessage}</p>
                   </CForm>
                 </CCardBody>
               </CCard>
@@ -115,7 +119,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

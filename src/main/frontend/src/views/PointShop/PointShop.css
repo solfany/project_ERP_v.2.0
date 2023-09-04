@@ -14,3 +14,7 @@
     display: block;
     margin-right: 10px;
 }
+
+.ant-form-item-required {
+    min-width: 120px;
+}

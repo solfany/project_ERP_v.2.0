@@ -15,17 +15,17 @@ package com.project.backend.service;
 //}
 
 //기존코드
-import java.util.List;
-import java.util.Optional;
 
+import com.project.backend.dto.StaffDto;
+import com.project.backend.entity.Staff;
+import com.project.backend.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.project.backend.dto.StaffDto;
-import com.project.backend.entity.Staff;
-import com.project.backend.repository.StaffRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Transactional // 데이터 영속성과 일관성을 유지하기 위해 사용
 @Service
@@ -90,4 +90,6 @@ public class StaffService {
 	public void deleteStaffById(Long empNum) {
 		staffRepository.deleteById(empNum);
 	}
+
+
 }

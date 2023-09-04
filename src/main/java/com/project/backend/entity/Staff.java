@@ -58,57 +58,37 @@ public class Staff {
 	@Column(name = "address")
 	private String address;
 
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "bank_name")
-	private String bankName;
-
-	@Column(name = "account_number")
-	private String accountNumber;
-
-//	@Column(name = "role")
-//	private String role;
-//
-//	public String getRole() {
-//		return role;
-//	}
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "t_user_authority", joinColumns = {
-			@JoinColumn(name = "emp_num", referencedColumnName = "emp_num") }, inverseJoinColumns = {
-					@JoinColumn(name = "authority_name", referencedColumnName = "authority_name") })
-	private Set<Authority> authorities;
-
-	// 비밀번호 인코딩 설정
-	public void setEmpPwd(String empPwd) {
-		if (empPwd != null) {
-			this.empPwd = empPwd;
-
-		} else {
-			throw new IllegalArgumentException("Password cannot be null");
-		}
-	}
-
-	public void setEncodedEmpPwd(String empPwd) {
-		this.empPwd = empPwd;
-	}
-
-	public static Staff createStaff(StaffDto staffDto) {
-		Staff staff = new Staff();
-		staff.setEmpNum(staffDto.getEmpNum());
-		staff.setEmpId(staffDto.getEmpId());
-		staff.setEmpPwd(staffDto.getEmpPwd());
-		staff.setDept(staffDto.getDept());
-		staff.setPosition(staffDto.getPosition());
-		staff.setEmpName(staffDto.getEmpName());
-		staff.setBirthDate(staffDto.getBirthDate());
-		staff.setPhoneNumber(staffDto.getPhoneNumber());
-		staff.setAddress(staffDto.getAddress());
-		staff.setEmail(staffDto.getEmail());
-		staff.setBankName(staffDto.getBankName());
-		staff.setAccountNumber(staffDto.getAccountNumber());
-		return staff;
-	}
-
+    @Column(name = "account_number")
+    private String accountNumber;
+    
+    //비밀번호 인코딩 설정
+    public void setEmpPwd(String empPwd) {
+    	if (empPwd != null) {
+    		this.empPwd = empPwd;
+    	
+    } else {
+    	throw new IllegalArgumentException("Password cannot be null");
+    }
+  } 
+    
+ 
+    public void setEncodedEmpPwd(String empPwd) {
+        this.empPwd = empPwd;
+    }
+    public static Staff createStaff(StaffDto staffDto) {
+        Staff staff = new Staff();
+        staff.setEmpNum(staffDto.getEmpNum());
+        staff.setEmpId(staffDto.getEmpId());
+        staff.setEmpPwd(staffDto.getEmpPwd());
+        staff.setDept(staffDto.getDept());
+        staff.setPosition(staffDto.getPosition());
+        staff.setEmpName(staffDto.getEmpName());
+        staff.setBirthDate(staffDto.getBirthDate());
+        staff.setPhoneNumber(staffDto.getPhoneNumber());
+        staff.setAddress(staffDto.getAddress());
+        staff.setEmail(staffDto.getEmail());
+        staff.setBankName(staffDto.getBankName());
+        staff.setAccountNumber(staffDto.getAccountNumber());
+        return staff;
+    }
 }

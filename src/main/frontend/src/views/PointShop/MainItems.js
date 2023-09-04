@@ -1,4 +1,4 @@
-import { CButton } from '@coreui/react';
+import { CButton, CTooltip } from '@coreui/react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -59,18 +59,24 @@ const MainItems = ({
       </div>
       <div className="product-cell price">
         <span className="cell-label">가격 : </span>
-        {price}원
+        {price.toLocaleString()}원
       </div>
       <div className="product-cell category">
         <Link to={`/point_shop/point_shop/${id}`}>
-          <CButton
-            color="info"
-            variant="ghost"
-            className={isGridActive ? 'cell-more-button' : 'show-detail'}
-            style={{ fontSize: '12px', fontWeight: '700', padding: '5px 12px' }}
-          >
-            보러가기
-          </CButton>
+          <CTooltip content="상세페이지로 이동합니다." placement="top">
+            <CButton
+              color="info"
+              variant="ghost"
+              className={isGridActive ? 'cell-more-button' : 'show-detail'}
+              style={{
+                fontSize: '12px',
+                fontWeight: '700',
+                padding: '5px 12px',
+              }}
+            >
+              보러가기
+            </CButton>
+          </CTooltip>
         </Link>
       </div>
     </div>

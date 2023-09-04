@@ -1,6 +1,7 @@
 package com.project.backend.entity.pointshop;
 
 import com.project.backend.constant.OrderStatus;
+import com.project.backend.entity.Staff;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,7 @@ public class Order extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "member_id")
-    private Member member;
+    private Staff staff;
 
     private LocalDateTime orderDate;  //주문일
 
@@ -38,9 +39,9 @@ public class Order extends BaseEntity {
     }
 
     //생성한 주문상품(OrderItem) 객체를 이용하여 주문(Order) 객체를 만드는 메소드
-    public static Order createOrder(Member member, List<OrderItem> orderItemList) {
+    public static Order createOrder(Staff staff, List<OrderItem> orderItemList) {
         Order order = new Order();
-        order.setMember(member);
+        order.setStaff(staff);
         for (OrderItem orderItem : orderItemList) {
             order.addOrderItem(orderItem);
         }

@@ -6,6 +6,8 @@ jwt:
   #expiration: 86400000
   
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mysql://localhost:3306/project
     username: root
@@ -48,12 +50,6 @@ spring:
       enabled: false
   freemarker:
     cache: false
-
-##redis
-#  profiles:
-#     active: local
-  
-     
 
 cloud:
   aws:

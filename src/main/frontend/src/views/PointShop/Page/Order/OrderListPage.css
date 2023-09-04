@@ -1,0 +1,71 @@
+.order-title div:last-child {
+    max-width: 10px;
+    position: absolute;
+    opacity: 0;
+}
+
+.order-title {
+    display: flex;
+    justify-content: space-around;
+    font-weight: 700;
+}
+
+.order-title :first-child {
+    width: 31%;
+    text-align: center;
+}
+
+.order-title :nth-child(2) {
+    width: 40%;
+    text-align: center;
+}
+
+.order-title :nth-child(3) {
+    width: 33%;
+    text-align: center;
+}
+
+.accordion-button::after {
+    position: absolute;
+    right: 5px;
+}
+
+.order-item-title {
+    text-align: center;
+    font-weight: 700;
+}
+
+.order-item-title td:first-child {
+    width: 26%;
+}
+
+.order-item-title td:nth-child(2) {
+    width: 42%;
+}
+
+.order-item-title td:nth-child(3) {
+    width: 14%;
+}
+
+.order-item-title td:last-child {
+    width: 22%;
+}
+
+.order-item-button td:last-child {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.order-item-button td:last-child button {
+    position: relative;
+    right: 10px;
+}
+
+.order-item-detail {
+    vertical-align: middle;
+}
+
+.order-pagination {
+    display: flex;
+    justify-content: center;
+}
