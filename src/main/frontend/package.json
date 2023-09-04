@@ -25,13 +25,10 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-<<<<<<< HEAD
     "@reduxjs/toolkit": "^1.9.5",
-=======
     "@stomp/stompjs": "^7.0.0",
     "@types/sockjs-client": "^1.5.1",
     "@types/stompjs": "^2.3.5",
->>>>>>> 1ad256cc06b80b2327b83c5de005a098c4287b62
     "antd": "^5.8.2",
     "axios": "^1.5.0",
     "bootstrap": "^5.3.1",
