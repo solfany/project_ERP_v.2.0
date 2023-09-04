@@ -5,12 +5,11 @@ import com.project.backend.dto.VacationDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,8 +26,12 @@ public class Vacation {
     
 //    @Column(nullable = false)
 //    @OneToOne(fetch = FetchType.LAZY)	//@ONeToOne 어노테이션을 이용해 회원 엔티티와 일대일로 매핑함
-//    @JoinColumn(name = "member_empNum") //@JoinColumn 어노테이션을 이용해 매핑할 외래키를 지정
-//    private String empNum;
+//    @JoinColumn(name = "staff_empNum", nullable = false) //@JoinColumn 어노테이션을 이용해 매핑할 외래키를 지정
+//    private Long empNum;
+    
+    @ManyToOne
+    @JoinColumn(name = "emp_num", referencedColumnName = "emp_num")
+    private Staff staff;
     
     @Column(nullable = false)
     private String empName;
@@ -51,12 +54,24 @@ public class Vacation {
     @Column(nullable = false)
     private String vacaReason;
 
-    // Getter, Setter 메서드 생략
+    @Column(nullable = false)
+    private String vacaEtc;
     
+//    public void calculateVacaEtc() {
+//        // 휴가 종료일 - 휴가 시작일 계산
+//        Period period = Period.between(vacaStart, vacaEnd);
+//
+//        // 휴가 일수를 정수로 가져옴
+//        int days = period.getDays();
+//
+//        // 휴가 일수를 문자열로 변환하여 저장
+//        vacaEtc = days + "일";
+//    }
+   
     
     public static Vacation createTableVacation(VacationDto vacationDto) {
 		Vacation vacation = new Vacation();
-//		vacation.setEmpNum(MemberDto.getEmpNum()); //사원 번호 - empNm
+//		vacation.setEmpNum(vacationDto.getEmpNum()); //사원 번호 - empNum
 		vacation.setEmpName(vacationDto.getEmpName()); //이름
 		vacation.setDept(vacationDto.getDept());	//부서 - dept
 		vacation.setPosition(vacationDto.getPosition()); //직급 - position

@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class Staff {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "emp_num", nullable = false)
 	private Long empNum;
 

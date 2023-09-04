@@ -1,0 +1,205 @@
+.App {
+  text-align: center;
+}
+
+.movie-container {
+  margin: 0 auto;
+  width: 80%;
+  padding: 10px 0 30px 0;
+  border-radius: 5px;
+  margin-bottom: 50px;
+}
+
+.submit-button {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+  padding: 20px;
+  border: none;
+  background: indianred;
+  border-radius: 5px;
+  margin-top: 40px;
+  vertical-align: middle;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+  min-height: 500px;
+}
+
+.BulletinBoardTablelayou {
+  text-align: -webkit-center;
+}
+
+/* 게시판 페이지 레이아웃 전체 사이즈  */
+.BullentinBoardContainer {
+  height: 300em;
+}
+
+/* 모달 인풋 위치 조정 */
+.BulletinBoardModalInputSize {
+  margin-bottom: 1em;
+}
+
+/* ======버트======= */
+
+.BulletinBoardModalBtn {
+  margin-top: 1em;
+  align-items: center;
+}
+.BulletinBoardPostBtn {
+  text-align: right;
+}
+
+/* ============글 페이지 css=========== */
+.BulletinBoardPages-Container {
+  margin: 0px;
+  padding: 0px;
+}
+.BulletinBoardPages-CCard {
+  padding: 1em 1em 1em 1em;
+
+  /* padding: 2em 2em 2em 2em;  */
+}
+
+.BulletinBoardPages-Center {
+  text-align: center;
+}
+.BulletinBoardPages-userInfo {
+}
+.BulletinBoardPages-Content {
+  text-align: center;
+}
+.BulletinBoardPages-Buttons {
+}
+/* ======페이지네이션 위치 조정======== */
+.BulletinBoardPages-PageNation {
+  display: flex;
+  justify-content: center;
+}
+
+.BulletinBoardPages-PageNation ul.pagination {
+  margin: 0; /* Optional: Reset margin for the ul element */
+}
+
+.BulletinBoardPages-PageNation ul.pagination li.page-item {
+  display: inline-block;
+  margin: 0 5px; /* Adjust margin as needed */
+}
+
+.BulletinBoardPages-PageNation ul.pagination li.page-item a.page-link {
+  padding: 5px 10px; /* Optional: Adjust padding as needed */
+}
+
+.BulletinBoardPages-PageNation ul.pagination li.page-item a.page-link:hover {
+  background-color: #f0f0f0; /* Optional: Apply background color on hover */
+}
+.BulletinBoardPages-Comment {
+}
+
+.BulletinBoardPages-AddDelBtn {
+  margin: 1em 0em 1em 0em;
+}
+
+.BulletinBoardPages-DelBtn {
+  font-size: small;
+  margin-top: 0.8em;
+}
+.BulletinBoardPages-DelBtn-Layout {
+  /* text-align: right; */
+}
+.BulletinBoardPages-MainComment {
+  margin: 1em 0em 2em 0em;
+}
+.BulletinBoardPages-MainCommentBox {
+  margin: 0px;
+}
+
+/* =========해시태그======= */
+.advance .tagify__tag {
+  --tag-hover: var(--tag-bg);
+}
+
+/* =========페이지네이션======== */
+
+/* Add these styles to your existing CSS or create a new CSS file */
+
+.BulletinBoardPages-PageNation {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 0;
+  border-radius: 0.25rem;
+}
+
+.page-item {
+  display: inline;
+  margin-right: 0.25rem;
+  border: none;
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #494b4e;
+  background-color: #fff;
+  border: none;
+}
+
+.page-link:hover {
+  z-index: 2;
+  color: #0056b3;
+  text-decoration: none;
+  background-color: #797d81;
+  border-color: #ffffff;
+}
+
+.page-link:focus {
+  z-index: 3;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.page-link[aria-disabled="true"] {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+.page-item:last-child .page-link {
+  margin-right: 0;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.page-item:first-child .page-link {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.toptext {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

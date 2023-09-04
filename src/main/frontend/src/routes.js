@@ -92,9 +92,9 @@ const Toasts = React.lazy(() => import("./views/notifications/toasts/Toasts"));
 const Widgets = React.lazy(() => import("./views/widgets/Widgets"));
 
 const staffManagement = React.lazy(() =>
-import('./views/staff/StaffManagement')
+  import("./views/staff/StaffManagement")
 );
-const Login = React.lazy(() => import('./views/login/Login'));
+const Login = React.lazy(() => import("./views/login/Login"));
 
 const TimeManagementSystem = React.lazy(() =>
   import("./views/TimeManagementSystem/TimeManagementSystem")
@@ -110,6 +110,9 @@ const BulletinBoard = React.lazy(() =>
 );
 const BulletinBoardPages = React.lazy(() =>
   import("./views/BulletinBoard/BulletinBoardPages")
+);
+const BulletinBoardPagesEdit = React.lazy(() =>
+  import("./views/BulletinBoard/BulletinBoardPagesEdit")
 );
 // ========================================================
 // ========================================================
@@ -222,13 +225,13 @@ const routes = [
     element: staffManagement,
   },
   {
-    path: '/login/Login',
-    name: 'login',
+    path: "/login/Login",
+    name: "login",
     element: Login,
   },
   {
-    path: '/TimeManagementSystem/TimeManagementSystem',
-    name: 'TimeManagementSystem',
+    path: "/TimeManagementSystem/TimeManagementSystem",
+    name: "TimeManagementSystem",
     element: TimeManagementSystem,
   },
   {
@@ -247,9 +250,14 @@ const routes = [
     element: BulletinBoard,
   },
   {
-    path: "/BulletinBoard/BulletinBoardPages",
+    path: "/BulletinBoard/BulletinBoardPages/:id",
     name: "BulletinBoardPages",
     element: BulletinBoardPages,
+  },
+  {
+    path: "/BulletinBoard/BulletinBoardPagesEdit/:id",
+    name: "BulletinBoardPages",
+    element: BulletinBoardPagesEdit,
   },
 ];
 

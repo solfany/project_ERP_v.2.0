@@ -65,7 +65,16 @@ dependencies {
     //stomp
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
-
+    
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//embedded-redis
+	implementation 'it.ozimov:embedded-redis:0.7.3'
+	
+	//log
+	 //implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging'
+    //implementation group: 'org.slf4j', name: 'slf4j-api'
+    //implementation group: 'ch.qos.logback', name: 'logback-classic'
+    implementation 'ch.qos.logback:logback-classic'
 }
 
 tasks.named('test') {
