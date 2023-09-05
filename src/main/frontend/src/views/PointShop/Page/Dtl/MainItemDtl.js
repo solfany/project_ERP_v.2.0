@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './MainItemDtl.css';
 import './../../PointShopNav.css';
-
+import jwt_decode from 'jwt-decode';
 import {
   CAccordion,
   CAccordionBody,
@@ -15,6 +15,8 @@ import {
 } from '@coreui/react';
 import PointShopNav from '../../PointShopNav';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { message } from 'antd';
 
 const MainItemDtl = () => {
   const { id } = useParams();
@@ -32,6 +34,15 @@ const MainItemDtl = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [activeImage, setActiveImage] = useState('');
+  const [selectedQuantity, setSelectedQuantity] = useState(1); // 선택된 수량 상태 추가
+  // 쿠키에서 staffInfo 데이터 가져오기
+  const staffInfo = JSON.parse(Cookies.get('staffInfo'));
+
+  // 수량 변경 함수
+  const handleQuantityChange = (event) => {
+    const newQuantity = parseInt(event.target.value);
+    setSelectedQuantity(newQuantity);
+  };
 
   // 이미지 클릭시 이미지를 교체하는 함수
   const handleImageClick = (imageUrl) => {
@@ -40,9 +51,10 @@ const MainItemDtl = () => {
 
   // 장바구니 담는 함수
   const handleAddToCart = async () => {
-    const updatedCount = cartItemsCount + 1;
-    // dispatch(updateCartItemsCount(updatedCount));
-
+    if (product.stockNumber == 0) {
+      message.error('품절 상품입니다.');
+      return null;
+    }
     try {
       const response = await fetch('/api/cart/', {
         method: 'POST',
@@ -52,7 +64,7 @@ const MainItemDtl = () => {
         body: JSON.stringify({
           itemId: id,
           count: selectedQuantity,
-          staff: staffData,
+          staff: staffInfo,
         }),
       });
 
@@ -173,11 +185,15 @@ const MainItemDtl = () => {
               }}
             >
               <option>수량을 선택하세요.</option>
-              {Array.from({ length: product.stockNumber }, (_, index) => (
-                <option key={index} value={index + 1}>
-                  {index + 1}
-                </option>
-              ))}
+              {product.stockNumber <= 0 ? (
+                <option>품절 입니다.</option>
+              ) : (
+                Array.from({ length: product.stockNumber }, (_, index) => (
+                  <option key={index} value={index + 1}>
+                    {index + 1}
+                  </option>
+                ))
+              )}
             </CFormSelect>
           </div>
           <hr />

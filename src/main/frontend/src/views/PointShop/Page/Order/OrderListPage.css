@@ -25,9 +25,13 @@
     text-align: center;
 }
 
-.accordion-button::after {
+.order-accordion-button .accordion-button::after {
     position: absolute;
     right: 5px;
+}
+
+.order-accordion-button .accordion-button {
+    padding-left: 0;
 }
 
 .order-item-title {
@@ -65,7 +69,31 @@
     vertical-align: middle;
 }
 
+.order-item-detail td {
+    background-color: ivory;
+    padding-bottom: 0.9rem !important;
+    font-size: 18px;
+
+}
+
 .order-pagination {
+    margin-top: 20px;
     display: flex;
     justify-content: center;
+}
+
+.orderStatus-order {
+    display: inline-block;
+    background-color: #2eb85c;
+    color: white;
+    padding: 4px 8px;
+
+}
+
+.orderStatus-cancel {
+    display: inline-block;
+    background-color: #e55353;
+    color: white;
+    padding: 4px 8px;
+    transform: translateX(5px);
 }

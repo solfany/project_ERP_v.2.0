@@ -1,5 +1,5 @@
 .input-group {
-    margin-bottom: 15px
+    margin-bottom: 15px;
 }
 
 .img-div {
@@ -10,11 +10,8 @@
     color: #bd2130;
 }
 
-.form-label {
+.ant-form-item-required {
     display: block;
     margin-right: 10px;
-}
-
-.ant-form-item-required {
     min-width: 120px;
 }

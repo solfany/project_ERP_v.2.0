@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -50,18 +49,14 @@ public class CartController {
 
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
+
+//    2.
     @PostMapping("/list")
-    public ResponseEntity<List<CartDetailDto>> getCartItems(Principal principal) {
-        List<CartDetailDto> cartDetailDtoList = cartService.getCartList(principal.getName());
+    public ResponseEntity<List<CartDetailDto>> getCartItems(@RequestBody Staff staff) {
+        List<CartDetailDto> cartDetailDtoList = cartService.getCartList(staff.getEmpNum());
         return ResponseEntity.ok(cartDetailDtoList);
     }
 
-    // 2.
-//    @PostMapping("/list")
-//    public ResponseEntity<List<CartDetailDto>> getCartItems(@RequestBody Staff staff) {
-//        List<CartDetailDto> cartDetailDtoList = cartService.getCartList(staff.getEmpNum());
-//        return ResponseEntity.ok(cartDetailDtoList);
-//    }
     // 1.
     //    @GetMapping("/cart")
 //    public ResponseEntity<List<CartDetailDto>> getCartItems(Principal principal) {

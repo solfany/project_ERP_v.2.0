@@ -13,23 +13,26 @@ import {
   CButton,
   CTableBody,
   CTableDataCell,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
   CTooltip,
 } from '@coreui/react';
 import PointShopNav from '../../PointShopNav';
 import './CartPage.css';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [cartOrder, setCartOrder] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
-
   const navigate = useNavigate();
+
+  // 쿠키에서 staffInfo 데이터 가져오기
+  const staffInfo = JSON.parse(Cookies.get('staffInfo'));
+  console.log(staffInfo);
+  // console.log(staffInfo);
+  // const staffInfo = useSelector((state) => state.auth.staffInfo);
 
   useEffect(() => {
     fetchCartItems();
@@ -37,14 +40,12 @@ const CartPage = () => {
 
   const fetchCartItems = async () => {
     try {
-      const response = await axios.post('/api/cart/list', staffData);
+      const response = await axios.post('/api/cart/list', staffInfo);
       setCartItems(response.data);
       message.success('데이터를 성공적으로 갱신하였습니다.');
-      console.log(response.data);
     } catch (error) {
       message.error('데이터를 갱신하는 도중 에러가 발생하였습니다.');
       console.error('Error fetching cart items:', error);
-    } finally {
     }
   };
 
@@ -53,7 +54,7 @@ const CartPage = () => {
     try {
       const response = await axios.patch(
         `/api/cart/item/${cartItemId}`,
-        { count: newCount, staff: staffData },
+        { count: newCount, staff: staffInfo },
         { headers: { 'Content-Type': 'application/json' } }
       );
 
@@ -72,14 +73,21 @@ const CartPage = () => {
 
   const handleDeleteCartItem = async (cartItemId) => {
     try {
-      await axios.delete(`/api/cart/item/${cartItemId}`);
+      const wantDelete = window.confirm('상품을 삭제하시겠습니까?');
 
-      // 삭제 성공 시 상태 갱신
-      const updatedCartItems = cartItems.filter(
-        (item) => item.cartItemId !== cartItemId
-      );
-      setCartItems(updatedCartItems);
-      message.info('상품이 삭제되었습니다.');
+      if (wantDelete) {
+        await axios.delete(`/api/cart/item/${cartItemId}`);
+
+        // 삭제 성공 시 상태 갱신
+        const updatedCartItems = cartItems.filter(
+          (item) => item.cartItemId !== cartItemId
+        );
+        setCartItems(updatedCartItems);
+        message.info('상품이 삭제되었습니다.');
+      } else {
+        // 사용자가 확인을 취소한 경우
+        message.info('상품 삭제가 취소되었습니다.');
+      }
     } catch (error) {
       console.error('Error deleting cart item:', error);
     }
@@ -91,7 +99,7 @@ const CartPage = () => {
         cartOrderDtoList: cartItems.map((item) => ({
           cartItemId: item.cartItemId,
         })),
-        staff: staffData,
+        staff: staffInfo,
       });
       if (!isAnimating) {
         setIsAnimating(true);

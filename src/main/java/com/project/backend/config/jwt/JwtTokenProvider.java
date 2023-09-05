@@ -4,6 +4,7 @@ import com.project.backend.config.auth.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,15 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
-
 
 @Slf4j
 // @Component
 // @Service
-public class JwtTokenProvider {// implements InitializingBean {
+public class JwtTokenProvider {
 	// 토큰 유효시간
 
 	private final int JWT_EXPIRATION_MS = 60000 * 1; // 만료 시간 세팅 : 60000 (1분) * 10 => 10분
@@ -64,6 +63,7 @@ public class JwtTokenProvider {// implements InitializingBean {
 
 		// 표준 클레임 셋팅
 		JwtBuilder builder = Jwts.builder().setClaims(claims) // 정보 저장
+				.claim("staffInfo", principalDetails.getStaff())
 				.setId(String.valueOf(principalDetails.getStaff().getEmpNum())) // jti: JWT의 고유 식별자로서, 주로 중복적인 처리를 방지하기
 				// 위하여 사용됩니다. 일회용 토큰에 사용하면 유용합니다.
 				.setIssuedAt(now) // iat: 토큰이 발급된 시간 (issued at), 이 값을 사용하여 토큰의 age 가 얼마나 되었는지 판단 할 수 있습니다. - 현재시간

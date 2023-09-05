@@ -4,14 +4,10 @@ import axios from 'axios';
 import MainItems from './MainItems';
 import './MainItems.css';
 import './PointShop.css';
-import { useDispatch, useSelector } from 'react-redux';
 import PointShopNav from './PointShopNav';
 import { CTooltip } from '@coreui/react';
 
 const PointShop = () => {
-  const cartItemsCount = useSelector((state) => state.cartItemsCount); // 상태를 가져옴
-  const token = useSelector((state) => state.token);
-  const dispatch = useDispatch(); // useDispatch를 통해 디스패치 함수를 가져옴
   const [items, setItems] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   const [isGridActive, setIsGridActive] = useState(true);
@@ -223,12 +219,7 @@ const PointShop = () => {
             </div>
           </div>
           {items.map((item) => (
-            <MainItems
-              key={item.id}
-              {...item}
-              isGridActive={isGridActive}
-              token={token}
-            />
+            <MainItems key={item.id} {...item} isGridActive={isGridActive} />
           ))}
         </div>
       </div>

@@ -57,8 +57,7 @@ const Tag = ({ text }) => (
 const MoreItem = () => (
   <div className="MoreItem">
     <div className="more-item-header">
-      <h1>더 많은 상품들을 만나보세요!</h1>
-      <p>ㅁㄴㅇㄹ</p>
+      <h2>업데이트 준비중입니다.</h2>
     </div>
     <div className="tag-list">
       {[...new Array(ROWS)].map((_, i) => (
