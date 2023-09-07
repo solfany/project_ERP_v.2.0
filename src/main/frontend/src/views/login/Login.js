@@ -72,12 +72,13 @@ const Login = () => {
         console.log('accessToken:', accessToken);
         console.log('refreshToken:', refreshToken);
         console.log('staffInfo:', staffInfo);
-
         // 로그인 성공 시 리다이렉션
         navigate('/Dashboard');
       } else {
         console.log('로그인 실패');
-        setLoginMessage('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
+        setLoginMessage(
+          '로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.'
+        );
       }
     } catch (error) {
       console.error('로그인 에러: ', error);
@@ -119,7 +120,11 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" onClick={handleLogin}>
+                        <CButton
+                          color="primary"
+                          className="px-4"
+                          onClick={handleLogin}
+                        >
                           로그인
                         </CButton>
                       </CCol>
@@ -133,7 +138,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

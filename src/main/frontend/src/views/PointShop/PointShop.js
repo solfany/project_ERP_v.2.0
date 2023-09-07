@@ -4,15 +4,10 @@ import axios from 'axios';
 import MainItems from './MainItems';
 import './MainItems.css';
 import './PointShop.css';
-import PointShopForm from './PointShopForm';
-import CartIcon from './CartIcon';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateCartItemsCount } from 'src/action';
+import PointShopNav from './PointShopNav';
+import { CTooltip } from '@coreui/react';
 
 const PointShop = () => {
-  const cartItemsCount = useSelector((state) => state.cartItemsCount); // 상태를 가져옴
-  const dispatch = useDispatch(); // useDispatch를 통해 디스패치 함수를 가져옴
-
   const [items, setItems] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   const [isGridActive, setIsGridActive] = useState(true);
@@ -40,10 +35,12 @@ const PointShop = () => {
       .then((response) => {
         const data = response.data.items.content; // items 데이터 추출
         console.log(data);
+        message.success('데이터를 성공적으로 갱신하였습니다.');
         setItems(data);
       })
       .catch((error) => {
         console.error(error);
+        message.error('데이터를 갱신하는 도중 에러가 발생하였습니다.');
       });
   }, []);
 
@@ -51,59 +48,65 @@ const PointShop = () => {
     <div className="content">
       {contextHolder}
       <div className="app-content">
+        <PointShopNav />
         <div className="app-content-actions">
-          <PointShopForm />
           {/* <input className="search-bar" placeholder="Search..." type="text"> */}
           <div className="app-content-actions-wrapper">
             <div className="filter-button-wrapper"></div>
-            <button
-              className={`action-button list ${!isGridActive ? 'active' : ''}`}
-              title="List View"
-              onClick={handleListClick}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-list"
+            <CTooltip content="리스트 뷰" placement="top">
+              <button
+                className={`action-button list ${
+                  !isGridActive ? 'active' : ''
+                }`}
+                title="리스트 뷰"
+                onClick={handleListClick}
               >
-                <line x1="8" y1="6" x2="21" y2="6" />
-                <line x1="8" y1="12" x2="21" y2="12" />
-                <line x1="8" y1="18" x2="21" y2="18" />
-                <line x1="3" y1="6" x2="3.01" y2="6" />
-                <line x1="3" y1="12" x2="3.01" y2="12" />
-                <line x1="3" y1="18" x2="3.01" y2="18" />
-              </svg>
-            </button>
-            <button
-              className={`action-button grid ${isGridActive ? 'active' : ''}`}
-              title="Grid View"
-              onClick={handleGridClick}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="feather feather-grid"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-list"
+                >
+                  <line x1="8" y1="6" x2="21" y2="6" />
+                  <line x1="8" y1="12" x2="21" y2="12" />
+                  <line x1="8" y1="18" x2="21" y2="18" />
+                  <line x1="3" y1="6" x2="3.01" y2="6" />
+                  <line x1="3" y1="12" x2="3.01" y2="12" />
+                  <line x1="3" y1="18" x2="3.01" y2="18" />
+                </svg>
+              </button>
+            </CTooltip>
+            <CTooltip content="그리드 뷰" placement="top">
+              <button
+                className={`action-button grid ${isGridActive ? 'active' : ''}`}
+                title="그리드 뷰"
+                onClick={handleGridClick}
               >
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-grid"
+                >
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                </svg>
+              </button>
+            </CTooltip>
           </div>
         </div>
         <div
@@ -220,7 +223,6 @@ const PointShop = () => {
           ))}
         </div>
       </div>
-      <CartIcon cartItemsCount={cartItemsCount} />
     </div>
   );
 };

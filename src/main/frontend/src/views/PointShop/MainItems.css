@@ -7,33 +7,6 @@
     font-style: normal;
 }
 
-
-:root {
-    --app-bg: #fff;
-    --sidebar: rgba(21, 30, 47, 1);
-    --sidebar-main-color: #fff;
-    --table-border: #1a2131;
-    --table-header: #1a2131;
-    --app-content-main-color: #1f1c2e;
-    --sidebar-link: #fff;
-    --sidebar-active-link: #1d283c;
-    --sidebar-hover-link: #1a2539;
-    --action-color: #2869ff;
-    --action-color-hover: #6291fd;
-    --app-content-secondary-color: #f3f6fd;
-    --filter-reset: #2c394f;
-    --filter-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.light:root {
-    --sidebar: #f3f6fd;
-    --sidebar-link: #1f1c2e;
-    --sidebar-hover-link: rgba(195, 207, 244, 0.5);
-    --sidebar-active-link: rgba(195, 207, 244, 1);
-    --sidebar-main-color: #1f1c2e;
-}
-
-
 .app-container {
 
     border-radius: 4px;
@@ -333,7 +306,7 @@
 
 .tableView .product-cell {
     flex: 1;
-    padding: 8px 16px;
+    padding: 8px 8px;
     color: var(--app-content-main-color);
     font-size: 14px;
     display: flex;

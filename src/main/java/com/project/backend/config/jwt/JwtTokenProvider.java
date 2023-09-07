@@ -1,31 +1,20 @@
 package com.project.backend.config.jwt;
 
-import java.security.Key;
-import java.util.Date;
-
-import javax.crypto.spec.SecretKeySpec;
-
+import com.project.backend.config.auth.PrincipalDetails;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.DatatypeConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.util.Date;
 
-import com.project.backend.config.auth.PrincipalDetails;
-
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.xml.bind.DatatypeConverter;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 // @Component
@@ -46,7 +35,7 @@ public class JwtTokenProvider {
 
 	/**
 	 * jwt 토큰 생성
-	 * 
+	 *
 	 * @param authentication
 	 * @return
 	 */
@@ -67,8 +56,8 @@ public class JwtTokenProvider {
 		 * 중복적인 처리를 방지하기 위하여 사용됩니다. 일회용 토큰에 사용하면 유용합니다. (id)
 		 */
 		Claims claims = Jwts.claims().setSubject(String.valueOf(principalDetails.getStaff().getEmpNum())); // JWT
-																											// payload 에
-																											// 저장되는 정보단위
+		// payload 에
+		// 저장되는 정보단위
 
 		claims.put("staff", principalDetails.getStaff());
 
@@ -76,15 +65,15 @@ public class JwtTokenProvider {
 		JwtBuilder builder = Jwts.builder().setClaims(claims) // 정보 저장
 				.claim("staffInfo", principalDetails.getStaff())
 				.setId(String.valueOf(principalDetails.getStaff().getEmpNum())) // jti: JWT의 고유 식별자로서, 주로 중복적인 처리를 방지하기
-																				// 위하여 사용됩니다. 일회용 토큰에 사용하면 유용합니다.
+				// 위하여 사용됩니다. 일회용 토큰에 사용하면 유용합니다.
 				.setIssuedAt(now) // iat: 토큰이 발급된 시간 (issued at), 이 값을 사용하여 토큰의 age 가 얼마나 되었는지 판단 할 수 있습니다. - 현재시간
-									// 기반으로 생성
+				// 기반으로 생성
 				.setSubject(principalDetails.getStaff().getEmpId()) // sub: 토큰 제목 (subject) - 사용자
 				.setIssuer("JK") // iss: 토큰 발급자 (issuer)
 				.signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘, signature에 들어갈 secret 값 세팅
 				.setExpiration(expiryDate) // exp: 토큰의 만료시간 (expiraton), 시간은 NumericDate 형식으로 되어있어야 하며 (예:
-											// 1480849147370), 언제나 현재 시간보다 이후로 설정되어있어야합니다.
-		;
+				// 1480849147370), 언제나 현재 시간보다 이후로 설정되어있어야합니다.
+				;
 
 		return builder.compact();
 	}
@@ -101,7 +90,7 @@ public class JwtTokenProvider {
 
 	/**
 	 * Jwt 토큰에서 유져이름 추출
-	 * 
+	 *
 	 * @param accessToken
 	 * @return
 	 */

@@ -30,6 +30,16 @@ function CalendarBoard() {
       });
   }, []);
 
+  const [user, setUser] = useState(null); // 유저 정보를 담을 상태
+  const [token, setToken] = useState(localStorage.getItem('token')); // 토큰 상태 초기화
+
+  const handleLogout = () => {
+    // 로그아웃 처리
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem('token');
+  };
+
   return (
     <div className="content light">
       {contextHolder}
