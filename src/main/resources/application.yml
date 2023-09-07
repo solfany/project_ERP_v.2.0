@@ -4,13 +4,13 @@ server:
 jwt:
   secret: ThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExample
   #expiration: 86400000
-  
+
 spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
     url: jdbc:mysql://localhost:3306/project
-    username: root
+    username: roo
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
@@ -38,11 +38,11 @@ spring:
     jpa:
       repositories:
         enabled: true
-    
+
     redis:
       host: localhost
       port: 6379
-     
+
   devtools:
     livereload:
       enabled: true

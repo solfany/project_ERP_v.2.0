@@ -1,6 +1,7 @@
 package com.project.backend.entity;
 
 import com.project.backend.dto.StaffDto;
+import com.project.backend.entity.timeManagementSystem.TimeManagementSystem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,56 +19,53 @@ import java.util.Set;
 @NoArgsConstructor
 public class Staff {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "emp_num", nullable = false)
-    private Long empNum;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "emp_num", nullable = false)
+  private Long empNum;
 
-    @Column(name = "emp_id")
-    private String empId;
+  @Column(name = "emp_id")
+  private String empId;
 
-    @Column(name = "emp_pwd", nullable = false)
-    private String empPwd;
+  @Column(name = "emp_pwd", nullable = false)
+  private String empPwd;
 
-    @Column(name = "dept")
-    private String dept;
+  @Column(name = "dept")
+  private String dept;
 
-    @Column(name = "position")
-    private String position;
+  @Column(name = "position")
+  private String position;
 
-    @Column(name = "emp_name")
-    private String empName;
+  @Column(name = "emp_name")
+  private String empName;
 
-    @Column(name = "birth_date")
-    private String birthDate;
+  @Column(name = "birth_date")
+  private String birthDate;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+  @Column(name = "phone_number")
+  private String phoneNumber;
 
-    @Column(name = "address")
-    private String address;
+  @Column(name = "address")
+  private String address;
 
-    @Column(name = "email")
-    private String email;
+  @Column(name = "email")
+  private String email;
 
-    @Column(name = "bank_name")
-    private String bankName;
+  @Column(name = "bank_name")
+  private String bankName;
 
-    @Column(name = "account_number")
-    private String accountNumber;
+  @Column(name = "account_number")
+  private String accountNumber;
 
-//	@Column(name = "role")
-//	private String role;
-//
-//	public String getRole() {
-//		return role;
-//	}
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "t_user_authority", joinColumns = {
-            @JoinColumn(name = "emp_num", referencedColumnName = "emp_num") }, inverseJoinColumns = {
-            @JoinColumn(name = "authority_name", referencedColumnName = "authority_name") })
-    private Set<Authority> authorities;
+
+
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "t_user_authority", joinColumns = {
+    @JoinColumn(name = "emp_num", referencedColumnName = "emp_num") }, inverseJoinColumns = {
+    @JoinColumn(name = "authority_name", referencedColumnName = "authority_name") })
+  private Set<Authority> authorities;
 
     // 비밀번호 인코딩 설정
     public void setEmpPwd(String empPwd) {
@@ -83,20 +81,6 @@ public class Staff {
         this.empPwd = empPwd;
     }
 
-    public static Staff createStaff(StaffDto staffDto) {
-        Staff staff = new Staff();
-        staff.setEmpId(staffDto.getEmpId());
-        staff.setEmpPwd(staffDto.getEmpPwd());
-        staff.setDept(staffDto.getDept());
-        staff.setPosition(staffDto.getPosition());
-        staff.setEmpName(staffDto.getEmpName());
-        staff.setBirthDate(staffDto.getBirthDate());
-        staff.setPhoneNumber(staffDto.getPhoneNumber());
-        staff.setAddress(staffDto.getAddress());
-        staff.setEmail(staffDto.getEmail());
-        staff.setBankName(staffDto.getBankName());
-        staff.setAccountNumber(staffDto.getAccountNumber());
-        return staff;
-    }
+
 
 }
