@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "bulletinboard")
@@ -15,7 +15,7 @@ import java.util.Date;
 public class BulletinBoard {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY )
   @Column(name = "post_Num")
   private Long postNum;
 
@@ -43,7 +43,7 @@ public class BulletinBoard {
   @Column(name = "post_Recommend")
   private int postRecommend;
 
-  @Column(name = "post_Category", nullable = false)
+  @Column(name = "post_Category")
   private String postCategory;
 
   @Column(name = "post_Date_Edit")
@@ -64,6 +64,10 @@ public class BulletinBoard {
 
   @Column(name = "email")
   private String email;
+
+  @OneToMany(mappedBy = "bulletinBoard", cascade = CascadeType.ALL)
+  private List<ParentComment> comments;
+
 
 
   // Constructors, other methods, if any

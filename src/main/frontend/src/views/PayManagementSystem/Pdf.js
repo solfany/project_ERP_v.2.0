@@ -3,12 +3,21 @@ import React, { useState, useEffect } from "react";
 import "jspdf-autotable";
 import QRCode from "qrcode";
 import encodedData from "./encodedFontData";
-
+import CIcon from "@coreui/icons-react";
+import {
+  CContainer,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CTableDataCell,
+  CButton,
+} from "@coreui/react";
+import { cilCloudDownload } from "@coreui/icons";
 // 그 후 사용하실 때는 다음과 같이 사용하면 됩니다:
 // encodedData.encodedFontData
 // encodedData.logoData
-
-import { CButton } from "@coreui/react";
 
 function Pdf({ userData }) {
   const [qrCodeURL, setQrCodeURL] = useState("");
@@ -222,7 +231,9 @@ function Pdf({ userData }) {
 
   return (
     <div>
-      <CButton onClick={generatePdf}>다운 ☑️</CButton>
+      <CButton onClick={generatePdf} size="sm">
+        <CIcon icon={cilCloudDownload} />
+      </CButton>
     </div>
   );
 }

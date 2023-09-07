@@ -14,6 +14,7 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 import BulletinBoardHashTag from "./BulletinBoardHashTag";
+import Cookies from "js-cookie";
 
 function BulletinBoardModal() {
   const [visibleLg, setVisibleLg] = useState(false);
@@ -27,12 +28,13 @@ function BulletinBoardModal() {
   const [selectedHashTags, setSelectedHashTags] = useState([]);
   const [email, setEmail] = useState("");
   const [hashtagDate, setHashtagDate] = useState("");
-
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
+  console.log(staffInfo);
   const handleBulletinBoardPostUpdate = async () => {
     try {
       const newPost = {
-        empNum: empNum,
-        empId: empId,
+        empNum: staffInfo.empNum, // staffInfo에서 empNum 가져옴
+        empId: staffInfo.empId, // staffInfo에서 empId 가져옴
         postTitle: postTitle,
         postContent: postContent,
         hashtagName: selectedHashTags.join(","), // Join selectedHashTags into a string
@@ -41,7 +43,7 @@ function BulletinBoardModal() {
         postLike: 0,
         postRecommend: 0,
         postCategory: postCategory,
-        email: email,
+        email: staffInfo.email, // staffInfo에서 email 가져옴
         hashtagDate: new Date(),
       };
       console.log("등록하기 버튼 클릭됨");

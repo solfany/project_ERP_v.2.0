@@ -3,12 +3,13 @@ import axios from "axios";
 import { CRow, CCol, CButton, CFormTextarea, CForm } from "@coreui/react";
 import { Input, Pagination } from "antd";
 import FormattedDate from "./FormattedDate";
-
+import Cookies from "js-cookie";
 import "./css/BulletinBoardComment.css";
 
 export const CommentInput = ({ postNum }) => {
   const [comment, setComment] = useState("");
-
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
+  console.log(staffInfo);
   const handleCommentChange = (event) => {
     setComment(event.target.value);
   };
@@ -19,9 +20,9 @@ export const CommentInput = ({ postNum }) => {
       const data = {
         commentDate: new Date(),
         postNum: postNum,
-        empId: "부모댓글",
-        empNum: "123456",
-        email: "johndoe@example.com",
+        empId: staffInfo.empId, // staffInfo에서 empId 가져옴
+        empNum: staffInfo.empNum, // staffInfo에서 empNum 가져옴
+        email: staffInfo.email, // staffInfo에서 email 가져옴
         commentContent: comment,
       };
 
@@ -271,6 +272,7 @@ const ChildCommentActions = ({
 // 자식 댓글 등록 폼
 const ReplyForm = ({ postNum, parentComment }) => {
   const [reply, setReply] = React.useState("");
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
 
   const handleReplyChange = (event) => {
     setReply(event.target.value);
@@ -282,9 +284,9 @@ const ReplyForm = ({ postNum, parentComment }) => {
         commentDate: new Date(),
         postNum: postNum,
         parentCommentId: parentComment, // 수정된 부분
-        empId: "자식 댓글",
-        empNum: "123456",
-        email: "johndoe@example.com",
+        empId: staffInfo.empId, // staffInfo에서 empId 가져옴
+        empNum: staffInfo.empNum, // staffInfo에서 empNum 가져옴
+        email: staffInfo.email, // staffInfo에서 email 가져옴
         commentContent: reply,
       };
 

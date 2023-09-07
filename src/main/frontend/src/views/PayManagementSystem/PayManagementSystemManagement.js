@@ -3,7 +3,7 @@ import { Table, Container, Row, Col, Button } from "reactstrap";
 import GetThisMonth from "../TimeManagementSystem/CountWeekdays";
 import Pdf from "./Pdf";
 import { Pagination, message } from "antd";
-
+import Cookies from "js-cookie";
 import {
   CContainer,
   CTable,
@@ -18,6 +18,7 @@ function PayManagementSystemManagement() {
   const [rows, setRows] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
 
   useEffect(() => {
     fetch("/api/timeManagement")
@@ -77,9 +78,9 @@ function PayManagementSystemManagement() {
 
   const clickTobtn = () => {
     alert(`
-    결제자: ${users.empNum}
-    결제 일시 : 23년 4월 17일 오전 11시 23분
-    관리자 코드: ${ran}`);
+    결제자: ${staffInfo.empName}
+    결제 일시 : ${new Date()}
+    관리자 코드: ${staffInfo.empNum}${ran}`);
   };
 
   //pdf 다운로드 로직
@@ -92,10 +93,9 @@ function PayManagementSystemManagement() {
     <>
       <CContainer className="d-flex justify-content-around ">
         <Col md="12">
-          <h2>급여정산</h2>
+          <h2 className="calendarTitle">급여정산</h2>
           <GetThisMonth />
-
-          <CTable>
+          <CTable striped bordered hover style={{ whiteSpace: "nowrap" }}>
             <CTableHead>
               <CTableRow>
                 {tableColumns.map((column, index) => (
@@ -138,8 +138,8 @@ function PayManagementSystemManagement() {
                   </CTableDataCell>
                 </CTableRow>
               ))}
-            </CTableBody>
-          </CTable>
+            </CTableBody>{" "}
+          </CTable>{" "}
           <Pagination />
         </Col>
       </CContainer>

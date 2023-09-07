@@ -5,6 +5,8 @@ import { Navigate, useNavigate, useHistory } from "react-router-dom"; // useHist
 import { Pagination, message } from "antd";
 import FormattedDate from "./FormattedDate";
 import HashTagCustom from "./HashTagCustom";
+import Cookies from "js-cookie";
+
 import {
   CButton,
   CModal,
@@ -45,9 +47,10 @@ function BulletinBoard() {
   const [searchedPosts, setSearchedPosts] = useState(); //검색창
   const [current, setCurrent] = useState(1);
   const [currentPagePosts, setCurrentPagePosts] = useState([]);
-
   const postsPerPage = 5;
-
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
+  console.log(staffInfo);
+  // 토큰
   const onChange = (page) => {
     setCurrent(page);
     const startIndex = (page - 1) * postsPerPage;

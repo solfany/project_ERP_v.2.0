@@ -27,6 +27,7 @@ public class ParentComment {
   private List<ChildComment> childComments = new ArrayList<>();
 
 
+
   @Column(name = "emp_Id")
   private String empId;
 
