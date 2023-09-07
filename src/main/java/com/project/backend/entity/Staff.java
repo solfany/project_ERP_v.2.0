@@ -30,11 +30,11 @@ import lombok.NoArgsConstructor;
 public class Staff {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "emp_num", nullable = false)
 	private Long empNum;
 
-	@Column(name = "emp_id")
+	@Column(name = "emp_id", unique = true, updatable = false )
 	private String empId;
 
 	@Column(name = "emp_pwd", nullable = false)
@@ -67,13 +67,6 @@ public class Staff {
 	@Column(name = "account_number")
 	private String accountNumber;
 
-//	@Column(name = "role")
-//	private String role;
-//
-//	public String getRole() {
-//		return role;
-//	}
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "t_user_authority", joinColumns = {
 			@JoinColumn(name = "emp_num", referencedColumnName = "emp_num") }, inverseJoinColumns = {
@@ -96,7 +89,6 @@ public class Staff {
 
 	public static Staff createStaff(StaffDto staffDto) {
 		Staff staff = new Staff();
-		staff.setEmpNum(staffDto.getEmpNum());
 		staff.setEmpId(staffDto.getEmpId());
 		staff.setEmpPwd(staffDto.getEmpPwd());
 		staff.setDept(staffDto.getDept());

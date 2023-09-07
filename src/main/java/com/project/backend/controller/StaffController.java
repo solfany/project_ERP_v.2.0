@@ -1,6 +1,7 @@
 package com.project.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,12 +11,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.backend.dto.StaffDto;
+import com.project.backend.dto.UpdatePasswordRequest;
 import com.project.backend.entity.Staff;
+import com.project.backend.repository.StaffRepository;
 import com.project.backend.service.StaffService;
 
 @RestController
@@ -23,13 +27,14 @@ import com.project.backend.service.StaffService;
 public class StaffController {
 
 	private final StaffService staffService;
-
+	private final StaffRepository staffRepository;
 	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public StaffController(StaffService staffService, PasswordEncoder passwordEncoder) {
+	public StaffController(StaffService staffService, PasswordEncoder passwordEncoder, StaffRepository staffRepository) {
 		this.staffService = staffService;
 		this.passwordEncoder = passwordEncoder;
+		this.staffRepository = staffRepository;
 	}
 
 	@PostMapping("/register")
@@ -68,6 +73,66 @@ public class StaffController {
 
 		return staffService.saveStaff(staff);
 	}
+	
+	   // Staff 정보 업데이트를 위한 메서드 추가
+    // 프로필 수정 엔드포인트
+	@PostMapping("/staff/{userInfo.empNum}")
+    public ResponseEntity<?> updateStaffProfile(@PathVariable Long empNum, @RequestBody StaffDto staffDto) {
+        try {
+            Optional<Staff> optionalStaff = staffService.findByEmpNum(empNum);
+            
+            if (optionalStaff.isPresent()) {
+                Staff existingStaff = optionalStaff.get();
+                
+                // 이름과 생년월일은 수정할 수 없도록 제어합니다.
+                // 이름과 생년월일을 수정하려면 별도의 엔드포인트나 권한이 필요할 수 있습니다.
+                existingStaff.setPhoneNumber(staffDto.getPhoneNumber());
+                existingStaff.setAddress(staffDto.getAddress());
+                existingStaff.setEmail(staffDto.getEmail());
+                existingStaff.setBankName(staffDto.getBankName());
+                existingStaff.setAccountNumber(staffDto.getAccountNumber());
+                
+                // 수정된 정보를 저장
+                staffService.saveStaff(existingStaff);
+                
+                return ResponseEntity.ok("Staff profile updated successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Staff not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update staff profile");
+        }
+    }
+	
+	
+	// 비밀번호 업데이트를 위한 새로운 엔드포인트 추가
+	@PostMapping("/staff/{empNum}/update-password")
+	public ResponseEntity<?> updateStaffPassword(@PathVariable Long empNum, @RequestBody UpdatePasswordRequest updatePasswordRequest) {
+	    try {
+	        Optional<Staff> optionalStaff = staffService.findByEmpNum(empNum);
+
+	        if (optionalStaff.isPresent()) {
+	            Staff existingStaff = optionalStaff.get();
+
+	            // 현재 비밀번호가 일치하는지 확인
+	            if (passwordEncoder.matches(updatePasswordRequest.getCurrentPassword(), existingStaff.getEmpPwd())) {
+	                // 새 비밀번호를 암호화하여 저장
+	                existingStaff.setEmpPwd(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
+	                staffService.saveStaff(existingStaff);
+
+	                return ResponseEntity.ok("Staff password updated successfully");
+	            } else {
+	                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Current password is incorrect");
+	            }
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Staff not found");
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update staff password");
+	    }
+	}
+
+
 
 	@DeleteMapping("/staff/{empNum}")
 	public ResponseEntity<?> deleteStaff(@PathVariable Long empNum) {

@@ -22,6 +22,3 @@ VALUES
 ('홍준이', '개발팀', '사원', '휴가', CURRENT_DATE, CURRENT_DATE, '정모', '1일'),
 ('김자겸', '개발팀', '사원', '일반 휴가', CURRENT_DATE, CURRENT_DATE, '생일', '1일'),
 ('조정원', '개발팀', '사원', '병가', CURRENT_DATE, CURRENT_DATE, '턱 날아감', '1일');
- 
-
-

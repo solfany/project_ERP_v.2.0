@@ -2,7 +2,8 @@ server:
   port: 8888
 
 jwt:
-  secret: ThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExample
+  #secret: ThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExample
+  secret: i6qfGHbPp6jI7Q+rbA8ZKhjkjPNEmr01Oxfvr0GSB72LQbE3OrYNU5XpmUkVsBG+Oe4+8N3bYwuhjU9IKsqFew==
   #expiration: 86400000
   
 spring:

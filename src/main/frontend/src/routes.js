@@ -114,6 +114,9 @@ const BulletinBoardPages = React.lazy(() =>
 const BulletinBoardPagesEdit = React.lazy(() =>
   import("./views/BulletinBoard/BulletinBoardPagesEdit")
 );
+const ProfileEdit = React.lazy(() =>
+  import("./views/login/ProfileEdit")
+);
 // ========================================================
 // ========================================================
 // ========================================================
@@ -228,6 +231,11 @@ const routes = [
     path: "/login/Login",
     name: "login",
     element: Login,
+  },
+  {
+    path: "/login/ProfileEdit",
+    name: "ProfileEdit",
+    element: ProfileEdit,
   },
   {
     path: "/TimeManagementSystem/TimeManagementSystem",
