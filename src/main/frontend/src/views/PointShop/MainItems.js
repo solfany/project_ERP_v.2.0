@@ -1,6 +1,6 @@
-import { CButton, CTooltip } from "@coreui/react";
-import React from "react";
-import { Link } from "react-router-dom";
+import { CButton, CTooltip } from '@coreui/react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const MainItems = ({
   id,
@@ -43,7 +43,7 @@ const MainItems = ({
         <span className="cell-label">판매상태 : </span>
         <span
           className={`status ${
-            itemSellStatus == "SELL" ? "active" : "disabled"
+            itemSellStatus == 'SELL' ? 'active' : 'disabled'
           }`}
         >
           {itemSellStatus}
@@ -67,11 +67,11 @@ const MainItems = ({
             <CButton
               color="info"
               variant="ghost"
-              className={isGridActive ? "cell-more-button" : "show-detail"}
+              className={isGridActive ? 'cell-more-button' : 'show-detail'}
               style={{
-                fontSize: "12px",
-                fontWeight: "700",
-                padding: "5px 12px",
+                fontSize: '12px',
+                fontWeight: '700',
+                padding: '5px 12px',
               }}
             >
               보러가기

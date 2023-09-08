@@ -73,7 +73,7 @@ function Attend_Input() {
       // 에러 메시지를 화면에 표시
       message.error('출근 기록이 존재하지 않습니다.');
     }
-  }, [time]);
+  };
 
   return (
     <div className="card">

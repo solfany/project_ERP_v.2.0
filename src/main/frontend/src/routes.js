@@ -5,10 +5,10 @@ const CalendarBoard = React.lazy(() =>
   import('./views/Calendar/CalendarBoard')
 );
 const Attend_Input = React.lazy(() =>
-  import('./views/Attend_Manage/Attend_Manage/Attend_Input')
+  import('./views/Attend_Manage/Attend_Input')
 );
 const Attend_Record = React.lazy(() =>
-  import('./views/Attend_Manage/Attend_Manage/Attend_Record')
+  import('./views/Attend_Manage/Attend_Record')
 );
 const PointShop = React.lazy(() => import('./views/PointShop/PointShop'));
 const MainItemDtl = React.lazy(() =>

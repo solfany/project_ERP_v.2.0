@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PointShopNav from '../../PointShopNav';
 import './OrderListPage.css';
-
+import jwt_decode from 'jwt-decode';
 import {
   CCard,
   CCardHeader,
@@ -18,15 +18,18 @@ import {
 } from '@coreui/react';
 import DeleteIcon from './DeleteIcon';
 import { Pagination, message } from 'antd';
+import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
 
 function OrderListPage() {
   const [orders, setOrders] = useState([]); // 주문 데이터
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [totalPages, setTotalPages] = useState(5); // 총 페이지 수
   const [totalItems, setTotalItems] = useState(10); // 총 아이템 수
-
   const [isDeleting, setIsDeleting] = useState(false);
-  console.log('totalPages 밖: ', totalPages);
+  // 쿠키에서 staffInfo 데이터 가져오기
+  const staffInfo = JSON.parse(Cookies.get('staffInfo'));
+
   //초기 렌더링
   useEffect(() => {
     fetchOrders(currentPage);
@@ -56,12 +59,15 @@ function OrderListPage() {
     setIsDeleting(true);
     setTimeout(() => setIsDeleting(false), 3200);
     try {
-      // POST 요청
-      const response = await axios.post(`api/order/${orderId}/cancel`);
+      const wantDelete = window.confirm('주문을 취소하시겠습니까?');
 
-      // 주문 취소 성공 시 처리
-      message.info(`주문번호 ${orderId}이(가) 취소되었습니다! `);
-      fetchOrders(currentPage);
+      if (wantDelete) {
+        // POST 요청
+        const response = await axios.post(`api/order/${orderId}/cancel`);
+
+        message.info(`주문번호 ${orderId}이(가) 취소되었습니다! `);
+        fetchOrders(currentPage);
+      }
     } catch (error) {
       // 주문 취소 실패 시 처리
       message.error(`주문 취소 중 오류가 발생했습니다.`);
@@ -92,22 +98,32 @@ function OrderListPage() {
             </CTableRow>
           </CTableHead>
           {orders.map((order) => (
-            <CAccordion>
+            <CAccordion key={order.orderId}>
               <CAccordionItem>
-                <CAccordionHeader>
+                <CAccordionHeader className="order-accordion-button">
                   <CTableRow
                     key={order.orderId}
                     style={{
                       width: '100%',
                       display: 'flex',
                       justifyContent: 'space-around',
+                      transform: 'translateX(20px)',
                     }}
                   >
-                    <CTableDataCell>{order.orderId}</CTableDataCell>
+                    <CTableDataCell>
+                      {order.orderId}&nbsp;&nbsp;&nbsp;&nbsp;
+                    </CTableDataCell>
                     <CTableDataCell>{order.orderDate}</CTableDataCell>
                     <CTableDataCell>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      {order.orderStatus}
+                      <span
+                        className={
+                          order.orderStatus == 'ORDER'
+                            ? 'orderStatus-order'
+                            : 'orderStatus-cancel'
+                        }
+                      >
+                        {order.orderStatus}
+                      </span>
                     </CTableDataCell>
                   </CTableRow>
                 </CAccordionHeader>
@@ -127,7 +143,9 @@ function OrderListPage() {
                           <CTableRow
                             key={index}
                             className="order-item-detail"
-                            style={{ textAlign: 'center' }}
+                            style={{
+                              textAlign: 'center',
+                            }}
                           >
                             <CTableDataCell>
                               <img
@@ -143,26 +161,56 @@ function OrderListPage() {
                             <CTableDataCell>{orderItem.itemNm}</CTableDataCell>
                             <CTableDataCell>{orderItem.count}</CTableDataCell>
                             <CTableDataCell>
-                              {orderItem.orderPrice}원
+                              {orderItem.orderPrice.toLocaleString()}원
                             </CTableDataCell>
                           </CTableRow>
                         </>
                       ))}
-                      <CTableRow className="order-item-button">
+                      <CTableRow>
                         <CTableDataCell></CTableDataCell>
                         <CTableDataCell></CTableDataCell>
                         <CTableDataCell></CTableDataCell>
-                        <CTableDataCell>
-                          <DeleteIcon
-                            onClick={() => handleCancelOrder(order.orderId)}
-                            orderId={order.orderId}
-                            isDeleting={isDeleting}
-                            setIsDeleting={setIsDeleting}
-                          />
+                        <CTableDataCell
+                          style={{
+                            textAlign: 'center',
+                            fontWeight: '700',
+                            fontSize: '20px',
+                          }}
+                        >
+                          총 가격 :{' '}
+                          <span style={{ color: '#C6303E' }}>
+                            {order.orderItemDtoList
+                              .reduce((totalPrice, orderItem) => {
+                                return totalPrice + orderItem.orderPrice;
+                              }, 0)
+                              .toLocaleString()}
+                            원
+                          </span>
                         </CTableDataCell>
                       </CTableRow>
                     </CTableBody>
                   </CTable>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      paddingRight: '5%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {order.orderStatus == 'ORDER' ? (
+                      <DeleteIcon
+                        onClick={() => handleCancelOrder(order.orderId)}
+                        orderId={order.orderId}
+                        isDeleting={isDeleting}
+                        setIsDeleting={setIsDeleting}
+                      />
+                    ) : (
+                      <p style={{ fontWeight: '700', fontSize: '20px' }}>
+                        취소 처리된 주문입니다.
+                      </p>
+                    )}
+                  </div>
                 </CAccordionBody>
               </CAccordionItem>
             </CAccordion>

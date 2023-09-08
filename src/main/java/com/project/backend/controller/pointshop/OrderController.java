@@ -3,6 +3,7 @@ package com.project.backend.controller.pointshop;
 
 import com.project.backend.dto.pointshop.OrderDto;
 import com.project.backend.dto.pointshop.OrderHistDto;
+import com.project.backend.entity.Staff;
 import com.project.backend.service.pointshop.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,8 +53,8 @@ public class OrderController {
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
-    @GetMapping(value = { "/orderList", "/orderList/{page}" })
-    public ResponseEntity<?> orderHist(@PathVariable(name = "page", required = false) Integer page) {
+    @PostMapping(value = { "/orderList", "/orderList/{page}" })
+    public ResponseEntity<?> orderHist(@PathVariable(name = "page", required = false) Integer page, @RequestBody Staff staff) {
             int pageSize = 4; // 페이지당 아이템 수
 
             // 페이지 번호 유효성 검사 추가
@@ -62,7 +63,7 @@ public class OrderController {
             }
 
             Pageable pageable = PageRequest.of((page - 1), pageSize);
-            Page<OrderHistDto> orderHistDtoPage = orderService.getOrderList(2L, pageable);
+            Page<OrderHistDto> orderHistDtoPage = orderService.getOrderList(staff.getEmpNum(), pageable);
 
             List<OrderHistDto> orderHistDtoList = orderHistDtoPage.getContent();
             int totalItems = (int) orderHistDtoPage.getTotalElements();
