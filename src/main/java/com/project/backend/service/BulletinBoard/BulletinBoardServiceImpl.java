@@ -54,5 +54,4 @@ public class BulletinBoardServiceImpl implements BulletinBoardService {
     BeanUtils.copyProperties(bulletinBoard, bulletinBoardDto);
     return bulletinBoardDto;
   }
-
 }

@@ -24,15 +24,11 @@ import Cookies from 'js-cookie';
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [cartOrder, setCartOrder] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
   const navigate = useNavigate();
 
   // 쿠키에서 staffInfo 데이터 가져오기
   const staffInfo = JSON.parse(Cookies.get('staffInfo'));
-  console.log(staffInfo);
-  // console.log(staffInfo);
-  // const staffInfo = useSelector((state) => state.auth.staffInfo);
 
   useEffect(() => {
     fetchCartItems();
@@ -50,7 +46,6 @@ const CartPage = () => {
   };
 
   const handleUpdateItemCount = async (cartItemId, newCount) => {
-    console.log(newCount);
     try {
       const response = await axios.patch(
         `/api/cart/item/${cartItemId}`,

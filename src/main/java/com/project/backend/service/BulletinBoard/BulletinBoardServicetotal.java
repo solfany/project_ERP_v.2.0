@@ -78,5 +78,7 @@ public class BulletinBoardServicetotal {
 
     bulletinBoardRepository.save(post);
   }
+//===========================
 
 }
+

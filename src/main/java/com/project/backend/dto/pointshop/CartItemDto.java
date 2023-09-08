@@ -1,5 +1,6 @@
 package com.project.backend.dto.pointshop;
 
+import com.project.backend.entity.Staff;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -14,4 +15,6 @@ public class CartItemDto {
 
     @Min(value = 1, message = "최소 1개 이상 담아주세요")
     private int count;
+
+    private Staff staff; // staff 객체를 추가
 }

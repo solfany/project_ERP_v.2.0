@@ -25,6 +25,7 @@ import { useLocation } from "react-router";
 import BulletinBoard from "./BulletinBoard";
 import { Alert } from "@coreui/coreui";
 //댓글 불러오기
+import Cookies from "js-cookie";
 
 const BulletinBoardPages = (props) => {
   //게시물 불러오기
@@ -32,7 +33,8 @@ const BulletinBoardPages = (props) => {
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
   const [comments, setComments] = useState([]);
-
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
+  console.log(staffInfo);
   //댓글 불러오기
   useEffect(() => {
     fetch(`/api/bulletinboard/BulletinBoardPages/${id}/comments`)
@@ -129,7 +131,7 @@ const BulletinBoardPages = (props) => {
           </CCol>
         </Row>
         <CCol>
-          <LikeHeartBtn postNum={post.postNum} />
+          <LikeHeartBtn postNum={post.postNum} empNum={staffInfo.empNum} />
         </CCol>
 
         <div className="d-grid gap-2 d-md-flex justify-content-md-end BulletinBoardPages-AddDelBtn">

@@ -14,5 +14,7 @@ public class TokenDto {
 	private Long EmpNum;
 	private String accessToken;
 	private String refreshToken;
-	private StaffDto staffInfo; // Staff 정보를 담을 StaffDto 필드
+
+	private StaffDto staffInfo;
+
 }

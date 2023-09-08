@@ -20,9 +20,10 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react';
-import CIcon from '@coreui/icons-react';
-import { cilLockLocked, cilUser } from '@coreui/icons';
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilLockLocked, cilUser } from "@coreui/icons";
+
 
 // JWT 토큰을 파싱하는 함수
 function parseJwt(token) {
@@ -56,7 +57,7 @@ const Login = () => {
         empPwd: empPwd,
       };
 
-      const response = await axios.post('/api/login', loginData);
+      const response = await axios.post("/api/login", loginData);
 
       if (response.status === 200) {
         const accessToken = response.headers['authorization'];
@@ -73,7 +74,7 @@ const Login = () => {
         console.log('refreshToken:', refreshToken);
         console.log('staffInfo:', staffInfo);
         // 로그인 성공 시 리다이렉션
-        navigate('/Dashboard');
+        navigate("/Dashboard");
       } else {
         console.log('로그인 실패');
         setLoginMessage(
@@ -81,7 +82,7 @@ const Login = () => {
         );
       }
     } catch (error) {
-      console.error('로그인 에러: ', error);
+      console.error("로그인 에러: ", error);
     }
   };
 

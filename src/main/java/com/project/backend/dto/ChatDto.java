@@ -8,11 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatDto {
-	//테스트용 채팅 메시지를 주고 받기 위한 dto 
+	//채팅 메시지를 주고 받기 위한 dto 
 
+	//채팅방의 상태
 	public enum MessageType{
-		ENTER, TALK
-//		, JOIN
+		ENTER, TALK, QUIT
 	}
 	private MessageType type;//메시지 타입
 	private String roomId;	//방번호 랜덤

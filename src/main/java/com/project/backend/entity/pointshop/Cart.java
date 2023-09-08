@@ -1,5 +1,6 @@
 package com.project.backend.entity.pointshop;
 
+import com.project.backend.entity.Staff;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,14 +19,13 @@ public class Cart extends BaseEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-    private Member member;
+
+    private Staff staff;
 
     //처음 장바구니에 상품을 담을 때 회원의 장바구니를 생성하는 메소드
-    public static Cart createCart(Member member) {
+    public static Cart createCart(Staff staff) {
         Cart cart = new Cart();
-        cart.setMember(member);
+        cart.setStaff(staff);
         return cart;
     }
 }
-

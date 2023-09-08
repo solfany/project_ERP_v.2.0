@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { useNavigate } from "react-router-dom";
 
 const SendMessage = () => {
   const [room, setRoom] = useState({});
@@ -11,20 +12,45 @@ const SendMessage = () => {
   const [messages, setMessages] = useState([]);
   const [ws, setWs] = useState(null);
 
+  // useEffect(() => {
+  //   const roomId = localStorage.getItem("wschat.roomId");
+  //   setSender(localStorage.getItem("wschat.sender"));
+  //   findRoom(roomId);
+  //   const websocket = connect(roomId);
+  //   setWs(websocket);
+  //   return () => {
+  //     if (websocket) {
+  //       websocket.deactivate(); // 수정된 부분
+  //     }
+  //   };
+  // }, []);
+
+  const getMessages = (roomId) => {
+    axios
+      .get(`/chat/room/${roomId}/messages`) // <-- 서버에 메시지 조회 API 호출
+      .then((response) => {
+        setMessages(response.data); // <-- 받아온 메시지를 상태 변수에 설정
+      })
+      .catch((error) => {
+        console.error("Error fetching messages:", error);
+      });
+  };
   useEffect(() => {
     const roomId = localStorage.getItem("wschat.roomId");
     setSender(localStorage.getItem("wschat.sender"));
     findRoom(roomId);
+    getMessages(roomId); // 채팅방 입장 시 초기 대화 내역 불러오기
     const websocket = connect(roomId);
     setWs(websocket);
+
     return () => {
       if (websocket) {
-        websocket.disconnect();
+        websocket.deactivate(); // 수정된 부분
       }
     };
   }, []);
 
-  //채팅방을 찾기
+  //채팅방을 찾기 기능
   const findRoom = (roomId) => {
     axios
       .get(`/chat/room/${roomId}`)
@@ -56,19 +82,70 @@ const SendMessage = () => {
   };
 
   const recvMessage = (recv) => {
-    const receivedSender = localStorage.getItem("wschat.sender"); // 변수 이름을 setSender에서 receivedSender로 변경
-    const { type, sender: recvSender, message: recvMessage } = recv;
-    const newMessage = {
-      type: type,
-      // sender: type === "ENTER" ? "[ 알림 ]" + receivedSender : recvSender,
-      sender: type === "ENTER" ? "[ 알림 ]" + receivedSender : recvSender,
+    let { type, sender: recvSender, message: recvMessage } = recv;
 
+    if (type === "ENTER") {
+      recvSender = "[ 알림 ]";
+      // recvMessage = `${recv.sender}님이 입장하셨습니다.`;
+    } else if (type === "QUIT") {
+      recvSender = "[ 알림 ]";
+      // recvMessage = `${recv.sender}님이 퇴장하셨습니다.`;
+    }
+
+    const newMessage = {
+      type,
+      sender: recvSender,
       message: recvMessage,
     };
+
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
   };
+  //메시지 삭제
+  const deleteMessage = (messageId) => {
+    console.log("Deleting message with ID:", messageId); // <-- Add this line
 
-  //WS-STOMP를 이용해 접속했을때 구독?을 하는 상태
+    const sender = localStorage.getItem("wschat.sender");
+
+    axios
+      .delete(`/chat/message/${messageId}`, { params: { userId: sender } })
+      .then(() => {
+        alert("메시지가 성공적으로 삭제되었습니다.");
+        // 메시지 목록을 다시 불러옵니다.
+        getMessages(room.roomId);
+      })
+      .catch((error) => {
+        console.error("Error deleting message:", error);
+      });
+  };
+  // const deleteMessage = (messageId) => {
+  //   const sender = localStorage.getItem("wschat.sender");
+
+  //   axios
+  //     .delete(`/chat/message/${messageId}`, { params: { userId: sender } })
+  //     .then(() => {
+  //       alert("메시지가 성공적으로 삭제되었습니다.");
+  //       // 메시지 목록을 다시 불러옵니다.
+  //       getMessages(room.roomId);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting message:", error);
+  //     });
+  // };
+
+  // const recvMessage = (recv) => {
+  //   const receivedSender = localStorage.getItem("wschat.sender"); // 변수 이름을 setSender에서 receivedSender로 변경
+  //   const { type, sender: recvSender, message: recvMessage } = recv;
+  //   const newMessage = {
+  //     type: type,
+  //     // sender: type === "ENTER" ? "[ 알림 ]" + receivedSender : recvSender,
+  //     sender: type === "ENTER" ? "[ 알림 ]" + receivedSender : recvSender,
+
+  //     message: recvMessage,
+  //   };
+  //   setMessages((prevMessages) => [newMessage, ...prevMessages]);
+  // };
+
+  //접속한 연결 상태에 따른 서버단에서 보내는 메시지
   const connect = (roomId) => {
     const sock = new SockJS("http://localhost:8888/ws-stomp");
     const websocket = new Client({
@@ -113,6 +190,35 @@ const SendMessage = () => {
     return websocket;
   };
 
+  const navigate = useNavigate();
+
+  const leaveRoom = () => {
+    const roomId = localStorage.getItem("wschat.roomId");
+    const sender = localStorage.getItem("wschat.sender");
+
+    // 채팅방 퇴장 메시지를 생성하고 서버에 전송합니다.
+    const quitMessage = {
+      type: "QUIT",
+      roomId,
+      sender: localStorage.getItem("wschat.sender"),
+    };
+
+    ws.publish({
+      destination: "/pub/chat/message",
+      body: JSON.stringify(quitMessage),
+    });
+
+    axios
+      .delete(`/chat/room/${roomId}/leave`, { params: { userId: sender } })
+      .then(() => {
+        alert("채팅방에서 나갑니다.");
+        navigate("/Chatting/Chat"); // <-- 변경된 부분
+      })
+      .catch((error) => {
+        console.error("Error leaving chat room:", error);
+      });
+  };
+
   return (
     <div className="container">
       <div>
@@ -141,12 +247,26 @@ const SendMessage = () => {
           >
             보내기
           </button>
+          {/* 나가기 버튼 추가 */}
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={leaveRoom}
+          >
+            나가기
+          </button>
         </div>
       </div>
       <ul className="list-group">
         {messages.map((msg, index) => (
           <li key={index} className="list-group-item">
             {msg.sender} - {msg.message}
+            {/* 현재 사용자가 이 메시지의 송신자일 경우만 삭제 버튼을 표시합니다. */}
+            {msg.sender === sender && (
+              <button onClick={() => deleteMessage(msg.chat_message_id)}>
+                Delete
+              </button>
+            )}
           </li>
         ))}
       </ul>

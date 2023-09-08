@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class RedisSubscriber implements MessageListener {
 
+	//이 코드는 Redis에서 발행/구독(pub/sub) 모델을 이용해 메시지를 구독하고 처리하는 클래스
+	
     private final ObjectMapper objectMapper;
     private final RedisTemplate redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;

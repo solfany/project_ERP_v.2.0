@@ -38,14 +38,11 @@ function OrderListPage() {
   // API를 통해 주문 데이터를 가져오는 함수 (주문 데이터는 서버에서 가져와야 함)
   const fetchOrders = async (page) => {
     try {
-      console.log('currentPage: ', currentPage);
-      console.log('totalPages: ', totalPages);
       const response = await axios.post(
         `/api/order/orderList/${page}`,
         staffInfo
       );
       const data = response.data;
-      console.log(data);
       setOrders(data.orders);
       setCurrentPage(data.currentPage);
       setTotalPages(data.totalPages);
@@ -61,14 +58,16 @@ function OrderListPage() {
     // 버튼 기본 동작
     setIsDeleting(true);
     setTimeout(() => setIsDeleting(false), 3200);
-    console.log(orderId);
     try {
-      // POST 요청
-      const response = await axios.post(`api/order/${orderId}/cancel`);
+      const wantDelete = window.confirm('주문을 취소하시겠습니까?');
 
-      // 주문 취소 성공 시 처리
-      message.info(`주문번호 ${orderId}이(가) 취소되었습니다! `);
-      fetchOrders(currentPage);
+      if (wantDelete) {
+        // POST 요청
+        const response = await axios.post(`api/order/${orderId}/cancel`);
+
+        message.info(`주문번호 ${orderId}이(가) 취소되었습니다! `);
+        fetchOrders(currentPage);
+      }
     } catch (error) {
       // 주문 취소 실패 시 처리
       message.error(`주문 취소 중 오류가 발생했습니다.`);

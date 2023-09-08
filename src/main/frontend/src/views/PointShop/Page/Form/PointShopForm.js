@@ -44,16 +44,6 @@ function PointShopForm() {
         message.success('상품이 성공적으로 등록되었습니다.');
         form.resetFields();
         setVisible(false); // 모달 닫기
-        axios
-          .get('/api/point_shop/')
-          .then((response) => {
-            const data = response.data.items.content; // items 데이터 추출
-            console.log(data);
-            setItems(data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
       }
     } catch (error) {
       console.error(error);
