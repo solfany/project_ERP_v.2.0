@@ -35,11 +35,11 @@ function OrderListPage() {
   // API를 통해 주문 데이터를 가져오는 함수 (주문 데이터는 서버에서 가져와야 함)
   const fetchOrders = async (page) => {
     try {
-      console.log('currentPage: ', currentPage);
-      console.log('totalPages: ', totalPages);
-      const response = await axios.get(`/api/order/orderList/${page}`);
+      const response = await axios.post(
+        `/api/order/orderList/${page}`,
+        staffInfo
+      );
       const data = response.data;
-      console.log(data);
       setOrders(data.orders);
       setCurrentPage(data.currentPage);
       setTotalPages(data.totalPages);
@@ -55,7 +55,6 @@ function OrderListPage() {
     // 버튼 기본 동작
     setIsDeleting(true);
     setTimeout(() => setIsDeleting(false), 3200);
-    console.log(orderId);
     try {
       // POST 요청
       const response = await axios.post(`api/order/${orderId}/cancel`);

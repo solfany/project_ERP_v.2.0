@@ -31,6 +31,9 @@ const CartPage = () => {
 
   const navigate = useNavigate();
 
+  // 쿠키에서 staffInfo 데이터 가져오기
+  const staffInfo = JSON.parse(Cookies.get('staffInfo'));
+
   useEffect(() => {
     fetchCartItems();
   }, []);
@@ -49,7 +52,6 @@ const CartPage = () => {
   };
 
   const handleUpdateItemCount = async (cartItemId, newCount) => {
-    console.log(newCount);
     try {
       const response = await axios.patch(
         `/api/cart/item/${cartItemId}`,

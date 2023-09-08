@@ -38,7 +38,6 @@ const PointShop = () => {
       .get('/api/point_shop/')
       .then((response) => {
         const data = response.data.items.content; // items 데이터 추출
-        console.log(data);
         message.success('데이터를 성공적으로 갱신하였습니다.');
         setItems(data);
       })

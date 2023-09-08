@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import './MainItemDtl.css';
 import './../../PointShopNav.css';
-
+import jwt_decode from 'jwt-decode';
 import {
   CAccordion,
   CAccordionBody,
@@ -32,6 +32,10 @@ const MainItemDtl = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [activeImage, setActiveImage] = useState('');
+  const [selectedQuantity, setSelectedQuantity] = useState(1); // 선택된 수량 상태 추가
+
+  // 쿠키에서 staffInfo 데이터 가져오기
+  const staffInfo = JSON.parse(Cookies.get('staffInfo'));
 
   // 이미지 클릭시 이미지를 교체하는 함수
   const handleImageClick = (imageUrl) => {
@@ -40,27 +44,19 @@ const MainItemDtl = () => {
 
   // 장바구니 담는 함수
   const handleAddToCart = async () => {
-    const updatedCount = cartItemsCount + 1;
-    // dispatch(updateCartItemsCount(updatedCount));
+    if (product.stockNumber === 0) {
+      message.error('품절 상품입니다.');
+      return null;
+    }
 
     try {
-      const response = await fetch('/api/cart/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          itemId: id,
-          count: selectedQuantity,
-          staff: staffData,
-        }),
+      const response = await axios.post('/api/cart/', {
+        itemId: id,
+        count: selectedQuantity,
+        staff: staffInfo,
       });
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(errorMessage);
-      }
-      const cartItemId = await response.json();
+      const cartItemId = response.data;
       console.log('Added to cart:', cartItemId, response);
 
       navigate('/point_shop/point_shop/cart_page');
@@ -82,7 +78,6 @@ const MainItemDtl = () => {
       .then((data) => {
         setProduct(data);
         setIsLoading(false);
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);
