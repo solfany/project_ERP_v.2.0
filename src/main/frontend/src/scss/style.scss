@@ -1,35 +1,57 @@
 // If you want to override variables do it here
-@import "variables";
+@import 'variables';
 
 $enable-ltr: true;
 $enable-rtl: true;
 
 // Import CoreUI for React components library
-@import "@coreui/coreui/scss/coreui";
+@import '@coreui/coreui/scss/coreui';
 
 // Import Chart.js custom tooltips styles
-@import "@coreui/chartjs/scss/coreui-chartjs";
+@import '@coreui/chartjs/scss/coreui-chartjs';
 
-@import "layout";
-@import "example";
+@import 'layout';
+@import 'example';
 
 // If you want to add custom CSS you can put it here.
-@import "custom";
-
+@import 'custom';
 
 .sidebar-nav::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background-color: #3c4b64;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #3c4b64;
 }
 
 .sidebar-nav::-webkit-scrollbar {
-    width: 12px;
-    background-color: #3c4b64;
+  width: 12px;
+  background-color: #3c4b64;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    background-color: #0e2241;
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #0e2241;
+}
+
+:root {
+  --primary: #275efe;
+  --primary-light: #7699ff;
+  --dark: #1c212e;
+  --grey-dark: #3f4656;
+  --grey: #6c7486;
+  --grey-light: #cdd9ed;
+  --white: #fff;
+  --green: #16bf78;
+  --sand: #dcb773;
+  --sand-light: #edd9a9;
+
+  --app-bg: #fff;
+  --table-border: #1a2131;
+  --table-header: #1a2131;
+  --app-content-main-color: #1f1c2e;
+  --action-color: #2869ff;
+  --action-color-hover: #6291fd;
+  --app-content-secondary-color: #f3f6fd;
+  --filter-reset: #2c394f;
+  --filter-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }

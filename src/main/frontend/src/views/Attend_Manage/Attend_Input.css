@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'SUIT-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.attend-button-container {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    margin: 0 6px;
+    width: 97%;
+    height: 50%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.attend-button {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.attend-title {
+    margin-top: 5px;
+    font-family: 'SUIT-Regular';
+    font-weight: 700;
+}
+
+.attend-table tr .attend-table td {
+    text-align: center;
+}

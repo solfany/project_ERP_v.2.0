@@ -1,45 +1,43 @@
 import React, { useState, useEffect } from "react";
+import { Table, Container, Row, Col, Button } from "reactstrap";
+import GetThisMonth from "../TimeManagementSystem/CountWeekdays";
+import Pdf from "./Pdf";
+import { Pagination, message } from "antd";
+import Cookies from "js-cookie";
 import {
-  Table,
-  Container,
-  Row,
-  Col,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
-} from "reactstrap";
-// import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
-import EmployeeModal from "./EmployeeModal";
-// 날짜
-import GetThisMonth from "../TimeManagementSystem/getThisMonth";
+  CContainer,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CTableDataCell,
+} from "@coreui/react";
+
 function PayManagementSystemManagement() {
   const [rows, setRows] = useState([]);
   const [users, setUsers] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
 
   useEffect(() => {
-    fetch(
-      "https://raw.githubusercontent.com/solfany/Json_Group/main/json/project/002/user-list.json"
-    )
+    fetch("/api/timeManagement")
       .then((response) => response.json())
-      .then((json) => {
-        setUsers(json);
+      .then((data) => {
+        setUsers(data);
       });
   }, []);
 
   useEffect(() => {
     setRows(
       users.map((user) => [
-        user.rank,
-        user.name,
-        user.data5,
-        user.data1,
+        user.empNum,
+        user.empName,
+        0,
+        user.vacation,
+        user.actualWorkDays,
+        user.workingHours,
         user.email,
-        user.date,
         "no",
       ])
     );
@@ -48,12 +46,13 @@ function PayManagementSystemManagement() {
   const tableColumns = [
     "사원번호",
     "이름",
+    "무급휴가일수",
     "유급휴가일수",
     "실제근로일수",
+    "실제근로시간",
     "이메일",
-    "입사일",
     "지급여부",
-    "액션",
+    "pdf 다운로드",
   ];
 
   const handlePayClick = (index) => {
@@ -61,19 +60,13 @@ function PayManagementSystemManagement() {
     if (confirmed) {
       alert("결제 완료되었습니다!");
       const newRows = [...rows];
-      newRows[index][6] = "yes";
+      newRows[index][7] = "yes";
       setRows(newRows);
     } else {
       alert("취소 되었습니다.");
     }
   };
 
-  const toggleModal = (user) => {
-    setSelectedUser(user);
-    setModal(!modal);
-  };
-
-  // 관리자 코드  랜덤 함수 추출
   const randum = (max) => Math.floor(Math.random() * max);
   const numbers = "0123456789";
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -85,35 +78,40 @@ function PayManagementSystemManagement() {
 
   const clickTobtn = () => {
     alert(`
-    결제자: 관리자 (김아무개) 
-    결제 일시 : 23년 4월 17일 오전 11시 23분
-    관리자 코드: ${ran}`);
+    결제자: ${staffInfo.empName}
+    결제 일시 : ${new Date()}
+    관리자 코드: ${staffInfo.empNum}${ran}`);
   };
+
+  //pdf 다운로드 로직
+  const handleRowClick = (index) => {
+    setSelectedRowIndex(index);
+  };
+  const someData = selectedRowIndex !== null ? users[selectedRowIndex] : null;
 
   return (
     <>
-      <div className="d-flex justify-content-around ">
+      <CContainer className="d-flex justify-content-around ">
         <Col md="12">
+          <h2 className="calendarTitle">급여정산</h2>
           <GetThisMonth />
-
-          <Table>
-            <thead>
-              <tr>
+          <CTable striped bordered hover style={{ whiteSpace: "nowrap" }}>
+            <CTableHead>
+              <CTableRow>
                 {tableColumns.map((column, index) => (
-                  <th key={index}>{column}</th>
+                  <CTableHeaderCell key={index}>{column}</CTableHeaderCell>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
               {rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
+                <CTableRow
+                  key={rowIndex}
+                  onClick={() => handleRowClick(rowIndex)}
+                >
                   {row.map((cell, cellIndex) => (
-                    <td
-                      key={`${rowIndex}-${cellIndex}`}
-                      onClick={() => toggleModal(users[rowIndex])} // 테이블 칸 클릭 시 모달 열기
-                      style={{ cursor: "pointer" }} // hover 효과를 주기 위해 cursor 속성 추가
-                    >
-                      {cellIndex === 6 && cell === "no" && (
+                    <CTableDataCell key={`${rowIndex}-${cellIndex}`}>
+                      {cellIndex === 7 && cell === "no" && (
                         <Button
                           size="sm"
                           color="success"
@@ -122,7 +120,7 @@ function PayManagementSystemManagement() {
                           Pay
                         </Button>
                       )}
-                      {cellIndex === 6 && cell === "yes" && (
+                      {cellIndex === 7 && cell === "yes" && (
                         <Button
                           size="sm"
                           color="secondary"
@@ -131,28 +129,22 @@ function PayManagementSystemManagement() {
                           Paid
                         </Button>
                       )}
-                      {cellIndex !== 6 && cell}
-                    </td>
+                      {cellIndex !== 7 && cell}
+                    </CTableDataCell>
                   ))}
-                  <td>
-                    <Button size="sm" color="primary">
-                      메일로 전송
-                    </Button>
-                  </td>
-                </tr>
+
+                  <CTableDataCell>
+                    <Pdf userData={users[rowIndex]} />
+                  </CTableDataCell>
+                </CTableRow>
               ))}
-            </tbody>
-          </Table>
-          {selectedUser && (
-            <EmployeeModal
-              isOpen={modal}
-              toggle={toggleModal}
-              user={selectedUser}
-            />
-          )}
+            </CTableBody>{" "}
+          </CTable>{" "}
+          <Pagination />
         </Col>
-      </div>
+      </CContainer>
     </>
   );
 }
+
 export default PayManagementSystemManagement;

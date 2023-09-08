@@ -155,9 +155,6 @@ package com.project.backend.controller;
 //}
 
 
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.project.backend.config.auth.PrincipalDetails;
 import com.project.backend.config.jwt.JwtTokenProvider;
@@ -171,14 +168,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -190,12 +188,14 @@ public class LoginController {
   private final JwtService jwtService;
 
   @RequestMapping(value = "/login", method = { RequestMethod.POST,
-      RequestMethod.GET }, produces = MediaType.APPLICATION_JSON_VALUE)
+
+    RequestMethod.GET }, produces = MediaType.APPLICATION_JSON_VALUE)
   public TokenDto Login(final HttpServletRequest request, final HttpServletResponse response,
-      @RequestBody LoginDto loginDto) {
+                        @RequestBody LoginDto loginDto) {
+
 
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        loginDto.getEmpId(), loginDto.getEmpPwd());
+      loginDto.getEmpId(), loginDto.getEmpPwd());
 
     Authentication authentication = authenticationManager.authenticate(authenticationToken);
 

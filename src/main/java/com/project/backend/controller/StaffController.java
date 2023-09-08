@@ -2,6 +2,8 @@ package com.project.backend.controller;
 
 import java.util.List;
 
+
+import com.project.backend.service.timemanagement.TimeManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,11 @@ public class StaffController {
 
 	private final PasswordEncoder passwordEncoder;
 
-	@Autowired
+  @Autowired
+  private TimeManagementService timeManagementService;  // TimeManagementService 주입
+
+
+  @Autowired
 	public StaffController(StaffService staffService, PasswordEncoder passwordEncoder) {
 		this.staffService = staffService;
 		this.passwordEncoder = passwordEncoder;
@@ -69,16 +75,14 @@ public class StaffController {
 		return staffService.saveStaff(staff);
 	}
 
-	@DeleteMapping("/staff/{empNum}")
-	public ResponseEntity<?> deleteStaff(@PathVariable Long empNum) {
-		// staffService.deleteStaffById()를 호출하여 주어진 id에 해당하는 Staff 삭제
-		// 삭제가 성공적으로 이루어지면 HttpStatus.OK 반환
-		// 삭제 과정에서 예외 발생 시 HttpStatus.INTERNAL_SERVER_ERROR 반환
-		try {
-			staffService.deleteStaffById(empNum);
-			return ResponseEntity.ok().build();
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+  @DeleteMapping("/staff/{empNum}")
+  public ResponseEntity<?> deleteStaff(@PathVariable Long empNum) {
+    try {
+      timeManagementService.deleteStaffAndTimeManagementSystem(empNum); // 변경된 부분
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
 }

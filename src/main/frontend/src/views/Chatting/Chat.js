@@ -102,11 +102,7 @@ const Chat = () => {
             className="list-group-item list-group-item-action"
           >
             <div onClick={() => enterRoom(item.roomId)}>{item.name}</div>
-            <div>
-              <button onClick={() => deleteMessage(msg.chat_message_id)}>
-                Delete
-              </button>
-            </div>
+            <button onClick={() => deleteRoom(item.roomId)}>Delete Room</button>
           </li>
         ))}
       </ul>

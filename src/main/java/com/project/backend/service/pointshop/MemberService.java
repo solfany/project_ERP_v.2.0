@@ -17,11 +17,13 @@ public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
+//    멤버 저장
     public Member saveMember(Member member) {
         validateDuplicateMember(member);
         return memberRepository.save(member);
     }
 
+// 아이디 중복검사
     private void validateDuplicateMember(Member member) {
         Member findMember = memberRepository.findByEmail(member.getEmail());
         if (findMember != null) {
@@ -44,4 +46,21 @@ public class MemberService implements UserDetailsService {
                 .roles(member.getRole().toString())
                 .build();
     }
+
+    ////////////////////////////////
+//    public MemberResponseDto findMemberInfoById(Long memberId) {
+//        return memberRepository.findById(memberId)
+//                .map(MemberResponseDto::of)
+//                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+//    }
+//
+//    public MemberResponseDto findMemberInfoByEmail(String email) {
+//        return memberRepository.findByEmail(email)
+//                .map(MemberResponseDto::of)
+//                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+//    }
+
+
+
+
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@RequestMapping("/members")
+@RequestMapping("/api/member")
 @Controller
 public class MemberController {
 
@@ -63,4 +63,15 @@ public class MemberController {
         model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");
         return "/member/memberLoginForm";
     }
+
+
+//    @GetMapping("/me")
+//    public ResponseEntity<MemberResponseDto> findMemberInfoById() {
+//        return ResponseEntity.ok(memberService.findMemberInfoById(SecurityUtil.getCurrentMemberId()));
+//    }
+//
+//    @GetMapping("/{email}")
+//    public ResponseEntity<MemberResponseDto> findMemberInfoByEmail(@PathVariable String email) {
+//        return ResponseEntity.ok(memberService.findMemberInfoByEmail(email));
+//    }
 }

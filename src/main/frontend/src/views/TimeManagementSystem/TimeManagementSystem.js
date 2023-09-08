@@ -1,18 +1,20 @@
-import {
-  Table,
-  FormGroup,
-  Label,
-  Input,
-  Row,
-  Col,
-  Button,
-  Pagination,
-} from "reactstrap";
+import { Table, FormGroup, Label, Input, Row, Col, Button } from "reactstrap";
 import { useState, useEffect } from "react";
 import TableToExcel from "./TableToExcel";
 import TotalExcel from "./TotalExcel";
+import { Pagination, message } from "antd";
+import {
+  CContainer,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CTableDataCell,
+} from "@coreui/react";
 // ---------
-import GetThisMonth from "./getThisMonth";
+import CountWeekdays from "./CountWeekdays";
+import CarComponent from "./CarComponent";
 function TimeManagementSystem() {
   const [users, setUsers] = useState([]);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -23,12 +25,22 @@ function TimeManagementSystem() {
   const itemsPerPage = 10; // 한 페이지에 표시할 아이템 수
   const [currentSortKey, setCurrentSortKey] = useState("");
   const [tableData, setTableData] = useState([]);
+  // 검색창 상태관리
+  const [searchName, setSearchName] = useState("");
+  const [searchDepartment, setSearchDepartment] = useState("");
+  const [searchEmpNum, setSearchEmpNum] = useState("");
 
+  const totalPages = Math.ceil(users.length / itemsPerPage); // 총 페이지 수
+  // 현재 페이지에 대한 아이템만 반환
+
+  // 페이지 변경 처리
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
   // --------------
 
   //엑셀 양식
   const tableColumns = [
-    `당월 근태정산`,
     "사원번호",
     "이름",
     "나이",
@@ -36,246 +48,221 @@ function TimeManagementSystem() {
     "소정근로일수",
     "실제근로일수",
     "소정근로시간",
-    "승인된 근로시간",
     "전화번호",
     "이메일",
-    "입사일",
   ];
-  //엑셀에 들어갈 나이를 출생년도로 바꿔주는 함수
-  function calculateAge(birthYear) {
+  // 나이 및 출생년도를 반환하는 함수
+  function getAgeAndBirthYear(birthDate) {
+    // 년도만 추출
+    const birthYear = parseInt(birthDate.split("-")[0], 10);
     const currentYear = new Date().getFullYear();
-    return currentYear - birthYear;
-  }
+    const age = currentYear - birthYear; // 현재 나이 계산
 
-  //json 파일 불러오기
-  useEffect(() => {
-    fetch(
-      "https://raw.githubusercontent.com/solfany/Json_Group/main/json/project/002/user-list.json"
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        setUsers(json);
-      });
-  }, []);
+    return `${birthYear}년 출생, 나이 만 ${age}세`;
+  }
 
   // ----------------
   //엑셀 양식
   useEffect(() => {
     setTableData(
       users.map((user) => [
-        ``,
-        `${user.rank} `,
-        `${user.name} 님`,
-        `${user.age}세 (${calculateAge(user.age)}년 출생)`,
-        `${user.data5} 일`,
-        `${user.data1} 일`,
-        `${user.data2} 일`,
-        `${user.data3} 시간`,
-        `${user.data4} 시간`,
-        `${user.phone} `,
-        `${user.email} `,
-        `${user.date} `,
+        `${user.staff.empNum}`, // 사원 번호
+        `${user.staff.empName}`, // 사원 이름
+        `${getAgeAndBirthYear(user.birthDate)}`, // 연도를 나이로 변환하는 함수
+        `${user.vacation} 일`, // 유급휴가일수
+        `${user.workingDays} 일`, //소정근로일수
+        `${user.actualWorkDays} 시간`, // 실제근로일수
+        `${user.workingHours} 시간`, //소정근로시간
+        `${user.phoneNumber} `, // 핸드폰
+        `${user.staff.email} `, //이메일
       ])
     );
   }, [users]);
 
-  // 현재 테이블 해당하는 아이템들을 반환하는 함수
+  // 현재 페이지에 해당하는 아이템을 반환하는 함수
   const getCurrentItems = () => {
-    const filterData = users.filter((user) => {
-      return (
-        user.name &&
-        user.date &&
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        user.date.toLowerCase().includes(searchDays.toLowerCase())
-      );
+    return getFilteredAndSortedItems().slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+  };
+
+  // 현재페이지 반환
+  const getFilteredAndSortedItems = () => {
+    let filteredUsers = users.filter((user) => {
+      const nameMatch = user.staff.empName
+        .toLowerCase()
+        .includes(searchName.toLowerCase());
+      const deptMatch = user.staff.dept
+        .toLowerCase()
+        .includes(searchDepartment.toLowerCase());
+      const empNumMatch = String(user.staff.empNum).includes(searchEmpNum);
+
+      return nameMatch && deptMatch && empNumMatch;
     });
 
-    // ---------
-
-    // currentSortKey에 따라 데이터를 정렬하는 로직
-    let sortedData;
-    if (currentSortKey === "name") {
-      //이름 오름차순/내림차순 정렬
-      sortedData = [...filterData].sort((a, b) =>
-        sortDirection === "asc" //오름차순 정렬
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name)
+    // 정렬 로직
+    if (currentSortKey === "empName") {
+      filteredUsers.sort((a, b) =>
+        sortDirection === "asc"
+          ? a.staff.empName.localeCompare(b.staff.empName)
+          : b.staff.empName.localeCompare(a.staff.empName)
       );
-    } else if (currentSortKey === "vacationDays") {
-      //유급휴가 일수 정렬
-      sortedData = [...filterData].sort((a, b) =>
-        sortDirection === "asc" //오름차순 정렬
-          ? a.vacationDays - b.vacationDays
-          : b.vacationDays - a.vacationDays
+    } else if (currentSortKey === "vacation") {
+      filteredUsers.sort((a, b) =>
+        sortDirection === "asc"
+          ? a.vacation - b.vacation
+          : b.vacation - a.vacation
       );
-    } else {
-      sortedData = filterData; //위의 두 경우에 해당하지 않는 경우에는 filterData를 그대로 할당
     }
-
-    // 페이지네이션 ----------
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return sortedData.slice(startIndex, endIndex);
+    return filteredUsers;
   };
 
-  const totalPages = Math.ceil(users.length / itemsPerPage);
-
-  // 현재 페이지에 해당하는 아이템들을 반환하는 함수
-  const currentItems = getCurrentItems();
-
-  // 이전 페이지로 이동하는 함수
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+  // 정렬
+  const sortByKey = (a, b, key, direction) => {
+    if (a[key] === b[key]) return 0;
+    const order = a[key] > b[key] ? 1 : -1;
+    return direction === "asc" ? order : -order;
   };
 
-  // 다음 페이지로 이동하는 함수
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  // 이름 & 유급휴가 일수 오름차순/내림차순 정렬
   const handleSortBy = (key) => {
-    if (sortDirection === "asc") {
-      setUsers([...users].sort((a, b) => (a[key] < b[key] ? 1 : -1)));
-      setSortDirection("desc");
-    } else {
-      setUsers([...users].sort((a, b) => (a[key] > b[key] ? 1 : -1)));
-      setSortDirection("asc");
-    }
+    const newDirection = sortDirection === "asc" ? "desc" : "asc";
+    setCurrentSortKey(key);
+    setSortDirection(newDirection);
   };
 
-  //체크박스
+  // 체크박스 선택
   const handleCheckbox = (index) => {
-    if (checkedIndex === index) {
-      // 이미 선택된 체크박스를 클릭하면 선택을 해제합니다.
-      setCheckedIndex(-1);
-    } else {
-      // 다른 체크박스를 클릭하면 해당 index로 설정합니다.
-      setCheckedIndex(index);
-    }
+    setCheckedIndex(checkedIndex === index ? -1 : index);
   };
 
-  // 검색창 해당하는 DB 찾기
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
+  // 검색창 이벤트 핸들러
+  const handleSearchNameChange = (event) => {
+    setSearchName(event.target.value);
     setCurrentPage(1);
   };
 
-  // 달력 날짜 별로 해당하는 db 찾기
-  const handleSearchDaysChange = (event) => {
-    setSearchDays(event.target.value);
+  const handleSearchDepartmentChange = (event) => {
+    setSearchDepartment(event.target.value);
     setCurrentPage(1);
   };
+
+  const handleSearchEmpNumChange = (event) => {
+    setSearchEmpNum(event.target.value);
+    setCurrentPage(1);
+  };
+
+  // 서버에서 데이터 불러오기
+  useEffect(() => {
+    // fetch("/api/timeManagement")를 사용하여 데이터를 불러옵니다.
+    fetch("/api/timeManagement")
+      .then((response) => response.json())
+      .then((data) => {
+        // 데이터를 받아와서 setUsers 함수를 사용하여 users 상태를 업데이트합니다.
+        setUsers(data);
+        console.log(data);
+      });
+  }, []); // 빈 배열을 두 번째 인자로 전달하여 한 번만 실행되도록 설정합니다.
 
   return (
-    <div className="content">
-      <div className="calendarHead">
-        <h2 className="calendarTitle">근태정산</h2>
-      </div>
-      <GetThisMonth />
+    <CContainer>
+      <h2 className="calendarTitle">근태정산</h2>
+      <CountWeekdays />
       <Row>
-        <Col md="3">
-          <FormGroup>
-            <Input
-              id="Date"
-              name="date"
-              placeholder="date placeholder"
-              type="date"
-              value={searchDays}
-              onChange={handleSearchDaysChange}
-              onClick={() => setCheckedIndex(-1)}
-            />
-          </FormGroup>
-        </Col>
-        <Col md="3">
+        <Col md="4">
           <Input
             type="text"
-            value={searchTerm}
-            onChange={handleSearchTermChange}
+            value={searchName}
+            onChange={handleSearchNameChange}
             placeholder=" 직원 이름으로 검색"
             onClick={() => setCheckedIndex(-1)}
           />
         </Col>
+        <Col md="4">
+          <Input
+            type="text"
+            value={searchDepartment}
+            onChange={handleSearchDepartmentChange}
+            placeholder=" 부서 이름으로 검색"
+            onClick={() => setCheckedIndex(-1)}
+          />
+        </Col>
+        <Col md="4">
+          <Input
+            type="text"
+            value={searchEmpNum}
+            onChange={handleSearchEmpNumChange}
+            placeholder=" 사원번호로 검색"
+            onClick={() => setCheckedIndex(-1)}
+          />
+        </Col>
       </Row>
-      <Table striped bordered hover style={{ whiteSpace: "nowrap" }}>
-        <thead>
-          <tr>
-            <th onClick={() => handleSortBy("name")}>
+
+      <br />
+      <CTable striped bordered hover style={{ whiteSpace: "nowrap" }}>
+        <CTableHead>
+          <CTableRow>
+            <CTableHeaderCell onClick={() => handleSortBy("empName")}>
               직원{" "}
               {sortDirection === "asc" ? (
                 <i className="fa fa-sort-alpha-asc"></i>
               ) : (
                 <i className="fa fa-sort-alpha-desc"></i>
               )}
-            </th>
-            <th onClick={() => handleSortBy("data5")}>
+            </CTableHeaderCell>
+            <CTableHeaderCell>사원번호</CTableHeaderCell>
+            <CTableHeaderCell>부서</CTableHeaderCell>
+
+            <CTableHeaderCell onClick={() => handleSortBy("vacation")}>
               유급휴가 일수{" "}
               {sortDirection === "asc" ? (
                 <i className="fa fa-sort-numeric-asc"></i>
               ) : (
                 <i className="fa fa-sort-numeric-desc"></i>
               )}
-            </th>
-            <th>email</th>
-            <th>소정근로일수</th>
-            <th>실제 근로일수</th>
-            <th>소정근로시간</th>
-            <th>승인된 근로시간</th>
-            <th>선택</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((user, index) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.data5}</td>
-              <td>{user.email}</td>
-              <td>{user.data1}</td>
-              <td>{user.data2}</td>
-              <td>{user.data3}</td>
-              <td>{user.data4}</td>
-              <td>
+            </CTableHeaderCell>
+            <CTableHeaderCell>소정근로일수</CTableHeaderCell>
+            <CTableHeaderCell>실제 근로일수</CTableHeaderCell>
+            <CTableHeaderCell>소정근로시간</CTableHeaderCell>
+            <CTableHeaderCell>email</CTableHeaderCell>
+            <CTableHeaderCell>선택</CTableHeaderCell>
+          </CTableRow>
+        </CTableHead>
+        <CTableBody>
+          {getCurrentItems().map((user, index) => (
+            <CTableRow key={user.id}>
+              <CTableDataCell>{user.staff.empName}</CTableDataCell>
+              <CTableDataCell>{user.staff.empNum}</CTableDataCell>
+              <CTableDataCell>{user.staff.dept}</CTableDataCell>
+              <CTableDataCell>{user.vacation}</CTableDataCell>
+              <CTableDataCell>{user.workingDays} 일</CTableDataCell>
+              <CTableDataCell>{user.actualWorkDays} 일</CTableDataCell>
+              <CTableDataCell>{user.workingHours} 시간</CTableDataCell>
+              <CTableDataCell>{user.staff.email}</CTableDataCell>
+              <CTableDataCell>
                 <input
                   type="checkbox"
                   checked={index === checkedIndex}
                   onChange={() => handleCheckbox(index)}
                   onClick={(e) => e.stopPropagation()}
-                />{" "}
-                {index === checkedIndex}{" "}
-              </td>
-            </tr>
+                />
+              </CTableDataCell>
+            </CTableRow>
           ))}
-        </tbody>
-      </Table>
+        </CTableBody>
+      </CTable>
+      {getCurrentItems().length === 0 && <CarComponent />}
+      <Pagination
+        current={currentPage}
+        total={users.length}
+        pageSize={itemsPerPage}
+        onChange={handlePageChange}
+      />
       <div
         style={{
           textAlign: "center",
         }}
-      >
-        <Col>
-          <Button size="sm" onClick={goToPrevPage}>
-            이전
-          </Button>
-
-          {Array.from({ length: totalPages }, (_, i) => (
-            <Button
-              size="sm"
-              key={i + 1}
-              onClick={() => setCurrentPage(i + 1)}
-              disabled={currentPage === i + 1}
-            >
-              {i + 1}
-            </Button>
-          ))}
-          <Button size="sm" onClick={goToNextPage}>
-            다음
-          </Button>
-        </Col>
-      </div>
+      ></div>
       <div
         style={{
           textAlign: "right",
@@ -292,16 +279,16 @@ function TimeManagementSystem() {
         <>
           <div
             style={{
-              textAlign: "right",
+              textAlign: "center",
             }}
           >
-            <h5>{currentItems[checkedIndex].name} 님의 근태정산 Excel</h5>
+            <h5>{users[checkedIndex].staff.empName} 님의 근태정산 Excel</h5>
             <TableToExcel
               tableData={tableData}
               tableColumns={tableColumns}
-              fileName={currentItems[checkedIndex].name}
+              fileName={users[checkedIndex].staff.empName}
               sheetName="mySheet"
-              currentItems={currentItems}
+              currentItems={getCurrentItems()} // 현재 페이지의 항목들을 전달합니다.
               checkedIndex={checkedIndex}
             />
             <Button size="sm" onClick={() => setCheckedIndex(-1)}>
@@ -310,7 +297,7 @@ function TimeManagementSystem() {
           </div>
         </>
       )}
-    </div>
+    </CContainer>
   );
 }
 export default TimeManagementSystem;

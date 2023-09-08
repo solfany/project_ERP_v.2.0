@@ -14,8 +14,8 @@ const UserProfile = () => {
     if (accessToken) {
       const decodedToken = jwt_decode(accessToken);
       const staffInfo = decodedToken.staff; // 'sub' 필드를 사용하여 empId 추출
-      const empName = staffInfo.empName;
-      setUserInfo({ empName });
+      const empId = staffInfo.empId;
+      setUserInfo({ empId });
     }
   }, []);
 
@@ -30,7 +30,7 @@ const UserProfile = () => {
     <div>
       {userInfo ? (
         <div>
-          <p>{userInfo.empName} 님 환영합니다.</p>
+          <p>{userInfo.empId} 님 환영합니다.</p>
           <button onClick={handleLogout}>로그아웃</button>
         </div>
       ) : (

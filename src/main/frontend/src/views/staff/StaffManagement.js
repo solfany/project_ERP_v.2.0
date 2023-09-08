@@ -103,55 +103,55 @@ const StaffManagement = () => {
           </CCol>
         </CRow>
         <CRow>
-          <CCol md={12} style={{margin:'20px'}}>
+          <CCol md={12} style={{ margin: '20px' }}>
             <CCard>
               <CCardHeader>직원 리스트</CCardHeader>
               <CCardBody>
-              <div style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
-                <CTable>
-                  <CTableHead>
-                    <CTableRow>
-                      <CTableHeaderCell>사원번호</CTableHeaderCell>
-                      <CTableHeaderCell>아이디</CTableHeaderCell>
-                      <CTableHeaderCell>부서</CTableHeaderCell>
-                      <CTableHeaderCell>직급</CTableHeaderCell>
-                      <CTableHeaderCell>이름</CTableHeaderCell>
-                      <CTableHeaderCell>생년월일</CTableHeaderCell>
-                      <CTableHeaderCell>연락처</CTableHeaderCell>
-                      <CTableHeaderCell>주소</CTableHeaderCell>
-                      <CTableHeaderCell>이메일주소</CTableHeaderCell>
-                      <CTableHeaderCell>은행명</CTableHeaderCell>
-                      <CTableHeaderCell>계좌번호</CTableHeaderCell>
-                      <CTableHeaderCell>삭제</CTableHeaderCell>
-                    </CTableRow>
-                  </CTableHead>
-                  <CTableBody>
-                    {staffs.map((staff) => (
-                      <CTableRow key={staff.empNum}>
-                        <CTableDataCell>{staff.empNum}</CTableDataCell>
-                        <CTableDataCell>{staff.empId}</CTableDataCell>
-                        <CTableDataCell>{staff.dept}</CTableDataCell>
-                        <CTableDataCell>{staff.position}</CTableDataCell>
-                        <CTableDataCell>{staff.empName}</CTableDataCell>
-                        <CTableDataCell>{staff.birthDate}</CTableDataCell>
-                        <CTableDataCell>{staff.phoneNumber}</CTableDataCell>
-                        <CTableDataCell>{staff.address}</CTableDataCell>
-                        <CTableDataCell>{staff.email}</CTableDataCell>
-                        <CTableDataCell>{staff.bankName}</CTableDataCell>
-                        <CTableDataCell>{staff.accountNumber}</CTableDataCell>
-                        <CTableDataCell>
-                          <Button
-                            color="danger"
-                            size="sm"
-                            onClick={() => handleDelete(staff.empNum)}
+                <div style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+                  <CTable>
+                    <CTableHead>
+                      <CTableRow>
+                        <CTableHeaderCell>사원번호</CTableHeaderCell>
+                        <CTableHeaderCell>아이디</CTableHeaderCell>
+                        <CTableHeaderCell>부서</CTableHeaderCell>
+                        <CTableHeaderCell>직급</CTableHeaderCell>
+                        <CTableHeaderCell>이름</CTableHeaderCell>
+                        <CTableHeaderCell>생년월일</CTableHeaderCell>
+                        <CTableHeaderCell>연락처</CTableHeaderCell>
+                        <CTableHeaderCell>주소</CTableHeaderCell>
+                        <CTableHeaderCell>이메일주소</CTableHeaderCell>
+                        <CTableHeaderCell>은행명</CTableHeaderCell>
+                        <CTableHeaderCell>계좌번호</CTableHeaderCell>
+                        <CTableHeaderCell>삭제</CTableHeaderCell>
+                      </CTableRow>
+                    </CTableHead>
+                    <CTableBody>
+                      {staffs.map((staff) => (
+                        <CTableRow key={staff.empNum}>
+                          <CTableDataCell>{staff.empNum}</CTableDataCell>
+                          <CTableDataCell>{staff.empId}</CTableDataCell>
+                          <CTableDataCell>{staff.dept}</CTableDataCell>
+                          <CTableDataCell>{staff.position}</CTableDataCell>
+                          <CTableDataCell>{staff.empName}</CTableDataCell>
+                          <CTableDataCell>{staff.birthDate}</CTableDataCell>
+                          <CTableDataCell>{staff.phoneNumber}</CTableDataCell>
+                          <CTableDataCell>{staff.address}</CTableDataCell>
+                          <CTableDataCell>{staff.email}</CTableDataCell>
+                          <CTableDataCell>{staff.bankName}</CTableDataCell>
+                          <CTableDataCell>{staff.accountNumber}</CTableDataCell>
+                          <CTableDataCell>
+                            <Button
+                              color="danger"
+                              size="sm"
+                              onClick={() => handleDelete(staff.empNum)}
                             >
                               삭제
                             </Button>
                           </CTableDataCell>
-                      </CTableRow>
-                    ))}
-                  </CTableBody>
-                </CTable>
+                        </CTableRow>
+                      ))}
+                    </CTableBody>
+                  </CTable>
                 </div>
               </CCardBody>
             </CCard>
@@ -175,7 +175,7 @@ const StaffManagement = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-            <Form.Label>패스워드</Form.Label>
+              <Form.Label>패스워드</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="패스워드"
@@ -186,20 +186,38 @@ const StaffManagement = () => {
             <Form.Group className="mb-3">
               <Form.Label>부서</Form.Label>
               <Form.Control
+
+                as="select"
                 type="text"
                 placeholder="부서"
                 value={dept}
                 onChange={(e) => setDept(e.target.value)}
-              />
+              >
+                <option value="선택">선택</option>
+                <option value="인사팀">인사팀</option>
+                <option value="관리팀">관리팀</option>
+                <option value="생산팀">생산팀</option>
+                <option value="마케팅">마케팅</option>
+                <option value="기획팀">기획팀</option>
+              </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>직급</Form.Label>
               <Form.Control
+                as="select"
                 type="text"
                 placeholder="직급"
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
-              />
+              >
+                <option value="선택">선택</option>
+                <option value="사장">사장</option>
+                <option value="부장">부장</option>
+                <option value="차장">차장</option>
+                <option value="과장">과장</option>
+                <option value="대리">대리</option>
+                <option value="사원">사원</option>
+              </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>이름</Form.Label>
@@ -213,7 +231,7 @@ const StaffManagement = () => {
             <Form.Group className="mb-3">
               <Form.Label>생년월일</Form.Label>
               <Form.Control
-                type="text"
+                type="date"
                 placeholder="생년월일"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
@@ -223,9 +241,12 @@ const StaffManagement = () => {
               <Form.Label>연락처</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="연락처"
+                placeholder="번호를 입력해주세요"
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={(e) => {
+                  const formattedPhoneNumber = e.target.value.replace(/[^0-9]/g, '');
+                  setPhoneNumber(formattedPhoneNumber);
+                }}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -237,14 +258,41 @@ const StaffManagement = () => {
                 onChange={(e) => setAddress(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
               <Form.Label>이메일주소</Form.Label>
               <Form.Control
-                type="text"
+                type="email"
                 placeholder="이메일주소"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              /> */}
+            <Form.Group className="mb-3">
+              <Form.Label>이메일 아이디</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="아이디"
+                value={email.split('@')[0]} // @ 이전의 아이디 부분
+                onChange={(e) => {
+                  const newEmail = e.target.value + (email.includes('@') ? email.split('@')[1] : '');
+                  setEmail(newEmail);
+                }}
               />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>이메일 도메인</Form.Label>
+              <Form.Control
+                as="select"
+                value={email.includes('@') ? email.split('@')[1] : ''}
+                onChange={(e) => {
+                  const newEmail = email.split('@')[0] + '@' + e.target.value;
+                  setEmail(newEmail);
+                }}
+              >
+                <option value="naver.com">네이버</option>
+                <option value="google.com">구글</option>
+                {/* 다른 이메일 도메인도 추가할 수 있습니다. */}
+              </Form.Control>
+
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>은행명</Form.Label>
@@ -259,7 +307,7 @@ const StaffManagement = () => {
               <Form.Label>계좌번호</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="계좌번호"
+                placeholder="-없이 입력해주세요"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value)}
               />
