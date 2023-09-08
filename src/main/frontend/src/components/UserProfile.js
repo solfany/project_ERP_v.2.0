@@ -36,7 +36,7 @@ const UserProfile = () => {
   };
 
   return (
-    <CHeader position="sticky-top" style={{ border: 'none' }}>
+    <CHeader position="sticky" style={{ border: 'none' }}>
       <CContainer fluid>
         <CHeaderNav className="d-none d-md-flex">
           {userInfo ? (
@@ -54,13 +54,6 @@ const UserProfile = () => {
           ) : null}
         </CHeaderNav>
       </CContainer>
-      <style>
-        {`
-          .c-header-nav .c-header-nav-divider {
-            display: none;
-          }
-        `}
-      </style>
     </CHeader>
   );
 };

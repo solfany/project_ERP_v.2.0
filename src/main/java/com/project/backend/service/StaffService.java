@@ -1,11 +1,9 @@
 package com.project.backend.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 
 import com.project.backend.dto.StaffDto;
@@ -13,7 +11,6 @@ import com.project.backend.entity.Staff;
 import com.project.backend.exception.edit.BadRequestException;
 import com.project.backend.exception.edit.NotFoundException;
 import com.project.backend.repository.StaffRepository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +71,6 @@ public class StaffService {
     public List<Staff> getAllStaffs() {
         return staffRepository.findAll();
     }
-
 
     public Staff saveStaff(Staff staff) {
         staff.setEmpPwd(passwordEncoder.encode(staff.getEmpPwd()));

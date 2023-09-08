@@ -33,7 +33,7 @@ const ProfileEdit = () => {
       const staffInfo = JSON.parse(staffInfoCookie);
       setUserInfo(staffInfo);
       // 기존 정보를 newInfo에 복사합니다.
-      setNewInfo(staffInfo);
+      setNewInfo({...staffInfo});
     }
   }, []);
 
@@ -64,6 +64,9 @@ const ProfileEdit = () => {
         // 성공적인 업데이트 메시지 또는 다른 처리를 수행
         alert('직원 정보가 업데이트되었습니다.');
 
+        // 수정된 정보 추출하여 StaffDto 업데이트
+        const updatedInfo = response.data; // 예를 들어, 백엔드에서 업데이트된 정보를 응답 데이터로 보냈다고 가정
+        setNewInfo(updatedInfo);
         // 리디렉션을 트리거
         setRedirect(true);
       } else {

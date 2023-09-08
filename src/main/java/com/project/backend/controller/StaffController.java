@@ -76,7 +76,7 @@ public class StaffController {
 	
 	   // Staff 정보 업데이트를 위한 메서드 추가
     // 프로필 수정 엔드포인트
-	@PostMapping("/staff/{userInfo.empNum}")
+	@PostMapping("/staff/{empNum}")
     public ResponseEntity<?> updateStaffProfile(@PathVariable Long empNum, @RequestBody StaffDto staffDto) {
         try {
             Optional<Staff> optionalStaff = staffService.findByEmpNum(empNum);
