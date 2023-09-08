@@ -138,7 +138,7 @@ const Dashboard = () => {
         period: 'Feb 11, 2023 - Sep 13, 2023',
         color: 'danger',
       },
-      github: 'https://github.com/Febyihong',
+      github: 'https://github.com/junyihong',
 
       email: 'Febyihong@naver.com',
     },
