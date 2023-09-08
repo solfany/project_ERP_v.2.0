@@ -1,99 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// //import React, { useEffect, useState } from "react";
-
-// import "./Map.css";
-
-// import { Table } from "reactstrap";
-
-// import Vacation from "./VacationModal";
-// import baseData from "./MapArray";
-// //import { Route } from "react-router-dom";
-// import { message } from "antd";
-
-// import axios from "axios";
-
-// //휴가 신청란의 기본 table 값
-// const Options = [
-//   { id: 1, name: "#", value: "" },
-//   { id: 2, name: "직원 이름", value: "" },
-//   { id: 3, name: "부서", value: "" },
-//   { id: 4, name: "직무", value: "" },
-//   { id: 5, name: "기간", value: "" },
-//   { id: 6, name: "휴가 종류", value: "" },
-//   { id: 7, name: "휴가 일수", value: "" },
-//   { id: 8, name: "사유", value: "" },
-//   { id: 9, name: "취소", value: "" },
-// ];
-// const TableSub = Options.map((parameter, index) => (
-//   <th
-//     style={{
-//       fontSize: "16px",
-//       textAlign: "center",
-//       fontFamily: "Poppins",
-//       whiteSpace: "nowrap",
-//     }}
-//     key={index}
-//   >
-//     {parameter.name}
-//   </th>
-// ));
-
-// function Map() {
-//   const onRemove = (name) => {
-//     const up = data.filter((item) => item.name !== name);
-//     setData(up);
-//     message.success("success");
-//   };
-//   const [data, setData] = useState(baseData);
-//   return (
-//     <>
-//       {/* {init && userObj && */}
-//       <div className="content">
-//         <div className="card" style={{ minHeight: "600px", padding: "0 10px" }}>
-//           <div className="calendarHead">
-//             <h2 className="calendarTitle">휴가 관리</h2>
-//             <div className="Mmodal_btn">
-//               <Vacation
-//                 data={data}
-//                 setData={setData}
-//                 onRemove={onRemove}
-//               ></Vacation>
-//             </div>
-//           </div>
-//           <Table style={{ whiteSpace: "nowrap" }}>
-//             <thead>
-//               <tr>{TableSub}</tr>
-//             </thead>
-//             <tbody>
-//               <tr scope="row"></tr>
-//               {data.map((data) => (
-//                 <tr key={data.name}>
-//                   <td>{data.code}</td>
-//                   <td>{data.name}</td>
-//                   <td>{data.teamName}</td>
-//                   <td>{data.position}</td>
-//                   <td>{data.etc}</td>
-//                   <td>{data.vacationType}</td>
-//                   <td>{data.day}</td>
-//                   <td>{data.reason}</td>
-//                   <td>
-//                     <button className="red" onClick={() => onRemove(data.name)}>
-//                       삭제1
-//                     </button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//             <tfoot></tfoot>
-//           </Table>
-//         </div>
-//       </div>
-//       {/* } */}
-//     </>
-//   );
-// }
-
-// export default Map;
 import React, { useState, useEffect } from "react";
 import "./Map.css";
 import { Table } from "reactstrap";
@@ -101,31 +5,19 @@ import VacationModal from "./VacationModal"; // 수정된 부분
 import axios from "axios";
 
 const Options = [
-  { id: 0, empName: "사원번호 ", value: "" },
-  { id: 1, empName: "직원 이름", value: "" },
-  { id: 2, dept: "부서", value: "" },
-  { id: 3, position: "직무", value: "" },
-  { id: 4, vacaType: "휴가 종류", value: "" },
-  { id: 5, vacaStart: "휴가 시작", value: "" },
-  { id: 6, vacaEnd: "휴가 종료", value: "" },
-  { id: 7, vacaEtc: "휴가 일수", value: "" },
-  //휴가 샘플 옵션
-  { id: 8, vacaReason: "휴가 사유", value: "" },
+  { id: 0, label: "사원 번호", key: "empNum" },
+  { id: 1, label: "직원 이름", key: "empName" },
+  { id: 2, label: "부서", key: "dept" },
+  { id: 3, label: "직무", key: "position" },
+  { id: 4, label: "휴가 종류", key: "vacaType" },
+  { id: 5, label: "휴가 시작", key: "vacaStart" },
+  { id: 6, label: "휴가 종료", key: "vacaEnd" },
+  { id: 7, label: "휴가 일수", key: "vacaEtc" },
+  { id: 8, label: "휴가 사유", key: "vacaReason" },
 ];
 
 const TableSub = Options.map((parameter) => (
-  <th key={parameter.id}>
-    {parameter.empNum}
-    {parameter.empName}
-    {parameter.dept}
-    {parameter.position}
-    {parameter.vacaType}
-    {parameter.vacaStart}
-    {parameter.vacaEnd}
-    {parameter.vacaEtc}
-    {/* 휴가 샘플 데이터 */}
-    {parameter.vacaReason}
-  </th>
+  <th key={parameter.id}>{parameter.label}</th>
 ));
 // ... (Options과 TableSub 등의 내용은 그대로 유지)
 
@@ -140,6 +32,7 @@ function Map() {
     try {
       const response = await axios.get("http://localhost:8888/api/vacation");
       setData(response.data);
+      console.log(response.data); // 데이터 확인용 로그
     } catch (error) {
       console.error("휴가 - 데이터 생성 실패:", error);
     }
@@ -176,16 +69,14 @@ function Map() {
           <tbody>
             {data.map((item) => (
               <tr key={item.id}>
-                {/* ... (Table 데이터 출력 부분 그대로 유지) */}
-                <td>{item.empNum}</td>
+                <td>{item.staff?.empNum}</td>
                 <td>{item.empName}</td>
                 <td>{item.dept}</td>
                 <td>{item.position}</td>
                 <td>{item.vacaType}</td>
-                <td>{item.vacaStart}</td>
-                <td>{item.vacaEnd}</td>
+                <td>{new Date(item.vacaStart).toISOString().slice(0, 10)}</td>
+                <td>{new Date(item.vacaEnd).toISOString().slice(0, 10)}</td>
                 <td>{item.vacaEtc}</td>
-                {/* 딱여기에 휴가 일수 넣어주면되고 */}
                 <td>{item.vacaReason}</td>
                 <td>
                   <button onClick={() => handleDelete(item.id)}>삭제</button>

@@ -36,6 +36,7 @@
     "classnames": "^2.3.2",
     "core-js": "^3.31.0",
     "html-react-parser": "^4.2.0",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.1",
     "jwt-decode": "^3.1.2",
     "prop-types": "^15.8.1",

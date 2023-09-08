@@ -27,7 +27,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException {
 
-		log.info("############################## PrincipalDetailsService - username : {}", empId);
+//		log.info("############################## PrincipalDetailsService - username : {}", empId);
 
 		return staffService.findOneWithAuthoritiesByUsername(empId).map(staff -> createStaff(empId, staff))
 				.orElseThrow(() -> new UsernameNotFoundException(empId + " -> 데이터베이스에서 찾을 수 없습니다."));

@@ -90,4 +90,16 @@ public class StaffService {
 	public void deleteStaffById(Long empNum) {
 		staffRepository.deleteById(empNum);
 	}
+	//정원 작성
+	// empNum을 사용하여 Staff 엔티티 조회
+    public Staff getStaffByEmpNum(Long empNum) {
+        Optional<Staff> staffOptional = staffRepository.findById(empNum);
+        if (staffOptional.isPresent()) {
+            return staffOptional.get();
+        } else {
+            // Staff 엔티티가 없을 경우 예외 처리 또는 기본값 반환
+            // 예를 들어, 여기서는 null을 반환합니다. 상황에 맞게 처리하세요.
+            return null;
+        }
+    }
 }

@@ -37,21 +37,7 @@ import lombok.Setter;
 //}
 
 //------------------------------------------------------------------------------------------------------
-//localstorage용
-//@Getter
-//@Setter
-//public class ChatRoom {
-//    private String roomId;
-//    private String name;
-//
-//    public static ChatRoom create(String name) {
-//        ChatRoom chatRoom = new ChatRoom();
-//        chatRoom.roomId = UUID.randomUUID().toString();
-////        chatRoom.roomId = roomId;
-//        chatRoom.name = name;
-//        return chatRoom;
-//    }
-//}
+
 @Getter
 @Setter
 public class ChatRoom implements Serializable {
@@ -60,13 +46,20 @@ public class ChatRoom implements Serializable {
 
     private String roomId;
     private String name;
+//    private List<String> senders; // 발신자 목록
+//    private List<String> messages; // 메시지 목록
+
+    //private String sender;//저장된 sender의 목록을 뽑아 내야됨
+    //private String massage;//저장된 message의 목록을 뽑아 내야됨
 
     public static ChatRoom create(String name) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;	//채팅방의 제목임
+
         return chatRoom;
     }
-    
-    
+
 }
+
+

@@ -31,6 +31,9 @@ public class VacationDto {
 //	//	private String vacaEtc; //휴가 기간을 int형으로 바꿔 일수를 구하는 것
 //
 //		private String vacaReason;	//휴가 사유 - vacaReason
+
+	 	
+		private Long empNum;
 	
 		private String empName;	//이름
 		

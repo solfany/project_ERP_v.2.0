@@ -19,6 +19,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 //    }
 //}
 
+//이 코드는 Spring에서 WebSocket과 STOMP 프로토콜을 사용하기 위한 설정을 하는 클래스
 
 @Configuration
 @EnableWebSocketMessageBroker

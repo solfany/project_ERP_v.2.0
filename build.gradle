@@ -75,6 +75,9 @@ dependencies {
     //implementation group: 'org.slf4j', name: 'slf4j-api'
     //implementation group: 'ch.qos.logback', name: 'logback-classic'
     implementation 'ch.qos.logback:logback-classic'
+    
+    
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
 }
 
 tasks.named('test') {

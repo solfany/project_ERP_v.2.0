@@ -1,90 +1,20 @@
-// import React, { useState } from "react";
-// import { Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
-// import axios from "axios";
-// import { message } from "antd";
-
-// function Vacation({ fetchVacationData }) {
-//   const [modal, setModal] = useState(false);
-//   const toggle = () => setModal(!modal);
-
-//   const [empName, setEmpName] = useState("");
-//   const [dept, setDept] = useState(""); // 수정된 부분
-//   const [position, setPosition] = useState(""); // 수정된 부분
-//   const [vacaType, setVacaType] = useState(""); // 수정된 부분
-//   const [vacaStart, setVacaStart] = useState(new Date());
-//   const [vacaEnd, setVacaEnd] = useState(new Date());
-//   const [vacaEtc, setVacaEtc] = useState(0); // 초기값은 0으로 설정
-//   //휴가 일수
-//   const [vacaReason, setVacaReason] = useState(""); // 수정된 부분
-
-//   useEffect(() => {
-//     const startDate = new Date(vacaStart);
-//     const endDate = new Date(vacaEnd);
-//     const timeDiff = endDate - startDate;
-//     const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-//     setVacaEtc(dayDiff);
-//   }, [vacaStart, vacaEnd]);
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-
-//       const vacationDto = {
-//         empName,
-//         dept,
-//         position,
-//         vacaType,
-//         vacaStart,
-//         vacaEnd,
-//         vacaEtc,
-//         //휴가 뺸거 etc
-//         vacaReason,
-//       };
-
-//       if (
-//         !empName ||
-//         !dept ||
-//         !position ||
-//         !vacaType ||
-//         !vacaStart ||
-//         !vacaEnd ||
-//         !vacaEtc ||
-//         //etc
-//         !vacaReason
-//       ) {
-//         return message.error("모두 입력하세요");
-//       }
-
-//       await axios.post("http://localhost:8888/api/vacation", vacationDto);
-
-//       setEmpName("");
-//       setDept("");
-//       setPosition("");
-//       setVacaType("");
-//       setVacaStart(new Date());
-//       setVacaEnd(new Date());
-//       setVacaEtc(0);
-//       //etc
-//       setVacaReason("");
-
-//       toggle();
-//       fetchVacationData();
-//     } catch (error) {
-//       console.error("Error adding vacation request:", error);
-//     }
-//   };
-
-
 import React, { useState, useEffect } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
 import axios from "axios";
 import { message } from "antd";
+import Cookies from "js-cookie";
 
-function Vacation({ fetchVacationData }) {
+function VacationModal({ fetchVacationData }) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   // const [empNum, setEmpNum] = useState("");
+  // const [userInfo, setUserInfo] = useState("");
+  const rawStaffInfo = Cookies.get("staffInfo");
+  const staffInfo = JSON.parse(rawStaffInfo);
+
+  const [empNum, setEmpNum] = useState("");
   const [empName, setEmpName] = useState("");
+
   const [dept, setDept] = useState("");
   const [position, setPosition] = useState("");
   const [vacaType, setVacaType] = useState("");
@@ -93,12 +23,27 @@ function Vacation({ fetchVacationData }) {
   const [vacaEtc, setVacaEtc] = useState(0);
   const [vacaReason, setVacaReason] = useState("");
 
+  useEffect(() => {
+    const rawStaffInfo = Cookies.get("staffInfo");
+    const staffInfo = JSON.parse(rawStaffInfo);
+    setEmpNum(staffInfo.empNum);
+  }, []); // 빈 배열은 이펙트가 처음 한 번만 실행되도록 합니다.
+
+  // const staffInfo = useSelector((state) => state.auth.staffInfo);
   // vacaStart 또는 vacaEnd가 변경될 때마다 vacaEtc를 다시 계산
   useEffect(() => {
     const startDate = new Date(vacaStart);
     const endDate = new Date(vacaEnd);
     const timeDiff = endDate - startDate;
-    const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    
+    if (timeDiff < 0) {
+      setVacaEtc("0일");
+      message.error("휴가 입력 기간이 잘못되었습니다.");
+      return;
+    }
+  
+    const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 *24));
+    
     setVacaEtc(dayDiff + "일");
   }, [vacaStart, vacaEnd]);
 
@@ -107,7 +52,7 @@ function Vacation({ fetchVacationData }) {
 
     try {
       const vacationDto = {
-        // empNum,
+        empNum: staffInfo.empNum,
         empName,
         dept,
         position,
@@ -116,10 +61,11 @@ function Vacation({ fetchVacationData }) {
         vacaEnd,
         vacaEtc,
         vacaReason,
+        // staffInfo, // staffInfo 객체를 포함
       };
 
       if (
-        // !empNum ||
+        !empNum ||
         !empName ||
         !dept ||
         !position ||
@@ -132,8 +78,30 @@ function Vacation({ fetchVacationData }) {
         return message.error("모두 입력하세요");
       }
 
+      if (empNum !== staffInfo.empNum) {
+        return message.error(
+          "입력된 사원 번호가 사용자 정보와 일치하지 않습니다."
+        );
+      }
+      if (empName !== staffInfo.empName) {
+        return message.error(
+          "입력된 사원 이름이 사용자 정보와 일치하지 않습니다."
+        );
+      }
+      if (dept !== staffInfo.dept) {
+        return message.error("입력된 부서가 사용자 정보와 일치하지 않습니다.");
+      }
+      if (position !== staffInfo.position) {
+        return message.error("입력된 직책이 사용자 정보와 일치하지 않습니다.");
+      }
+
+      if (vacaEtc === "0일") {
+        return message.error("휴가 입력 기간이 잘못되었습니다.");
+      }
+
       await axios.post("http://localhost:8888/api/vacation", vacationDto);
-      // setEmpNum("");
+      console.log(vacationDto);
+      setEmpNum(staffInfo.empNum);
       setEmpName("");
       setDept("");
       setPosition("");
@@ -141,7 +109,7 @@ function Vacation({ fetchVacationData }) {
       setVacaStart(new Date());
       setVacaEnd(new Date());
       setVacaReason("");
-      setVacaEtc("");
+      setVacaEtc();
       toggle();
       fetchVacationData();
     } catch (error) {
@@ -163,9 +131,11 @@ function Vacation({ fetchVacationData }) {
           <div>
             <form onSubmit={handleSubmit}>
               <ul>
-                {/* <li>
-                  <Label style={{ width: "300px" }}>사원번호 : {empNum}</Label>
-                </li> */}
+                <li>
+                  <Label style={{ width: "300px" }}>
+                    사원 번호 : {staffInfo.empNum}
+                  </Label>
+                </li>
 
                 <li>
                   <Label style={{ width: "80px" }}>이름 : </Label>
@@ -241,24 +211,6 @@ function Vacation({ fetchVacationData }) {
                     onChange={(e) => setVacaEnd(e.target.value)}
                   ></input>
                 </li>
-
-                {/* <li>
-                  <Label style={{ width: "80px" }}>휴가 :</Label>
-                  <p
-                    name="vacaDay"
-                    value={vacaDay}
-                    onChange={(e) => setDayValue(e.target.value)}
-                  ></p>
-                </li>
-                <li>
-                  <Label style={{ width: "80px" }}>휴가 기간 :</Label>
-                  <p
-                    type="vacaEtc"
-                    value={vacaEtc}
-                    onChange={(e) => setVacaEtc(e.target.value)}
-                  ></p>
-                </li> */}
-
                 <li style={{ display: "flex" }}>
                   <Label style={{ width: "300px" }}>
                     휴가 일수 : {vacaEtc}
@@ -297,4 +249,4 @@ function Vacation({ fetchVacationData }) {
   );
 }
 
-export default Vacation;
+export default VacationModal;
