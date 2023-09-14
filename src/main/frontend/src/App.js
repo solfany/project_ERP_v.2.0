@@ -26,10 +26,10 @@ class App extends Component {
           <Routes>
             <Route exact path="/login" element={<Login />} />
             {/* 닫고 생성한 다음 로그인하세요 */}
-            {/*<Route*/}
+            {/* <Route*/}
             {/*  path="/"*/}
             {/*  element={<ProtectedRoute element={<DefaultLayoutLayout />} />}*/}
-            {/*/>*/}
+            {/*/> */}
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/404" element={<Page404 />} />
             <Route exact path="/500" element={<Page500 />} />
