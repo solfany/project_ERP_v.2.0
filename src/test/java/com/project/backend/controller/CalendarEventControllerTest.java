@@ -79,7 +79,7 @@ public class CalendarEventControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("일정이 성공적으로 삭제되었습니다.", response.getBody());
 
-        // Verify that DeleteCalendarEvent method was called once
+        //
         verify(calendarEventService, times(1)).DeleteCalendarEvent(eventId);
     }
 

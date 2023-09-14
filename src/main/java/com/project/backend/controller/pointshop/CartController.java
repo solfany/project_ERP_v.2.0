@@ -50,6 +50,7 @@ public class CartController {
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
 
+    //    2.
     @PostMapping("/list")
     public ResponseEntity<List<CartDetailDto>> getCartItems(@RequestBody Staff staff) {
         List<CartDetailDto> cartDetailDtoList = cartService.getCartList(staff.getEmpNum());

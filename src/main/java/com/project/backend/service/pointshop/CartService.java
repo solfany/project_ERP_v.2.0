@@ -103,22 +103,17 @@ public class CartService {
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
             CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
                     .orElseThrow(EntityNotFoundException::new);
-
             OrderDto orderDto = new OrderDto();
             orderDto.setItemId(cartItem.getItem().getId());
             orderDto.setCount(cartItem.getCount());
             orderDtoList.add(orderDto);
         }
-
         Long orderId = orderService.orders(orderDtoList, empNum);
-
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
             CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
                     .orElseThrow(EntityNotFoundException::new);
-
             cartItemRepository.delete(cartItem);
         }
-
         return  orderId;
     }
 }

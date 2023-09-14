@@ -29,7 +29,7 @@ public class Staff {
 	@Column(name = "emp_num", nullable = false)
 	private Long empNum;
 
-	@Column(name = "emp_id", unique = true, updatable = false )
+	@Column(name = "emp_id", updatable = false )
 	private String empId;
 
 	@Column(name = "emp_pwd", nullable = false)
