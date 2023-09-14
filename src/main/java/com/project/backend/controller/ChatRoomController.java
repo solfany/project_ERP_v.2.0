@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 //@CrossOrigin(origins = "http://localhost:3000") // 허용할 오리진을 지정
 public class ChatRoomController {
 
-//service로 변경
  private final ChatRoomRepository chatRoomRepository;
  private final ChatMessageRepository chatMessageRepository;
  
@@ -36,6 +35,7 @@ public class ChatRoomController {
  public String rooms(Model model) {
      return "/chat/room";
  }
+ 
  // 모든 채팅방 목록 반환
  @GetMapping("/rooms")
  @ResponseBody
@@ -57,7 +57,6 @@ public class ChatRoomController {
      return ResponseEntity.noContent().build();
 }
  
- 
  // 채팅방 입장 화면
  @GetMapping("/room/enter/{roomId}")
  public String sendMessage(Model model, @PathVariable Long roomId) {
@@ -73,7 +72,6 @@ public class ChatRoomController {
      return ResponseEntity.noContent().build();
  }
  
-
  // 특정 채팅방 조회
  @GetMapping("/room/{roomId}")
  @ResponseBody
@@ -81,6 +79,7 @@ public class ChatRoomController {
      return chatRoomRepository.findRoomById(roomId);
  }
 
+ //해당 엔드포인드로 이동시 담겨있는 모든 정보 가져옴 //db연계
  @GetMapping("/room/{roomId}/messages")
  @ResponseBody
  public List<ChatMessage> getMessages(@PathVariable String roomId) {

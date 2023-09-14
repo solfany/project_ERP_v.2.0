@@ -3,6 +3,7 @@ import "./Map.css";
 import { Table } from "reactstrap";
 import VacationModal from "./VacationModal"; // 수정된 부분
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Options = [
   { id: 0, label: "사원 번호", key: "empNum" },
@@ -14,6 +15,7 @@ const Options = [
   { id: 6, label: "휴가 종료", key: "vacaEnd" },
   { id: 7, label: "휴가 일수", key: "vacaEtc" },
   { id: 8, label: "휴가 사유", key: "vacaReason" },
+  { id: 9, label: "삭제" },
 ];
 
 const TableSub = Options.map((parameter) => (
@@ -23,9 +25,15 @@ const TableSub = Options.map((parameter) => (
 
 function Map() {
   const [data, setData] = useState([]);
+  const [currentEmpNum, setCurrentEmpNum] = useState("");
 
   useEffect(() => {
     fetchVacationData(); // 페이지 로딩 시 휴가 데이터를 불러옴
+    const rawStaffInfo = Cookies.get("staffInfo"); // 쿠키에서 staffInfo 가져오기
+    if (rawStaffInfo) {
+      const staffInfo = JSON.parse(rawStaffInfo);
+      setCurrentEmpNum(staffInfo.empNum); // empNum 설정
+    }
   }, []);
 
   const fetchVacationData = async () => {
@@ -63,10 +71,10 @@ function Map() {
           </div>
         </div>
         <Table style={{ whiteSpace: "nowrap" }}>
-          <thead>
+          <thead style={{ textAlign: "center" }}>
             <tr>{TableSub}</tr>
           </thead>
-          <tbody>
+          <tbody style={{ textAlign: "center" }}>
             {data.map((item) => (
               <tr key={item.id}>
                 <td>{item.staff?.empNum}</td>
@@ -79,7 +87,16 @@ function Map() {
                 <td>{item.vacaEtc}</td>
                 <td>{item.vacaReason}</td>
                 <td>
-                  <button onClick={() => handleDelete(item.id)}>삭제</button>
+                  {(currentEmpNum === item.staff?.empNum ||
+                    item.staff?.empNum === null) && (
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      style={{ color: "red" }}
+                      className="delete-button"
+                    >
+                      삭제
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

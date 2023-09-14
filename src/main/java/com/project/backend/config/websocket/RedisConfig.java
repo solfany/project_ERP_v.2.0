@@ -13,9 +13,6 @@ public class RedisConfig {
 	
 	//이 코드는 Spring Boot에서 Redis를 사용하기 위한 기본 설정을 하는 클래스
 
- /**
-  * redis pub/sub 메시지를 처리하는 listener 설정
-  */
  @Bean
  public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory) {
      RedisMessageListenerContainer container = new RedisMessageListenerContainer();
@@ -23,18 +20,7 @@ public class RedisConfig {
      return container;
  }
 
- /**
-  * 어플리케이션에서 사용할 redisTemplate 설정
-  */
- 
-// @Bean
-// public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-//     RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-//     redisTemplate.setConnectionFactory(connectionFactory);
-//     redisTemplate.setKeySerializer(new StringRedisSerializer());
-//     redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
-//     return redisTemplate;
-// }
+
  
  @Bean
  public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {

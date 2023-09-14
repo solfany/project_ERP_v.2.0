@@ -18,7 +18,7 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
 	@EntityGraph(attributePaths = "authorities")
 	Optional<Staff> findOneWithAuthoritiesByEmpId(String empId);
 
-
+	public Staff findByEmpName(String empName);
 
 
 }

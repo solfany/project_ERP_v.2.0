@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 	
 //이 코드는 Redis에서 발행/구독(pub/sub) 모델을 이용해 메시지를 발행하는 클래스
 
-//import 생략...
 @RequiredArgsConstructor
 @Service
 public class RedisPublisher {

@@ -33,23 +33,23 @@ public class VacationController {
         this.vacationService = vacationService;
     }
     
-    // GET 요청을 처리하는 핸들러 메서드를 추가
+    //신청한 데이터에 대한 모든 정보를 보여주도록 함 
     @GetMapping("/vacation")
     public ResponseEntity<List<Vacation>> getAllVacations() {
         List<Vacation> vacations = vacationService.getAllVacations();
         return ResponseEntity.ok(vacations);
     }
     
- // POST 요청을 처리하는 핸들러 메서드를 추가합니다.
+    //휴가신청을 요청을 처리
     @PostMapping("/vacation")
     public ResponseEntity<String> addVacation(@RequestBody VacationDto vacationDto) {
         try {
             vacationService.addVacation(vacationDto);
 
-            return ResponseEntity.ok("Vacation request added successfully");
+            return ResponseEntity.ok("성공적으로 등록 완료");
         } catch (NoSuchElementException e) {
             // Staff 엔티티를 찾을 수 없는 경우에 대한 처리
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Staff not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("휴가 정보를 찾을 수 없습니다 ");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add vacation request");
         }
@@ -61,7 +61,7 @@ public class VacationController {
     	//@pathvariable을 통해 메소드에서 {id}값을 찾아 삭제 시킴
         try {
             vacationService.deleteVacationById(id);
-            return ResponseEntity.ok("Vacation request deleted successfully");
+            return ResponseEntity.ok("삭제 성공");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete vacation request");
         }
