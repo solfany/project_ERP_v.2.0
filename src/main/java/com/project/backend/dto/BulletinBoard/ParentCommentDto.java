@@ -1,5 +1,6 @@
 package com.project.backend.dto.BulletinBoard;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -12,17 +13,10 @@ public class ParentCommentDto {
   private String email;
   private String commentContent;
   private Date commentDate;
-  private Date commentEdit;
-  private Date commentEditDate;
+  private Date commentEditDate; // 수정 댓글 저장 날짜a
 
 //  자식 댓글 리스트
   private List<ChildCommentDto> childComments;
-
-
-
-
-
-
 
 
 
@@ -90,13 +84,7 @@ public class ParentCommentDto {
     this.commentDate = commentDate;
   }
 
-  public Date getCommentEdit() {
-    return commentEdit;
-  }
 
-  public void setCommentEdit(Date commentEdit) {
-    this.commentEdit = commentEdit;
-  }
 
   public Date getCommentEditDate() {
     return commentEditDate;

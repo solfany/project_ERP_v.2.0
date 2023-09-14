@@ -24,7 +24,6 @@ import {
   CDropdownDivider,
   CFormSelect,
 } from "@coreui/react";
-import css from "./css.css";
 function CountWeekdays() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);

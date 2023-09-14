@@ -15,6 +15,7 @@ import {
 // ---------
 import CountWeekdays from "./CountWeekdays";
 import CarComponent from "./CarComponent";
+import "./listStyle.css";
 function TimeManagementSystem() {
   const [users, setUsers] = useState([]);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -166,7 +167,7 @@ function TimeManagementSystem() {
 
   return (
     <CContainer>
-      <h2 className="calendarTitle">근태정산</h2>
+      <h2 className="calendarTitle">근태관리</h2>
       <CountWeekdays />
       <Row>
         <Col md="4">
@@ -221,6 +222,7 @@ function TimeManagementSystem() {
                 <i className="fa fa-sort-numeric-desc"></i>
               )}
             </CTableHeaderCell>
+            <CTableHeaderCell>무급휴가일수</CTableHeaderCell>
             <CTableHeaderCell>소정근로일수</CTableHeaderCell>
             <CTableHeaderCell>실제 근로일수</CTableHeaderCell>
             <CTableHeaderCell>소정근로시간</CTableHeaderCell>
@@ -234,6 +236,7 @@ function TimeManagementSystem() {
               <CTableDataCell>{user.staff.empName}</CTableDataCell>
               <CTableDataCell>{user.staff.empNum}</CTableDataCell>
               <CTableDataCell>{user.staff.dept}</CTableDataCell>
+              <CTableDataCell>0</CTableDataCell>
               <CTableDataCell>{user.vacation}</CTableDataCell>
               <CTableDataCell>{user.workingDays} 일</CTableDataCell>
               <CTableDataCell>{user.actualWorkDays} 일</CTableDataCell>
@@ -253,6 +256,7 @@ function TimeManagementSystem() {
       </CTable>
       {getCurrentItems().length === 0 && <CarComponent />}
       <Pagination
+        className="pag"
         current={currentPage}
         total={users.length}
         pageSize={itemsPerPage}

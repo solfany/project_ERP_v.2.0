@@ -40,14 +40,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     ObjectMapper om = new ObjectMapper();
 
     try {
-      /*
-       * log.info(request.getInputStream().toString());
-       * BufferedReader br = request.getReader();
-       * String input = null;
-       * while((input = br.readLine()) != null) {
-       * log.info(input);
-       * }
-       */
+
       StaffDto staffDto = om.readValue(request.getInputStream(), StaffDto.class);
 
       log.info("staff.getEmpId() : {}", staffDto.getEmpId());
@@ -92,8 +85,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     TokenDto tokenDto = TokenDto.builder().EmpNum(userNo).refreshToken(refreshToken).build();
     jwtService.saveRefreshToken(tokenDto);
 
-    log.info("Generated Access Token: {}", accessToken);
-    log.info("Generated Refresh Token: {}", refreshToken);
+//    log.info("Generated Access Token: {}", accessToken);
+//    log.info("Generated Refresh Token: {}", refreshToken);
     
     jwtTokenProvider.setHeaderAccessToken(response, accessToken);
     jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);

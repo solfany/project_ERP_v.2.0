@@ -1,8 +1,81 @@
 .child-comment {
   margin-left: 40px;
+  list-style: none;
 }
 
 .BulletinBoardPages-DelBtn {
   background-color: none;
   background: none;
+  width: 2.8rem;
+  height: 2rem;
+  font-size: 0.01rem;
+  text-align: center;
+}
+.comment-content {
+  padding: 10px 10px 10px 10px;
+  border-bottom: 1px dotted #405687;
+  background-color: rgb(238, 241, 245);
+  border-radius: 1rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.edit-btn,
+.delete-btn {
+  position: absolute;
+  top: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.edit-btn {
+  right: 50px;
+}
+
+.delete-btn {
+  right: 10px;
+}
+
+.comment-toggle {
+  color: #8e8e8e;
+  cursor: pointer;
+}
+
+.comment-toggle:hover {
+  color: #000;
+}
+.comment-textbox {
+  border: none;
+}
+.comment-textbox:hover {
+  border-bottom: 1px dotted #485d89;
+}
+.comment-content {
+  padding: 10px 10px 10px 10px;
+  background-color: #e7edf2;
+  border-radius: 1rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  list-style: none;
+}
+.childText {
+  background-color: rgb(241, 243, 246);
+  border-bottom: 1px dotted #8f9bb5;
+
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 0.5rem;
+  border-radius: 1rem;
+  list-style: none;
+}
+.BulletinBoardPages-MainCommentBo:hover {
+  border-bottom: 1px dotted #8f9bb5;
+}
+.BulletinBoardPages-MainCommentBox {
+  background-color: rgb(247, 249, 251);
+  border: none;
+}
+.BulletinBoardPages-MainCommentBox:hover {
+  border-bottom: 1px dotted #485d89;
 }

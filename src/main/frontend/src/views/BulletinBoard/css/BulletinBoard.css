@@ -203,3 +203,15 @@
   flex-direction: row;
   align-items: center;
 }
+.BulletinBoardPages-Content {
+  padding: 40px 40px 40px 40px;
+  background-color: #f2f5f8;
+}
+.BulletinBoardPages-Content img {
+  max-width: 100%;
+  height: auto;
+}
+.boardPagination {
+  align-items: center;
+  text-align: center;
+}

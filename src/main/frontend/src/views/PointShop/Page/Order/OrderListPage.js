@@ -82,7 +82,7 @@ function OrderListPage() {
   };
 
   return (
-    <div className="app-content">
+    <div className="app-content" style={{ height: 'auto', minHeight: '80vh' }}>
       <PointShopNav />
       <div className="app-content-actions"></div>
       <CCard>

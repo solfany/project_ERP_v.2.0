@@ -11,7 +11,7 @@ import lombok.Setter;
 public class CartItem extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_item_id")
     private Long id;
 
@@ -25,19 +25,8 @@ public class CartItem extends BaseEntity {
 
     private int count;
 
-    @Transient
-    private int stockNumber;
-
-    // 상품의 재고 수량(stockNumber)를 가져오는 메소드
-    public int getStockNumber() {
-        if (item != null) {
-            return item.getStockNumber();
-        }
-        return 0; // item이 null인 경우 임의의 기본값 반환 또는 다른 적절한 값을 반환
-    }
-
     //장바구니에 담을 상품 엔티티를 생성하는 메소드
-    public static CartItem createCartItem(Cart cart, Item item, Integer count) {
+    public static CartItem createCartItem(Cart cart, Item item, int count) {
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
         cartItem.setItem(item);

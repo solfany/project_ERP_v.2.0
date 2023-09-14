@@ -3,19 +3,34 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CContainer, CForm, CFormInput, CRow, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+} from '@coreui/react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
 
 const StaffManagement = () => {
   const [empNum, setEmpNum] = useState(''); // 사원번호
   const [empId, setEmpId] = useState(''); //아이디
   const [empPwd, setEmpPwd] = useState(''); //패스워드
-  const [dept, setDept] = useState(''); // 부서 
+  const [dept, setDept] = useState(''); // 부서
   const [position, setPosition] = useState(''); // 직급
-  const [empName, setEmpName] = useState('');//이름
+  const [empName, setEmpName] = useState(''); //이름
   const [birthDate, setBirthDate] = useState(''); // 생년월일
   const [phoneNumber, setPhoneNumber] = useState(''); // 연락처
   const [address, setAddress] = useState(''); // 주소
@@ -39,7 +54,6 @@ const StaffManagement = () => {
   }, []);
 
   const handleSubmit = async () => {
-
     try {
       const staffDto = {
         empNum,
@@ -53,9 +67,11 @@ const StaffManagement = () => {
         address,
         email,
         bankName,
-        accountNumber
+        accountNumber,
       };
 
+      const newEmail = `${email.split('@')[0]}@${email.split('@')[1]}`;
+      setEmail(newEmail);
       // 요청 보내기 전에 버튼 비활성화
       //submitButton.setAttribute('disabled', 'true');
       await axios.post('/api/register', staffDto);
@@ -73,8 +89,6 @@ const StaffManagement = () => {
       setAccountNumber('');
       fetchStaffs();
       setShowModal(false); // Hide the modal after successful submission
-
-
     } catch (error) {
       console.error('Error adding staffs:', error);
     }
@@ -85,19 +99,20 @@ const StaffManagement = () => {
       await axios.delete(`/api/staff/${empNum}`);
       fetchStaffs(); // 직원 리스트 갱신
     } catch (error) {
-      console.error("삭제 불가", error);
+      console.error('삭제 불가', error);
     }
   };
-
-
-
 
   return (
     <div>
       <CContainer>
         <CRow>
           <CCol md={12} className="d-flex justify-content-end">
-            <CButton color="primary" style={{ fontSize: '12px' }} onClick={() => setShowModal(true)}>
+            <CButton
+              color="primary"
+              style={{ fontSize: '12px' }}
+              onClick={() => setShowModal(true)}
+            >
               직원 추가
             </CButton>
           </CCol>
@@ -107,7 +122,12 @@ const StaffManagement = () => {
             <CCard>
               <CCardHeader>직원 리스트</CCardHeader>
               <CCardBody>
-                <div style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+                <div
+                  style={{
+                    maxHeight: 'calc(100vh - 200px)',
+                    overflowY: 'auto',
+                  }}
+                >
                   <CTable>
                     <CTableHead>
                       <CTableRow>
@@ -134,9 +154,12 @@ const StaffManagement = () => {
                           <CTableDataCell>{staff.position}</CTableDataCell>
                           <CTableDataCell>{staff.empName}</CTableDataCell>
                           <CTableDataCell>{staff.birthDate}</CTableDataCell>
+                          {/* <CTableDataCell>{staff.phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</CTableDataCell> */}
                           <CTableDataCell>{staff.phoneNumber}</CTableDataCell>
                           <CTableDataCell>{staff.address}</CTableDataCell>
+                          {/* <CTableDataCell>{staff.email.split('@')[0]}</CTableDataCell> */}
                           <CTableDataCell>{staff.email}</CTableDataCell>
+                          {/* <CTableDataCell>{staff.email.includes('@') ? staff.email.split('@')[1] : ''}</CTableDataCell> */}
                           <CTableDataCell>{staff.bankName}</CTableDataCell>
                           <CTableDataCell>{staff.accountNumber}</CTableDataCell>
                           <CTableDataCell>
@@ -186,14 +209,13 @@ const StaffManagement = () => {
             <Form.Group className="mb-3">
               <Form.Label>부서</Form.Label>
               <Form.Control
-
                 as="select"
                 type="text"
                 placeholder="부서"
                 value={dept}
                 onChange={(e) => setDept(e.target.value)}
               >
-                <option value="선택">선택</option>
+                <option value="부서선택">부서선택</option>
                 <option value="인사팀">인사팀</option>
                 <option value="관리팀">관리팀</option>
                 <option value="생산팀">생산팀</option>
@@ -210,7 +232,7 @@ const StaffManagement = () => {
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
               >
-                <option value="선택">선택</option>
+                <option value="직급선택">직급선택</option>
                 <option value="사장">사장</option>
                 <option value="부장">부장</option>
                 <option value="차장">차장</option>
@@ -244,7 +266,10 @@ const StaffManagement = () => {
                 placeholder="번호를 입력해주세요"
                 value={phoneNumber}
                 onChange={(e) => {
-                  const formattedPhoneNumber = e.target.value.replace(/[^0-9]/g, '');
+                  const formattedPhoneNumber = e.target.value.replace(
+                    /[^0-9]/g,
+                    ''
+                  );
                   setPhoneNumber(formattedPhoneNumber);
                 }}
               />
@@ -258,50 +283,52 @@ const StaffManagement = () => {
                 onChange={(e) => setAddress(e.target.value)}
               />
             </Form.Group>
-            {/* <Form.Group className="mb-3">
-              <Form.Label>이메일주소</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="이메일주소"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              /> */}
             <Form.Group className="mb-3">
-              <Form.Label>이메일 아이디</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="아이디"
-                value={email.split('@')[0]} // @ 이전의 아이디 부분
-                onChange={(e) => {
-                  const newEmail = e.target.value + (email.includes('@') ? email.split('@')[1] : '');
-                  setEmail(newEmail);
-                }}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>이메일 도메인</Form.Label>
-              <Form.Control
-                as="select"
-                value={email.includes('@') ? email.split('@')[1] : ''}
-                onChange={(e) => {
-                  const newEmail = email.split('@')[0] + '@' + e.target.value;
-                  setEmail(newEmail);
-                }}
-              >
-                <option value="naver.com">네이버</option>
-                <option value="google.com">구글</option>
-                {/* 다른 이메일 도메인도 추가할 수 있습니다. */}
-              </Form.Control>
-
+              <Form.Label>이메일</Form.Label>
+              <div className="d-flex">
+                <Form.Control
+                  type="text"
+                  placeholder="이메일"
+                  value={email.split('@')[0]} // @ 이전의 아이디 부분
+                  onChange={(e) => {
+                    const newEmail =
+                      e.target.value +
+                      (email.includes('@') ? email.split('@')[1] : '');
+                    setEmail(newEmail);
+                  }}
+                  style={{ flex: 1, marginRight: '5px' }}
+                />
+                <Form.Control
+                  as="select"
+                  value={email.includes('@') ? email.split('@')[1] : ''}
+                  onChange={(e) => {
+                    const newEmail = email.split('@')[0] + '@' + e.target.value;
+                    setEmail(newEmail);
+                  }}
+                  style={{ flex: 2 }}
+                >
+                  <option value="naver.com">naver.com</option>
+                  <option value="google.com">google.com</option>
+                  {/* 다른 이메일 도메인도 추가할 수 있습니다. */}
+                </Form.Control>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>은행명</Form.Label>
               <Form.Control
+                as="select"
                 type="text"
                 placeholder="은행명"
                 value={bankName}
                 onChange={(e) => setBankName(e.target.value)}
-              />
+              >
+                <option value="은행선택">은행선택</option>
+                <option value="국민은행">국민은행</option>
+                <option value="기업은행">기업은행</option>
+                <option value="우리은행">우리은행</option>
+                <option value="농협">농협</option>
+                <option value="카카오뱅크">카카오뱅크</option>
+              </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>계좌번호</Form.Label>

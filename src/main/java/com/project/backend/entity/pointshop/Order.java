@@ -2,6 +2,7 @@ package com.project.backend.entity.pointshop;
 
 import com.project.backend.constant.OrderStatus;
 import com.project.backend.entity.Staff;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,9 @@ public class Order extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+
     private Staff staff;
+
 
     private LocalDateTime orderDate;  //주문일
 

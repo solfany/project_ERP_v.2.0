@@ -58,7 +58,7 @@ public class ItemController {
 
 
 
-    //상품 상세 페이지 진입 및 수정을 위한 데이터 전송
+    //상품 상세 페이지 진입
     @GetMapping(value = "/{itemId}")
     public ResponseEntity<ItemFormDto> getItemDetails(@PathVariable("itemId") Long itemId) {
         try {

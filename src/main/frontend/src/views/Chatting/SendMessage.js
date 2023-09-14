@@ -290,14 +290,14 @@ const SendMessage = () => {
           >
             {msg.sender} - {msg.message}
             {/* 현재 사용자가 이 메시지의 송신자일 경우만 삭제 버튼을 표시합니다. */}
-            {msg.sender === sender && (
+            {/* {msg.sender === sender && (
               <button
                 className="delete-button"
                 onClick={() => deleteMessage(msg.messageId)}
               >
                 Delete
               </button>
-            )}
+            )} */}
           </li>
         ))}
       </ul>

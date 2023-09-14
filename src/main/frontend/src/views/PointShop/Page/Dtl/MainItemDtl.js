@@ -34,7 +34,6 @@ const MainItemDtl = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeImage, setActiveImage] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1); // 선택된 수량 상태 추가
-
   // 쿠키에서 staffInfo 데이터 가져오기
   const staffInfo = JSON.parse(Cookies.get('staffInfo'));
 

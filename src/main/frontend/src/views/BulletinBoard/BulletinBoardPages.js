@@ -1,6 +1,6 @@
 import "./css/BulletinBoard.css";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
 import FormattedDate from "./FormattedDate";
@@ -34,6 +34,12 @@ const BulletinBoardPages = (props) => {
   const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const staffInfo = JSON.parse(Cookies.get("staffInfo"));
+  const currentId = parseInt(id, 10);
+  const prevPost = currentId - 1;
+  const nextPost = currentId + 1;
+  const [maxPostId, setMaxPostId] = useState(null);
+  const [minPostId] = useState(1); // Assuming your post IDs start from 1
+
   console.log(staffInfo);
   //댓글 불러오기
   useEffect(() => {
@@ -50,7 +56,10 @@ const BulletinBoardPages = (props) => {
   useEffect(() => {
     fetch(`/api/bulletinboard/BulletinBoardPages/${id}`)
       .then((response) => response.json())
-      .then((data) => setPost(data));
+      .then((data) => {
+        setPost(data);
+      });
+    // TODO: 백엔드에서 사용 가능한 postNum 목록을 가져올 수 있는 API가 필요
   }, [id]);
 
   if (!post) return <div>Loading...</div>;
@@ -77,77 +86,53 @@ const BulletinBoardPages = (props) => {
     <Container className="BulletinBoardPages-Container">
       <CCard className="BulletinBoardPages-CCard">
         <Row>
-          <CCol md={9} className="BulletinBoardPages-Center">
-            <h1>
-              {post.postTitle}
-              <h4>
-                <CBadge color="secondary">{post.postCategory} </CBadge>
-              </h4>
-            </h1>
+          <CCol md={12} className="BulletinBoardPages-Center">
+            <h1>{post.postTitle}</h1>
           </CCol>
           <div className="toptext"></div>
           <pre>
+            카테고리 :<CBadge color="secondary">{post.postCategory} </CBadge>{" "}
+            <br />
             작성일: [ <FormattedDate date={post.postDate} /> ] 조회수:{" "}
-            {post.postCountNum}
-          </pre>
+            {post.postCountNum} <br />
+            작성자 : {post.empId} &nbsp; 이메일 :
+            <a id="email" href="mailto:djkehh@gmail.com">
+              {post.email}
+            </a>
+            <br />
+            해시태그 : <HashTagCustom hashtagNames={post.hashtagName} />
+          </pre>{" "}
         </Row>
 
         <Row className="BulletinBoardPages-group">
-          <CCol
-            md={3}
-            lg={3}
-            className="order-md-last BulletinBoardPages-userInfo"
-          >
-            <aside>
-              <div>
-                <img
-                  style={{ width: "10em", height: "10em" }}
-                  id="image"
-                  alt="User"
-                  src="https://png.pngtree.com/png-vector/20191115/ourmid/pngtree-beautiful-profile-line-vector-icon-png-image_1990469.jpg"
-                />
-              </div>
-              <p>
-                <span id="nickname"> 유저 아이디 : {post.empId}</span>
-              </p>
-              <p>
-                email :
-                <a id="email" href="mailto:djkehh@gmail.com">
-                  {post.email}
-                </a>
-              </p>
-              <p>
-                <span id="hashtag" className="badge mx-1">
-                  <a className="text-reset">
-                    <HashTagCustom hashtagNames={post.hashtagName} />
-                  </a>
-                </span>
-              </p>
-            </aside>
-          </CCol>
-
-          <CCol md={9} lg={9} className="BulletinBoardPages-Content">
+          <CCol md={10} lg={12} className="BulletinBoardPages-Content">
             <p dangerouslySetInnerHTML={{ __html: post.postContent }}></p>
           </CCol>
         </Row>
-        <CCol>
+        {/* <CCol>
           <LikeHeartBtn postNum={post.postNum} empNum={staffInfo.empNum} />
-        </CCol>
+        </CCol> */}
 
         <div className="d-grid gap-2 d-md-flex justify-content-md-end BulletinBoardPages-AddDelBtn">
-          <CButton color="danger" role="button" onClick={handleDelete}>
-            삭제
-          </CButton>
+          {staffInfo.empId === post.empId && (
+            <CButton color="danger" role="button" onClick={handleDelete}>
+              삭제
+            </CButton>
+          )}
 
-          <CButton
-            color="success"
-            role="button"
-            onClick={() => {
-              navigate(`/BulletinBoard/BulletinBoardPagesEdit/${post.postNum}`);
-            }}
-          >
-            수정
-          </CButton>
+          {staffInfo.empId === post.empId && (
+            <CButton
+              color="success"
+              role="button"
+              onClick={() => {
+                navigate(
+                  `/BulletinBoard/BulletinBoardPagesEdit/${post.postNum}`
+                );
+              }}
+            >
+              수정
+            </CButton>
+          )}
         </div>
         {/*첫댓글 작성 폼*/}
         <CommentInput postNum={post.postNum} />
@@ -175,16 +160,36 @@ const BulletinBoardPages = (props) => {
               className="BulletinBoardPages-PageNation"
             >
               <ul className="pagination">
-                <li className="page-item">
-                  <a className="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo; 이전 글 </span>
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true"> 다음 글 &raquo;</span>
-                  </a>
-                </li>
+                {prevPost ? (
+                  <li className="page-item">
+                    <Link
+                      to={`/BulletinBoard/BulletinBoardPages/${prevPost}`}
+                      className="page-link"
+                      aria-label="Previous"
+                    >
+                      <span aria-hidden="true">&laquo; 이전 글 </span>
+                    </Link>
+                  </li>
+                ) : (
+                  <li className="page-item disabled">
+                    <span className="page-link">&laquo; 이전 글</span>
+                  </li>
+                )}
+                {nextPost ? (
+                  <li className="page-item">
+                    <Link
+                      to={`/BulletinBoard/BulletinBoardPages/${nextPost}`}
+                      className="page-link"
+                      aria-label="Next"
+                    >
+                      <span aria-hidden="true"> 다음 글 &raquo;</span>
+                    </Link>
+                  </li>
+                ) : (
+                  <li className="page-item disabled">
+                    <span className="page-link">다음 글 &raquo;</span>
+                  </li>
+                )}
               </ul>
             </nav>
           </CCol>

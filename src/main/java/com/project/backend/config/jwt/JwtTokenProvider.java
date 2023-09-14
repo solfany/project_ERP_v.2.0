@@ -1,11 +1,13 @@
 package com.project.backend.config.jwt;
 
+
 import com.project.backend.config.auth.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,10 +15,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 
 
+
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
 
+
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.DatatypeConverter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 // @Component
@@ -30,11 +47,13 @@ public class JwtTokenProvider {
   private final Key key;
   private final UserDetailsService userDetailsService;
 
+
   public JwtTokenProvider(String secret, UserDetailsService userDetailsService) {
     byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secret);
     this.key = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
     this.userDetailsService = userDetailsService;
   }
+
 
   /**
    * jwt 토큰 생성
@@ -48,7 +67,9 @@ public class JwtTokenProvider {
     // Date expiryDate = new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS);
     // // 만료 시간 세팅 : 60000 (1분) * 10 => 10분
 
+
     PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+
 
     /*
      * iss: 토큰 발급자 (issuer) sub: 토큰 제목 (subject) aud: 토큰 대상자 (audience) exp: 토큰의
@@ -62,7 +83,7 @@ public class JwtTokenProvider {
     // payload 에
     // 저장되는 정보단위
 
-    claims.put("staff", principalDetails.getStaff());
+
 
     // 표준 클레임 셋팅
     JwtBuilder builder = Jwts.builder().setClaims(claims) // 정보 저장
@@ -87,9 +108,11 @@ public class JwtTokenProvider {
     Date expiryDate = new Date(now.getTime() + JWT_REFRESH_EXPIRATION_MS);
     // 60000 * 1; // 만료 시간 세팅 : 60000 (1분) * 10 => 10분
 
+
     return Jwts.builder().setIssuedAt(now).setExpiration(expiryDate).signWith(key, SignatureAlgorithm.HS512)
       .compact();
   }
+
 
   /**
    * Jwt 토큰에서 유져이름 추출
@@ -139,6 +162,7 @@ public class JwtTokenProvider {
   public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
     response.setHeader("refreshtoken", "Bearer " + refreshToken);
   }
+
 
   public Authentication getAuthenticationByAccessToken(String token) {
     UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsernameByAccessToken(token));

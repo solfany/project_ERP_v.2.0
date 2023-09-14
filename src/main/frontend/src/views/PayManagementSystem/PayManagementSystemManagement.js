@@ -4,6 +4,7 @@ import GetThisMonth from "../TimeManagementSystem/CountWeekdays";
 import Pdf from "./Pdf";
 import { Pagination, message } from "antd";
 import Cookies from "js-cookie";
+import "./PayManagementSystemManagement.css";
 import {
   CContainer,
   CTable,
@@ -140,7 +141,7 @@ function PayManagementSystemManagement() {
               ))}
             </CTableBody>{" "}
           </CTable>{" "}
-          <Pagination />
+          <Pagination className="payPagination" />
         </Col>
       </CContainer>
     </>

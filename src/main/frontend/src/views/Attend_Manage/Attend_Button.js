@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import {
   CCol,
   CRow, // CoreUI의 버튼 컴포넌트
-  CSpinner,
   CWidgetStatsD, // 로딩 스피너 컴포넌트
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
@@ -67,7 +66,7 @@ function Attend_Button({
       });
 
       currentTime.setHours(currentTime.getHours() - 9);
-
+      console.log(response);
       if (response.data.message === '이미 출근 기록이 존재합니다.') {
         message.error(response.data.message);
       } else if (response.data.message === '출근 기록이 완료되었습니다.') {

@@ -4,6 +4,7 @@ import com.project.backend.dto.CalendarEventDto;
 import com.project.backend.entity.CalendarEvent;
 import com.project.backend.repository.CalendarEventRepository;
 import com.project.backend.service.CalendarEventService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,17 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/calendarevents")
 public class CalendarEventController {
 
     private final CalendarEventRepository calendarEventRepository;
     private final CalendarEventService calendarEventService;
 
-
-    public CalendarEventController(CalendarEventRepository calendarEventRepository, CalendarEventService calendarEventService) {
-        this.calendarEventRepository = calendarEventRepository;
-        this.calendarEventService = calendarEventService;
-    }
 
     @GetMapping
     public List<CalendarEvent> getAllEvents() {

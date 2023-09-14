@@ -28,7 +28,6 @@ public class CartController {
     @PostMapping(value = "/")
     public @ResponseBody ResponseEntity cart(@RequestBody @Valid CartItemDto cartItemDto,
                                               BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -46,24 +45,16 @@ public class CartController {
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
 
-//    2.
+    //    2.
     @PostMapping("/list")
     public ResponseEntity<List<CartDetailDto>> getCartItems(@RequestBody Staff staff) {
         List<CartDetailDto> cartDetailDtoList = cartService.getCartList(staff.getEmpNum());
         return ResponseEntity.ok(cartDetailDtoList);
     }
 
-    // 1.
-    //    @GetMapping("/cart")
-//    public ResponseEntity<List<CartDetailDto>> getCartItems(Principal principal) {
-//        List<CartDetailDto> cartDetailDtoList = cartService.getCartList(principal.getName());
-//        return ResponseEntity.ok(cartDetailDtoList);
-//    }
-//
     //장바구니 상품의 수량을 업데이트하는 요청을 처리
     @PatchMapping(value = "/item/{cartItemId}", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> updateCartItem(
@@ -86,21 +77,6 @@ public class CartController {
         return new ResponseEntity<>("장바구니 상품 수량 업데이트 성공", HttpStatus.OK);
     }
 
-    //    //장바구니 상품의 수량을 업데이트하는 요청을 처리
-//    @PatchMapping(value = "/cartItem/{cartItemId}")
-//    public @ResponseBody ResponseEntity updateCartItem(
-//            @PathVariable("cartItemId") Long cartItemId, int count, Principal principal) {
-//
-//        if (count <= 0) {
-//            return new ResponseEntity<String>("최소 1개 이상 담아주세요", HttpStatus.BAD_REQUEST);
-//        } else if (!cartService.validateCartItem(cartItemId, principal.getName())) {
-//            return new ResponseEntity<String>("수정 권한이 없습니다", HttpStatus.FORBIDDEN);
-//        }
-//
-//        cartService.updateCartItemCount(cartItemId, count);
-//        return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
-//    }
-//
     //장바구니 상품을 삭제하는 요청을 처리
     @DeleteMapping(value = "/item/{cartItemId}")
     public @ResponseBody ResponseEntity deleteCartItem(
@@ -109,7 +85,6 @@ public class CartController {
         cartService.deleteCartItem(cartItemId);
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
-//
 
     @PostMapping(value = "/orders")
     public @ResponseBody ResponseEntity orderCartItem(
@@ -125,24 +100,4 @@ public class CartController {
         Long orderId = cartService.orderCartItem(cartOrderDtoList, staff.getEmpNum());
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
-
-//    @PostMapping(value = "/cart/orders")
-//    public @ResponseBody ResponseEntity orderCartItem(
-//            @RequestBody CartOrderDto cartOrderDto, Principal principal) {
-//
-//        List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
-//
-//        if (cartOrderDtoList == null || cartOrderDtoList.size() == 0) {
-//            return new ResponseEntity<String>("주문할 상품을 선택해주세요", HttpStatus.FORBIDDEN);
-//        }
-//
-//        for (CartOrderDto cartOrder : cartOrderDtoList) {
-//            if (!cartService.validateCartItem(cartOrder.getCartItemId(), principal.getName())) {
-//                return new ResponseEntity<String>("주문 권한이 없습니다", HttpStatus.FORBIDDEN);
-//            }
-//        }
-//
-//        Long orderId = cartService.orderCartItem(cartOrderDtoList, principal.getName());
-//        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
-//    }
 }

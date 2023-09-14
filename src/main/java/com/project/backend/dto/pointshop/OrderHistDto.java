@@ -5,7 +5,6 @@ import com.project.backend.entity.pointshop.Order;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +14,7 @@ public class OrderHistDto {
 
     public OrderHistDto(Order order) {
         this.orderId = order.getId();
-        // 주문 날짜 파싱 및 포맷팅
-        LocalDateTime orderDateTime = order.getOrderDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-        this.orderDate = orderDateTime.format(formatter);
-
+        this.orderDate = order.getOrderDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.orderStatus = order.getOrderStatus();
     }
 

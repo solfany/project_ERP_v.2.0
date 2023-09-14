@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StaffDto {
 
-	private Long empNum;
+	private long empNum;
 	private String empId;
 	private String empPwd;
 	private String dept;

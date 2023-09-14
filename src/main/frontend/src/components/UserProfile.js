@@ -1,42 +1,60 @@
-// npm install jwt-decode
-
 import React, { useEffect, useState } from 'react';
-import jwt_decode from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import {
+  CContainer,
+  CHeader,
+  CHeaderNav,
+  CDropdown,
+  CDropdownToggle,
+  CDropdownMenu,
+  CDropdownItem,
+} from "@coreui/react";
+import Cookies from 'js-cookie'; // js-cookie 라이브러리 추가
+
 
 
 const UserProfile = () => {
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
-    // accessToken을 가져와서 Staff 정보 파싱
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      const decodedToken = jwt_decode(accessToken);
-      const staffInfo = decodedToken.staff; // 'sub' 필드를 사용하여 empId 추출
-      const empId = staffInfo.empId;
-      setUserInfo({ empId });
+    // 쿠키에서 staff 정보를 가져오기
+    const staffInfoCookie = Cookies.get('staffInfo');
+
+    if (staffInfoCookie) {
+      const staffInfo = JSON.parse(staffInfoCookie);
+      const empName = staffInfo.empName;
+      setUserInfo({ empName });
     }
   }, []);
 
   const handleLogout = () => {
-    //로그 아웃 버튼 클릭 시 로컬 스토리지에서 토큰 제거
+    // 로그아웃 버튼 클릭 시 로컬 스토리지와 쿠키에서 토큰 및 staff 정보 제거
     localStorage.removeItem('accessToken');
-
+    Cookies.remove('staffInfo');
     navigate('/Login');
-  }
+  };
 
   return (
-    <div>
-      {userInfo ? (
-        <div>
-          <p>{userInfo.empId} 님 환영합니다.</p>
-          <button onClick={handleLogout}>로그아웃</button>
-        </div>
-      ) : (
-        <p>사용자 정보를 불러올 수 없습니다.</p>
-      )}
-    </div>
+    <CHeader position="sticky" style={{ border: 'none' }}>
+      <CContainer fluid>
+        <CHeaderNav className="d-none d-md-flex">
+          {userInfo ? (
+            <CDropdown inNav>
+              <CDropdownToggle caret>
+                {userInfo.empName} 님
+              </CDropdownToggle>
+              <CDropdownMenu>
+                <CDropdownItem>
+                  <Link to="/login/ProfileEdit">정보 수정</Link> {/* 정보 수정 페이지로 이동 */}
+                </CDropdownItem>
+                <CDropdownItem onClick={handleLogout}>로그아웃</CDropdownItem>
+              </CDropdownMenu>
+            </CDropdown>
+          ) : null}
+        </CHeaderNav>
+      </CContainer>
+    </CHeader>
   );
 };
 

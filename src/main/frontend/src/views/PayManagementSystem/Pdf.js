@@ -15,17 +15,10 @@ import {
   CButton,
 } from "@coreui/react";
 import { cilCloudDownload } from "@coreui/icons";
-// 그 후 사용하실 때는 다음과 같이 사용하면 됩니다:
-// encodedData.encodedFontData
-// encodedData.logoData
 
 function Pdf({ userData }) {
   const [qrCodeURL, setQrCodeURL] = useState("");
   const [pdfViewerUrl, setPdfViewerUrl] = useState("");
-
-  // useEffect(() => {
-  //   generateQrCode();
-  // }, []);
 
   // QR코드 생성 함수 변경
   const generateQrCode = async (pdfUrl) => {
@@ -42,18 +35,15 @@ function Pdf({ userData }) {
   const generatePdf = async () => {
     const doc = new jsPDF();
 
-    // const finalPdfDataURI = doc.output("datauristring");
-
     const finalPdfDataURI = doc.output("datauristring");
     const finalPdfBlob = doc.output("blob");
     const finalPdfURL = URL.createObjectURL(finalPdfBlob);
-    const pageWidth = 210; // A4 width in mm
-    const pageHeight = 297; // A4 height in mm
+
     setPdfViewerUrl(finalPdfURL);
 
     const base64Font = encodedData.encodedFontData;
-    // 로고 추가
 
+    // 로고 추가
     doc.addFileToVFS("NotoSerifKR.ttf", base64Font);
     doc.addFont("NotoSerifKR.ttf", "NotoSerifKR", "normal");
     doc.setFont("NotoSerifKR");
@@ -64,10 +54,13 @@ function Pdf({ userData }) {
       align: "center",
       fontStyle: "bold",
     });
+
+    // 기본 정보 추가
     doc.setFontSize(12);
     doc.text("회사명 : ", 10, 30);
     doc.text("지급일 : ", 10, 40);
 
+    // 테이블 헤더와 데이터 설정
     const headers = [
       ["이름", "생년월일", "사원번호", "부서명", "직급", "주소", "이메일"],
     ];
@@ -78,7 +71,6 @@ function Pdf({ userData }) {
         userData.empNum,
         userData.dept,
         userData.position,
-
         userData.address,
         userData.email,
       ],
@@ -99,11 +91,12 @@ function Pdf({ userData }) {
       },
     });
 
+    // 근태정산 항목 테이블
     const detailsHeader = [["근태정산 항목", "합계"]];
     const detailsData = [
       ["실제근로 일수", userData.actualWorkDays],
       ["실제근로시간", userData.workingHours],
-      ["무급휴가 일수", userData.workingHours],
+      ["무급휴가 일수", "0"],
       ["유급휴가 일수", userData.vacation],
     ];
 
@@ -121,6 +114,7 @@ function Pdf({ userData }) {
       headStyles: { fillColor: [200, 200, 200] },
     });
 
+    // 지급항목 테이블
     const calculatorHeader = [["지급항목", "지급금액"]];
     const calculatorData = [
       ["기본급", "3,300,000 원"],
@@ -145,6 +139,8 @@ function Pdf({ userData }) {
         fillColor: [200, 200, 200],
       },
     });
+
+    // 공제항목 테이블
     const totalHeader = [["공제항목", "공제금액"]];
     const totalData = [
       ["국민연금", "180,000 원 "],
@@ -169,6 +165,7 @@ function Pdf({ userData }) {
         fillColor: [200, 200, 200],
       },
     });
+
     doc.setFontSize(10);
     doc.text(
       "귀하의 노고에 감사드립니다.",
@@ -178,31 +175,16 @@ function Pdf({ userData }) {
         align: "center",
       }
     );
+
     doc.setFontSize(14);
     doc.text("주식 회사 ( ---- )", 105, doc.autoTable.previous.finalY + 20, {
       align: "center",
     });
-    // if (qrCodeURL) {
-    //   doc.addImage(
-    //     qrCodeURL,
-    //     "PNG",
-    //     150,
-    //     doc.autoTable.previous.finalY + 30,
-    //     30,
-    //     30
-    //   );
-    // }
-    // =======QR코드 PDF삽입 코드 ==========
-    // QR생성 코드는 가장 하단에 위치해야 한다.
+
+    // QR 코드 추가
     const pdfBlob = doc.output("blob");
-
-    // Blob으로부터 임시 URL을 생성합니다.
     const pdfTempUrl = URL.createObjectURL(pdfBlob);
-
-    // 생성된 임시 URL로 QR 코드를 생성합니다.
     const generatedQrCodeURL = await generateQrCode(pdfTempUrl);
-
-    // 생성된 QR 코드를 PDF에 추가합니다.
     doc.addImage(
       generatedQrCodeURL,
       "PNG",
@@ -211,20 +193,10 @@ function Pdf({ userData }) {
       30,
       30
     );
-    // 이미지 크기 설정 (예: 가로 200mm, 세로 50mm)
-    // const imageWidth = 200;
-    // const imageHeight = 200;
 
-    // // 이미지를 PDF 하단에 추가
-    // const x = (pageWidth - imageWidth) / 2; // 이미지를 중앙에 위치시키기 위한 x 좌표
-    // const y = pageHeight - imageHeight; // 이미지를 하단에 위치시키기 위한 y 좌표
-
-    // doc.addImage(encodedData.logoData, "PNG", x, y, imageWidth, imageHeight);
-
-    // PDF를 다시 저장합니다.
+    // PDF 저장 및 다운로드
     const updatedPdfBlob = doc.output("blob");
     const updatedPdfUrl = URL.createObjectURL(updatedPdfBlob);
-
     setPdfViewerUrl(updatedPdfUrl);
     doc.save("급여명세.pdf");
   };
