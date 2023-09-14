@@ -11,13 +11,13 @@ import com.project.backend.repository.bulletinboard.ParentCommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 @Service
 public class CommentService {
-
-
 
 
   @Autowired
@@ -29,6 +29,7 @@ public class CommentService {
   @Autowired
   private ChildCommentRepository childCommentRepository;
 
+
   public void addParentComment(Long postNum, ParentCommentDto parentCommentDto) {
     BulletinBoard bulletinBoard = bulletinBoardRepository.findById(postNum)
       .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postNum));
@@ -39,7 +40,6 @@ public class CommentService {
     parentComment.setEmpNum(parentCommentDto.getEmpNum());
     parentComment.setEmail(parentCommentDto.getEmail());
     parentComment.setCommentDate(parentCommentDto.getCommentDate());
-    parentComment.setCommentEdit(parentCommentDto.getCommentEdit());
     parentComment.setCommentEditDate(parentCommentDto.getCommentEditDate());
     parentCommentRepository.save(parentComment);
   }
@@ -78,7 +78,6 @@ public class CommentService {
         parentCommentDto.setEmpNum(parentComment.getEmpNum());
         parentCommentDto.setEmail(parentComment.getEmail());
         parentCommentDto.setCommentDate(parentComment.getCommentDate());
-        parentCommentDto.setCommentEdit(parentComment.getCommentEdit());
         parentCommentDto.setCommentEditDate(parentComment.getCommentEditDate());
 
         // 자식 댓글 리스트를 가져와서 ParentCommentDto에 추가
@@ -101,7 +100,6 @@ public class CommentService {
       })
       .collect(Collectors.toList());
   }
-
 
 
   // 부모 댓글 삭제
@@ -132,5 +130,31 @@ public class CommentService {
     // 자식 댓글 삭제
     childCommentRepository.delete(childComment);
   }
-}
 
+  // 부모 댓글 수정
+  public void editParentComment(Long postNum, Long commentId, ParentCommentDto parentCommentDto) {
+    // 게시글과 댓글을 찾습니다.
+    ParentComment parentComment = parentCommentRepository.findById(commentId)
+      .orElseThrow(() -> new IllegalArgumentException("해당 부모 댓글이 없습니다. id=" + commentId));
+
+    // 댓글 내용과 수정일자만 업데이트 합니다.
+    parentComment.setCommentContent(parentCommentDto.getCommentContent());
+    parentComment.setCommentEditDate(new Date()); // 댓글 수정 시간을 현재 시간으로 업데이트
+
+    parentCommentRepository.save(parentComment);
+  }
+
+
+  // 자식 댓글 수정
+  public void editChildComment(Long postNum, Long childCommentId, ChildCommentDto childCommentDto) {
+    ChildComment childComment = childCommentRepository.findById(childCommentId)
+      .orElseThrow(() -> new IllegalArgumentException("해당 자식 댓글이 없습니다. id=" + childCommentId));
+
+    // 댓글 내용과 수정일자만 업데이트 합니다.
+    childComment.setCommentContent(childCommentDto.getCommentContent());
+    childComment.setCommentEditDate(new Date()); // 댓글 수정 시간을 현재 시간으로 업데이트
+
+    childCommentRepository.save(childComment);
+  }
+
+}

@@ -1,0 +1,26 @@
+/* HashtagCustom.css */
+
+.badge-cyan {
+  background-color: cyan;
+  color: #000; /* 필요한 경우 글자색을 변경 */
+}
+
+.badge-magenta {
+  background-color: magenta;
+  color: #fff; /* 필요한 경우 글자색을 변경 */
+}
+
+.badge-yellow {
+  background-color: yellow;
+  color: #000; /* 필요한 경우 글자색을 변경 */
+}
+
+.badge-gray {
+  background-color: gray;
+  color: #fff; /* 필요한 경우 글자색을 변경 */
+}
+
+.badge-olive {
+  background-color: olive;
+  color: #fff; /* 필요한 경우 글자색을 변경 */
+}

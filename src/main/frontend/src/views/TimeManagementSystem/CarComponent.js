@@ -5,11 +5,10 @@ const CarComponent = () => {
   return (
     <div className="CarHTHML">
       <h5 className="CarText">일치하는 데이터가 없습니다.</h5>
-      <div className="CarBody">
-        <div className="car-container">
-          {/* Any additional markup/content */}
-        </div>
-      </div>
+      {/* <div className="CarBody"> */}
+      {/* <div className="car-container">
+        </div> */}
+      {/* </div> */}
     </div>
   );
 };

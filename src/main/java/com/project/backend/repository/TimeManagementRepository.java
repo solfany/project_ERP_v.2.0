@@ -11,6 +11,4 @@ public interface TimeManagementRepository extends JpaRepository<TimeManagementSy
   // 예를 들어, 이름으로 TimeManagementSystem 데이터를 찾는 메서드는 아래와 같이 정의할 수 있습니다.
   // List<TimeManagementSystem> findByEmpName(String empName);
   void deleteByStaff(Staff staff);
-
-
 }

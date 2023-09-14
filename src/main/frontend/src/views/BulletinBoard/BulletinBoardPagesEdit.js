@@ -91,6 +91,7 @@ const BulletinBoardPagesEdit = (props) => {
       <Container className="BulletinBoardPages-Container">
         <CCard className="BulletinBoardPages-CCard">
           <CRow className="BulletinBoardModalInputSize">
+            <h2>게시글 수정</h2>
             <CCol md={3}>
               <CFormSelect
                 aria-label="카테고리"

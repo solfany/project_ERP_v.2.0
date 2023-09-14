@@ -1,5 +1,6 @@
 import React from "react";
 import { CBadge } from "@coreui/react";
+import "./HashtagCustom.css"; // CSS 파일 가져오기
 
 const tagColors = [
   "primary",

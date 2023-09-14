@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Children } from "react";
+import React, { useState, useEffect, Childre, useCallback } from "react";
 import axios from "axios";
 import { CRow, CCol, CButton, CFormTextarea, CForm } from "@coreui/react";
 import { Input, Pagination } from "antd";
@@ -41,22 +41,21 @@ export const CommentInput = ({ postNum }) => {
 
   return (
     <CRow className="BulletinBoardPages-MainComment">
-      <CCol md={9} sm="auto">
+      <CCol md={10} sm="auto">
         <input type="hidden" className="article-id" />
         <input type="hidden" className="parent-comment-id" />
         <CFormTextarea
-          className="form-control comment-textbox BulletinBoardPages-MainCommentBox"
+          className="BulletinBoardPages-MainCommentBox"
           placeholder="댓글 작성시 상대방에 대한 매너를 지켜주세요. "
-          rows="4"
+          rows="3"
           required
           value={comment}
           onChange={handleCommentChange}
         />
       </CCol>
-      <CCol md={3} sm="auto">
+      <CCol md={2} sm="auto">
         <CButton
           className="form-control mt-2"
-          color="info"
           type="button"
           onClick={handleSubmitComment}
         >
@@ -68,21 +67,65 @@ export const CommentInput = ({ postNum }) => {
 };
 
 // CommentContent 컴포넌트 내에서 수정 기능 추가
-const CommentContent = ({ author, time, text, onUpdate }) => {
+const CommentContent = ({
+  author,
+  time,
+  text,
+  postNum,
+  commentId,
+  empId,
+  isChild = false, // isChild prop을 추가. 기본값은 false (부모 댓글)
+}) => {
   const [editing, setEditing] = useState(false);
   const [editedText, setEditedText] = useState(text);
+  const staffInfo = JSON.parse(Cookies.get("staffInfo"));
+  console.log("댓글 작성자 empId:", empId);
+  console.log("현재 로그인한 사용자 empId:", staffInfo.empId);
 
   const handleEditChange = (event) => {
     setEditedText(event.target.value);
   };
 
-  const handleUpdate = () => {
-    onUpdate(editedText); // onUpdate 함수를 통해 변경된 내용을 상위 컴포넌트에 전달
+  const handleUpdate = async () => {
+    if (empId !== staffInfo.empId) {
+      alert("댓글의 작성자만 수정할 수 있습니다.");
+      return;
+    }
+
+    try {
+      const data = {
+        commentContent: editedText,
+        commentEditDate: new Date(),
+      };
+
+      // 부모 댓글과 자식 댓글에 대한 엔드포인트를 구분
+      const endPoint = isChild
+        ? `/api/bulletinboard/BulletinBoardPages/${postNum}/updateChildComment/${commentId}`
+        : `/api/bulletinboard/BulletinBoardPages/${postNum}/updateParentComment/${commentId}`;
+
+      await axios.put(endPoint, data);
+
+      alert("댓글이 성공적으로 수정되었습니다.");
+    } catch (error) {
+      console.error("실패");
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        alert("댓글 수정 중 오류: " + error.response.data.message);
+        console.log("Server response:", error.response.data);
+      } else {
+        alert("댓글 수정 중 알 수 없는 오류가 발생했습니다.");
+      }
+    }
+
     setEditing(false);
   };
 
   return (
-    <CCol md={10} xs="auto">
+    <CCol md={10} xs="auto" className="textBoxBoard">
       <strong>{author} </strong>
       <small>
         <time>{time}</time>
@@ -110,20 +153,38 @@ const CommentContent = ({ author, time, text, onUpdate }) => {
       ) : (
         <>
           <p className="mb-1">{text}</p>
-          <CButton
-            className="BulletinBoardPages-DelBtn"
-            color="primary"
-            variant="ghost"
-            onClick={() => setEditing(true)}
-          >
-            수정
-          </CButton>
+          {author === staffInfo.empId && (
+            <CButton
+              id="EditBtn"
+              className="BulletinBoardPages-DelBtn"
+              color="primary"
+              variant="ghost"
+              onClick={() => setEditing(true)}
+            >
+              수정
+            </CButton>
+          )}
+          {!editing && author === staffInfo.empId && (
+            <CButton
+              className="BulletinBoardPages-DelBtn"
+              color="danger"
+              variant="ghost"
+              onClick={() => {
+                if (isChild) {
+                  deleteChildComment(postNum, commentId);
+                } else {
+                  deleteParentComment(postNum, commentId);
+                }
+              }}
+            >
+              삭제
+            </CButton>
+          )}
         </>
       )}
     </CCol>
   );
 };
-
 // 부모 댓글 삭제
 function deleteParentComment(postNum, commentId) {
   fetch(
@@ -156,6 +217,8 @@ function deleteParentComment(postNum, commentId) {
       }
     });
 }
+
+// ===================================
 
 // 자식 댓글 삭제
 function deleteChildComment(postNum, commentId) {
@@ -191,82 +254,6 @@ const handleUpdateComment = (updatedText) => {
   // 여기에서 API를 호출하여 댓글 내용을 업데이트
   console.log("Updated text:", updatedText);
   // 예를 들면, axios.put() 메서드를 사용하여 댓글을 업데이트
-};
-
-// 부모 삭제 버튼
-const ParentCommentActions = ({ postNum, commentId }) => (
-  <CCol
-    md={2}
-    xs="auto"
-    className="col-2 mb-3 align-self-center BulletinBoardPages-DelBtn-Layout"
-  >
-    <CButton
-      className="BulletinBoardPages-DelBtn"
-      color="danger"
-      variant="ghost"
-      onClick={() => deleteParentComment(postNum, commentId)}
-    >
-      삭제
-    </CButton>
-  </CCol>
-);
-
-// 자식 삭제 버튼
-const ChildCommentActions = ({
-  postNum,
-  commentId,
-  author,
-  time,
-  text,
-  onUpdate,
-}) => {
-  const [editing, setEditing] = useState(false);
-  const [editedText, setEditedText] = useState(text);
-
-  const handleEditChange = (event) => {
-    setEditedText(event.target.value);
-  };
-
-  const handleUpdate = () => {
-    onUpdate(editedText);
-    setEditing(false);
-  };
-
-  return (
-    <CCol
-      md={10}
-      xs="auto"
-      className="col-2 mb-3 align-self-center BulletinBoardPages-DelBtn-Layout"
-    >
-      <strong>{author} </strong>
-      <small>
-        <time>{time}</time>
-      </small>
-      {editing ? (
-        <>
-          <CFormTextarea value={editedText} onChange={handleEditChange} />
-          <CButton color="success" onClick={handleUpdate}>
-            저장
-          </CButton>
-          <CButton color="secondary" onClick={() => setEditing(false)}>
-            취소
-          </CButton>
-        </>
-      ) : (
-        <>
-          <p className="mb-1">{text}</p>
-          <CButton
-            className="BulletinBoardPages-DelBtn"
-            color="danger"
-            variant="ghost"
-            onClick={() => deleteChildComment(postNum, commentId)}
-          >
-            삭제
-          </CButton>
-        </>
-      )}
-    </CCol>
-  );
 };
 
 // 자식 댓글 등록 폼
@@ -310,46 +297,51 @@ const ReplyForm = ({ postNum, parentComment }) => {
     <li className="child-comment">
       <input type="hidden" className="article-id" />
       <div className="row">
-        <div className="col-md-10 col-lg-9">
+        <CCol md={12}>
           <details>
-            <summary>자식 댓글 달기</summary>
+            <summary className="comment-toggle">댓글 달기</summary>
             <CForm className="comment-form">
               <input type="hidden" className="article-id" />
               <input type="hidden" className="parent-comment-id" />
-              <CFormTextarea
-                className="form-control comment-textbox"
-                placeholder="댓글 쓰기.."
-                rows="2"
-                required
-                value={reply}
-                onChange={handleReplyChange}
-              />
-              <CButton
-                className="form-control btn btn-primary mt-2"
-                color="info"
-                type="button"
-                onClick={handleSubmit}
-              >
-                쓰기
-              </CButton>
+              <CRow>
+                <CCol md={9}>
+                  <CFormTextarea
+                    className="comment-textbox"
+                    placeholder="댓글 쓰기.."
+                    rows="2"
+                    required
+                    value={reply}
+                    onChange={handleReplyChange}
+                  />
+                </CCol>
+                <CCol md={2}>
+                  <CButton
+                    className="form-control btn btn-primary mt-2"
+                    color="info"
+                    type="button"
+                    onClick={handleSubmit}
+                  >
+                    쓰기
+                  </CButton>
+                </CCol>
+              </CRow>
             </CForm>
           </details>
-        </div>
-        <CCol
-          md={2}
-          xs="auto"
-          className="BulletinBoardPages-DelBtn-Layout"
-        ></CCol>
+        </CCol>
       </div>
     </li>
   );
 };
 
 // 전체 댓글 폼
-// SingleComment 컴포넌트
 export const SingleComment = ({ comment, postNum }) => {
   const { commentContent, commentDate, empId, commentId, childComments } =
     comment;
+
+  const handleUpdateComment = useCallback((updatedContent) => {
+    console.log("Updated Content:", updatedContent);
+    // 여기서 업데이트 로직을 구현합니다. (필요한 경우)
+  }, []);
 
   return (
     <div className="comment">
@@ -363,34 +355,33 @@ export const SingleComment = ({ comment, postNum }) => {
               time={<FormattedDate date={commentDate} />}
               text={commentContent}
               onUpdate={handleUpdateComment}
+              postNum={postNum}
+              commentId={commentId}
+              empId={empId}
             />
-            <ParentCommentActions postNum={postNum} commentId={commentId} />
+            <ReplyForm postNum={postNum} parentComment={commentId} />
           </CRow>
-          <ReplyForm postNum={postNum} parentComment={commentId} />
         </div>
       </CForm>
       {/* 자식 댓글들 */}
       {childComments && childComments.length > 0 ? (
         <ul>
-          {childComments.map((childComment, index) => {
-            console.log("childComment:", childComment); // 여기서 로그를 찍어서 확인
-
-            return (
-              <li key={index}>
-                <CRow>
-                  <CommentContent
-                    author={childComment.empId}
-                    time={<FormattedDate date={childComment.commentDate} />}
-                    text={childComment.commentContent}
-                  />
-                  <ChildCommentActions
-                    postNum={postNum}
-                    commentId={childComment.commentId}
-                  />
-                </CRow>
-              </li>
-            );
-          })}
+          {childComments.map((childComment, index) => (
+            <li key={index} className="childText">
+              <CRow>
+                <CommentContent
+                  author={childComment.empId}
+                  time={<FormattedDate date={childComment.commentDate} />}
+                  text={childComment.commentContent}
+                  onUpdate={handleUpdateComment}
+                  postNum={postNum}
+                  commentId={childComment.commentId}
+                  empId={childComment.empId}
+                  isChild={true} // 자식 댓글임을 나타내는 prop을 추가합니다.
+                />
+              </CRow>
+            </li>
+          ))}
         </ul>
       ) : null}
     </div>

@@ -5,11 +5,13 @@ import com.project.backend.dto.BulletinBoard.ChildCommentDto;
 import com.project.backend.dto.BulletinBoard.ParentCommentDto;
 import com.project.backend.service.BulletinBoard.BulletinBoardServicetotal;
 import com.project.backend.service.BulletinBoard.CommentService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bulletinboard")
@@ -144,6 +146,23 @@ public class BulletinBoardController {
     }
   }
 
+  @PutMapping("/BulletinBoardPages/{postNum}/updateParentComment/{commentId}")
+  public ResponseEntity<?> updateParentComment(@PathVariable Long postNum, @PathVariable Long commentId, @RequestBody ParentCommentDto request) {
+    try {
+      commentService.editParentComment(postNum, commentId, request);
+      return ResponseEntity.ok().body("댓글이 성공적으로 수정되었습니다.");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("댓글 수정 중 오류가 발생했습니다.");
+    }
+  }
 
+  @PutMapping("/BulletinBoardPages/{postNum}/updateChildComment/{commentId}")
+  public ResponseEntity<?> updateChildComment(@PathVariable Long postNum, @PathVariable Long commentId, @RequestBody ChildCommentDto request) {
+    try {
+      commentService.editChildComment(postNum, commentId, request);
+      return ResponseEntity.ok().body("자식 댓글이 성공적으로 수정되었습니다.");
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("자식 댓글 수정 중 오류가 발생했습니다.");
+    }
+  }
 }
-

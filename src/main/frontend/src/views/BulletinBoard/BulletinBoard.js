@@ -235,6 +235,7 @@ function BulletinBoard() {
                 <BulletinBoardModal />
 
                 <Pagination
+                  className="boardPagination"
                   current={current}
                   onChange={onChange}
                   total={
