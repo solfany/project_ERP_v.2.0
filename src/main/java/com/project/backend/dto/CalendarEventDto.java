@@ -10,7 +10,6 @@ import java.util.Date;
 @Setter
 public class CalendarEventDto {
     private Long id;
-
     private Long empNum;
     private String title;
     private String empName;

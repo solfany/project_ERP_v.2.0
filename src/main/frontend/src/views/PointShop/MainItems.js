@@ -63,7 +63,7 @@ const MainItems = ({
       </div>
       <div className="product-cell category">
         <Link to={`/point_shop/point_shop/${id}`}>
-          <CTooltip content="상세페이지로 이동합니다." placement="top">
+          <CTooltip content="상세페이지로 이동합니다." placement="right">
             <CButton
               color="info"
               variant="ghost"

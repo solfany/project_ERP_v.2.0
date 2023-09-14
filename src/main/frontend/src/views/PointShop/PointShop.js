@@ -33,6 +33,7 @@ const PointShop = () => {
     axios
       .get('/api/point_shop/')
       .then((response) => {
+        console.log(response);
         const data = response.data.items.content; // items 데이터 추출
         message.success('데이터를 성공적으로 갱신하였습니다.');
         setItems(data);
@@ -46,7 +47,10 @@ const PointShop = () => {
   return (
     <div className="content">
       {contextHolder}
-      <div className="app-content">
+      <div
+        className="app-content "
+        style={{ height: 'auto', minHeight: '95vh' }}
+      >
         <PointShopNav />
         <div className="app-content-actions">
           {/* <input className="search-bar" placeholder="Search..." type="text"> */}

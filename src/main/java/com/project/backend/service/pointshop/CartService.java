@@ -57,16 +57,12 @@ public class CartService {
     @Transactional(readOnly = true)
     public List<CartDetailDto> getCartList(Long empNum) {
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
-
         Staff staff = staffRepository.findByEmpNum(empNum);
         Cart cart = cartRepository.findByStaffEmpNum(staff.getEmpNum());
-
         if (cart == null) {
             return cartDetailDtoList;
         }
-
         cartDetailDtoList = cartItemRepository.findCartDetailDtoList(cart.getId());
-
         return cartDetailDtoList;
     }
 

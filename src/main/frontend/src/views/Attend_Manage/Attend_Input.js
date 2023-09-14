@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 import { CCardHeader } from '@coreui/react';
 import Timer from './Timer';
 import './Attend_Input.css';
-import Attend_Records from './Attend_Record';
 import Attend_Button from './Attend_Button';
 import { message } from 'antd';
 

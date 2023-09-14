@@ -6,6 +6,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios';
 import PointShopNav from '../../PointShopNav';
+import { useNavigate } from 'react-router-dom';
 
 function PointShopForm() {
   const [item, setItem] = useState({
@@ -19,7 +20,7 @@ function PointShopForm() {
   const [sellStatus, setSellStatus] = useState('');
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(true);
-
+  const navigate = useNavigate();
   const onFinish = async (values) => {
     const formData = new FormData();
 
@@ -45,6 +46,7 @@ function PointShopForm() {
         form.resetFields();
         setVisible(false); // 모달 닫기
       }
+      navigate('/point_shop/point_shop/');
     } catch (error) {
       console.error(error);
       message.error('상품 등록 중 에러가 발생했습니다.');
@@ -57,8 +59,9 @@ function PointShopForm() {
 
   return (
     <div className="content">
-      <div className="app-content">
+      <div className="app-content" style={{ height: '95vh' }}>
         <PointShopNav />
+        <div style={{ height: '15vh' }}></div>
         <CButton onClick={() => setVisible(!visible)}>상품 등록하기</CButton>
         <CModal
           size="lg"

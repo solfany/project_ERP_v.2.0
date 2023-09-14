@@ -64,10 +64,8 @@ public class OrderService {
                 OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
                 orderHistDto.addOrderItemDto(orderItemDto);
             }
-
             orderHistDtos.add(orderHistDto);
         }
-
         return new PageImpl<OrderHistDto>(orderHistDtos, pageable, totalCount);
     }
 
@@ -81,7 +79,6 @@ public class OrderService {
         if (!curStaff.getEmpId().equals(savedStaff.getEmpId())) {
             return false;
         }
-
         return true;
     }
 

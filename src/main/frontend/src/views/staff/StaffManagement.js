@@ -3,19 +3,34 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CContainer, CForm, CFormInput, CRow, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+} from '@coreui/react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
 
 const StaffManagement = () => {
   const [empNum, setEmpNum] = useState(''); // 사원번호
   const [empId, setEmpId] = useState(''); //아이디
   const [empPwd, setEmpPwd] = useState(''); //패스워드
-  const [dept, setDept] = useState(''); // 부서 
+  const [dept, setDept] = useState(''); // 부서
   const [position, setPosition] = useState(''); // 직급
-  const [empName, setEmpName] = useState('');//이름
+  const [empName, setEmpName] = useState(''); //이름
   const [birthDate, setBirthDate] = useState(''); // 생년월일
   const [phoneNumber, setPhoneNumber] = useState(''); // 연락처
   const [address, setAddress] = useState(''); // 주소
@@ -39,7 +54,6 @@ const StaffManagement = () => {
   }, []);
 
   const handleSubmit = async () => {
-
     try {
       const staffDto = {
         empNum,
@@ -53,7 +67,7 @@ const StaffManagement = () => {
         address,
         email,
         bankName,
-        accountNumber
+        accountNumber,
       };
 
       const newEmail = `${email.split('@')[0]}@${email.split('@')[1]}`;
@@ -75,8 +89,6 @@ const StaffManagement = () => {
       setAccountNumber('');
       fetchStaffs();
       setShowModal(false); // Hide the modal after successful submission
-
-
     } catch (error) {
       console.error('Error adding staffs:', error);
     }
@@ -87,7 +99,7 @@ const StaffManagement = () => {
       await axios.delete(`/api/staff/${empNum}`);
       fetchStaffs(); // 직원 리스트 갱신
     } catch (error) {
-      console.error("삭제 불가", error);
+      console.error('삭제 불가', error);
     }
   };
 
@@ -96,7 +108,11 @@ const StaffManagement = () => {
       <CContainer>
         <CRow>
           <CCol md={12} className="d-flex justify-content-end">
-            <CButton color="primary" style={{ fontSize: '12px' }} onClick={() => setShowModal(true)}>
+            <CButton
+              color="primary"
+              style={{ fontSize: '12px' }}
+              onClick={() => setShowModal(true)}
+            >
               직원 추가
             </CButton>
           </CCol>
@@ -106,7 +122,12 @@ const StaffManagement = () => {
             <CCard>
               <CCardHeader>직원 리스트</CCardHeader>
               <CCardBody>
-                <div style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+                <div
+                  style={{
+                    maxHeight: 'calc(100vh - 200px)',
+                    overflowY: 'auto',
+                  }}
+                >
                   <CTable>
                     <CTableHead>
                       <CTableRow>
@@ -188,7 +209,6 @@ const StaffManagement = () => {
             <Form.Group className="mb-3">
               <Form.Label>부서</Form.Label>
               <Form.Control
-
                 as="select"
                 type="text"
                 placeholder="부서"
@@ -246,7 +266,10 @@ const StaffManagement = () => {
                 placeholder="번호를 입력해주세요"
                 value={phoneNumber}
                 onChange={(e) => {
-                  const formattedPhoneNumber = e.target.value.replace(/[^0-9]/g, '');
+                  const formattedPhoneNumber = e.target.value.replace(
+                    /[^0-9]/g,
+                    ''
+                  );
                   setPhoneNumber(formattedPhoneNumber);
                 }}
               />
@@ -268,7 +291,9 @@ const StaffManagement = () => {
                   placeholder="이메일"
                   value={email.split('@')[0]} // @ 이전의 아이디 부분
                   onChange={(e) => {
-                    const newEmail = e.target.value + (email.includes('@') ? email.split('@')[1] : '');
+                    const newEmail =
+                      e.target.value +
+                      (email.includes('@') ? email.split('@')[1] : '');
                     setEmail(newEmail);
                   }}
                   style={{ flex: 1, marginRight: '5px' }}

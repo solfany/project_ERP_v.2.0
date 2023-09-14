@@ -15,11 +15,11 @@ public class Cart extends BaseEntity {
 
     @Id
     @Column(name = "cart_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-
+    @JoinColumn(name="staff_emp_num")
     private Staff staff;
 
     //처음 장바구니에 상품을 담을 때 회원의 장바구니를 생성하는 메소드

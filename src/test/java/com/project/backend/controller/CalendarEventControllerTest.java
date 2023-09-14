@@ -52,7 +52,6 @@ public class CalendarEventControllerTest {
     public void testCreateCalendarEventSuccess() throws Exception {
         // Given
         CalendarEventDto calendarEventDto = new CalendarEventDto();
-        when(calendarEventService.CreateCalendarEvent(calendarEventDto)).thenReturn(new CalendarEvent());
 
         // When
         ResponseEntity<String> response = calendarEventController.CreateCalendarEvent(calendarEventDto);
@@ -61,7 +60,6 @@ public class CalendarEventControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("일정이 성공적으로 저장되었습니다.", response.getBody());
 
-        // Verify that CreateCalendarEvent method was called once
         verify(calendarEventService, times(1)).CreateCalendarEvent(calendarEventDto);
     }
 
@@ -70,7 +68,6 @@ public class CalendarEventControllerTest {
     public void testDeleteCalendarEventSuccess() throws Exception {
         // Given
         Long eventId = 1L;
-        when(calendarEventService.DeleteCalendarEvent(eventId)).thenReturn(ResponseEntity.ok("Event deleted successfully"));
 
         // When
         ResponseEntity<String> response = calendarEventController.deleteCalendarEvent(eventId);
@@ -78,8 +75,6 @@ public class CalendarEventControllerTest {
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("일정이 성공적으로 삭제되었습니다.", response.getBody());
-
-        //
         verify(calendarEventService, times(1)).DeleteCalendarEvent(eventId);
     }
 

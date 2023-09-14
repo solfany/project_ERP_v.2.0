@@ -18,13 +18,8 @@ public class ItemFormDto {
     private String itemDetail;
     private Integer stockNumber;
     private ItemSellStatus itemSellStatus;
-
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>();
     private List<Long> itemImgIds = new ArrayList<>();
-
-    // 생성자가 없는 경우에는 기본 생성자를 명시적으로 추가하는 것이 좋습니다.
-    public ItemFormDto() {
-    }
 
     private static ModelMapper modelMapper = new ModelMapper();
 
@@ -34,5 +29,9 @@ public class ItemFormDto {
 
     public static ItemFormDto of(Item item) {
         return modelMapper.map(item, ItemFormDto.class);
+    }
+
+    public ItemFormDto() {
+        // 기본 생성자
     }
 }

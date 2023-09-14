@@ -28,7 +28,6 @@ public class CartController {
     @PostMapping(value = "/")
     public @ResponseBody ResponseEntity cart(@RequestBody @Valid CartItemDto cartItemDto,
                                               BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -46,7 +45,6 @@ public class CartController {
         } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
 

@@ -6,6 +6,7 @@ import com.project.backend.dto.pointshop.CartOrderDto;
 import com.project.backend.entity.Staff;
 import com.project.backend.service.pointshop.CartService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,6 +39,7 @@ public class CartControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @DisplayName("[Post] 장바구니에 상품 추가 테스트")
     @Test
     public void testAddCartItem_WithInput() {
         // Given
@@ -52,6 +54,7 @@ public class CartControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
+    @DisplayName("[Post] 장바구니 상품 목록 조회 테스트")
     @Test
     public void testGetCartItems() {
         // Given
@@ -66,7 +69,7 @@ public class CartControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
     }
-
+    @DisplayName("[Patch] 장바구니 상품 수량 업데이트 유효한 입력값 테스트")
     @Test
     public void testUpdateCartItem_WithValidInput() {
         // Given
@@ -86,6 +89,7 @@ public class CartControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
+    @DisplayName("[Patch] 장바구니 상품 수량 업데이트 무효한 입력값 테스트")
     @Test
     public void testUpdateCartItem_WithInvalidInput() {
         // Given
@@ -103,6 +107,7 @@ public class CartControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
+    @DisplayName("[Delete] 장바구니에서 상품 삭제 테스트")
     @Test
     public void testDeleteCartItem() {
         // Given
@@ -116,6 +121,7 @@ public class CartControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
+    @DisplayName("[Post] 장바구니에서 주문 유효한 입력값 테스트")
     @Test
     public void testOrderCartItem_WithValidInput() {
         Staff staff = createValidStaff();
@@ -132,6 +138,7 @@ public class CartControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
+    @DisplayName("[Post] 장바구니에서 주문 무효한 입력값 테스트")
     @Test
     public void testOrderCartItem_WithInput() {
         // Given
@@ -146,6 +153,7 @@ public class CartControllerTest {
     }
 
     private CartItemDto createValidCartItem() {
+        createInValidCartOrderItem();
         CartItemDto cartItemDto = new CartItemDto();
         cartItemDto.setItemId(1L);
         cartItemDto.setCount(5);
@@ -175,6 +183,13 @@ public class CartControllerTest {
     private CartOrderDto createValidCartOrderItem() {
         CartOrderDto cartOrderDtoItem = new CartOrderDto();
         cartOrderDtoItem.setCartItemId(1L);
+        cartOrderDtoItem.setCartOrderDtoList(new ArrayList<>());
+        cartOrderDtoItem.setStaff(createValidStaff());
+        return cartOrderDtoItem;
+    }
+    private CartOrderDto createInValidCartOrderItem() {
+        CartOrderDto cartOrderDtoItem = new CartOrderDto();
+        cartOrderDtoItem.setCartItemId(-1L);
         cartOrderDtoItem.setCartOrderDtoList(new ArrayList<>());
         cartOrderDtoItem.setStaff(createValidStaff());
         return cartOrderDtoItem;

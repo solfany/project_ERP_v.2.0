@@ -19,7 +19,6 @@ import PointShopNav from '../../PointShopNav';
 import './CartPage.css';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 
 const CartPage = () => {
@@ -35,10 +34,12 @@ const CartPage = () => {
   }, []);
 
   const fetchCartItems = async () => {
+    console.log(staffInfo);
     try {
       const response = await axios.post('/api/cart/list', staffInfo);
       setCartItems(response.data);
       message.success('데이터를 성공적으로 갱신하였습니다.');
+      console.log(response.data);
     } catch (error) {
       message.error('데이터를 갱신하는 도중 에러가 발생하였습니다.');
       console.error('Error fetching cart items:', error);
@@ -111,7 +112,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="app-content">
+    <div className="app-content" style={{ height: 'auto', minHeight: '95vh' }}>
       <PointShopNav />
       <div className="app-content-actions"></div>
       <CCard>

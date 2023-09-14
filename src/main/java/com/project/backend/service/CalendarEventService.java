@@ -25,8 +25,8 @@ public class CalendarEventService {
     }
 
     public CalendarEvent CreateCalendarEvent(CalendarEventDto calendarEventDto) {
-        CalendarEvent calendarEvent = calendarEventDto.toEntity(); // 수정된 부분
-        calendarEventRepository.save(calendarEvent);
+        CalendarEvent calendarEvent = calendarEventDto.toEntity();  // Dto를 Entity로 변환
+        calendarEventRepository.save(calendarEvent);                // 변환된 Entity를 Repository에 저장
 
         return calendarEvent;
     }
@@ -38,12 +38,12 @@ public class CalendarEventService {
             if (calendarEventOptional.isPresent()) {
                 CalendarEvent calendarEvent = calendarEventOptional.get();
                 calendarEventRepository.delete(calendarEvent);
-                return ResponseEntity.ok("Event deleted successfully");
+                return ResponseEntity.ok("일정이 성공적으로 삭제되었습니다.");
             } else {
                 return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete event");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("일정을 삭제하는 동안 에러가 발생했습니다.");
         }
     }
 }
