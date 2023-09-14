@@ -13,13 +13,11 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilMenu } from "@coreui/icons";
-
 import { AppBreadcrumb } from "./index";
-// import { AppHeaderDropdown } from "./header/index";
 import { logo } from "src/assets/brand/logo";
-import UserProfile from "./UserProfile"; // UserProfile 컴포넌트를 불러옵니다.
+import UserProfile from "./UserProfile";
 
-const AppHeader = () => {
+export const AppHeader = () => {
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
 
@@ -38,11 +36,15 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
             <CNavLink to="/dashboard" component={NavLink}>
-              관리보드
+              관리 보드
             </CNavLink>
           </CNavItem>
-          <CNavItem>{/* <CNavLink href="#">Users</CNavLink> */}</CNavItem>
-          <CNavItem>{/* <CNavLink href="#">Settings</CNavLink> */}</CNavItem>
+          <CNavItem>
+            <CNavLink href="#">Users</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink href="#">Settings</CNavLink>
+          </CNavItem>
         </CHeaderNav>
         <CHeaderNav>
           <CNavItem>
@@ -57,5 +59,3 @@ const AppHeader = () => {
     </CHeader>
   );
 };
-
-export default AppHeader;

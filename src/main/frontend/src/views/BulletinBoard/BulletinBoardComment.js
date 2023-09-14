@@ -106,6 +106,7 @@ const CommentContent = ({
       await axios.put(endPoint, data);
 
       alert("댓글이 성공적으로 수정되었습니다.");
+      location.reload();
     } catch (error) {
       console.error("실패");
 
