@@ -63,7 +63,6 @@ const MainItemDtl = () => {
       });
 
       const cartItemId = response.data;
-      console.log('Added to cart:', cartItemId, response);
 
       navigate('/point_shop/point_shop/cart_page');
     } catch (error) {

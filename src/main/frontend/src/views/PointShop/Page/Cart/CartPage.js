@@ -34,7 +34,6 @@ const CartPage = () => {
   }, []);
 
   const fetchCartItems = async () => {
-    console.log(staffInfo);
     try {
       const response = await axios.post('/api/cart/list', staffInfo);
       setCartItems(response.data);

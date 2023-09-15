@@ -44,7 +44,7 @@ function Attend_Input() {
         const [hour, minute, second] = attendanceTimeValue.split(':');
 
         let formattedHour = hour; // 시간을 그대로 저장
-        console.log(attendanceTimeValue);
+
         if (parseInt(hour) >= 12) {
           if (hour !== '12') {
             formattedHour = String(parseInt(hour) - 12).padStart(2, '0'); // 12시 이후에는 12를 빼고 2자리 숫자로 표기

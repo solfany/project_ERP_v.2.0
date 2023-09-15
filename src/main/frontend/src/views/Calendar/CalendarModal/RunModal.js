@@ -25,8 +25,6 @@ function RunModal({ events, setEvents, className }) {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-
-
   const sendData = async (e) => {
     e.preventDefault();
 
@@ -39,7 +37,15 @@ function RunModal({ events, setEvents, className }) {
     const endTime = moment(selectedEndTime, 'HH:mm').format('HH:mm');
 
     // 필드가 모두 채워져 있는지 확인
-    if (!name || !empNum || !desc || !date || !startTime || !endTime || !endDay) {
+    if (
+      !name ||
+      !empNum ||
+      !desc ||
+      !date ||
+      !startTime ||
+      !endTime ||
+      !endDay
+    ) {
       toggle();
       return message.error('모든 필드를 입력해주세요.');
     }
@@ -47,7 +53,7 @@ function RunModal({ events, setEvents, className }) {
     const newEvent = {
       title: name + ' - ' + desc,
       empNum: empNum,
-      empName: name, // 이전에 name이었던 것을 empName으로 변경
+      empName: name,
       start: new Date(
         startDate.year(),
         startDate.month(),
@@ -65,31 +71,23 @@ function RunModal({ events, setEvents, className }) {
       description: desc,
     };
 
-    axios.get('/api/calendarevents')
-      .then(response => {
-        setEvents(response.data)
-        message.success('데이터를 성공적으로 갱신하였습니다.');
-      })
+    axios.get('/api/calendarevents').then((response) => {
+      setEvents(response.data);
+      message.success('데이터를 성공적으로 갱신하였습니다.');
+    });
 
     try {
-
-      // newEvent 객체를 axios.post 요청을 통해 서버로 전달, 응답결과를 response에 저장
       const response = await axios.post('/api/calendarevents/add', newEvent);
-
-      // newEvent 를 반영한 데이터베이스를 가져오기 위해 events 갱신
-      axios.get('/api/calendarevents')
-      .then(updatedEvents => { setEvents(updatedEvents.data)})
-
+      axios.get('/api/calendarevents').then((updatedEvents) => {
+        setEvents(updatedEvents.data);
+      });
       message.success(response.data);
       toggle();
     } catch (error) {
-      console.error(error);
       if (error.response) {
-        // 서버에서 에러 응답을 보낸 경우
-        console.error("Server error response:", error.response.data);
+        console.error('서버 에러 :', error.response.data);
       } else {
-        // 요청 자체가 실패한 경우
-        console.error("Request failed:", error.message);
+        console.error('요청 실패:', error.message);
       }
     }
   };
@@ -105,7 +103,7 @@ function RunModal({ events, setEvents, className }) {
 
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={toggle}>일정 작성</ModalHeader>
-        <ModalBody style={{paddingTop: '20px'}}>
+        <ModalBody style={{ paddingTop: '20px' }}>
           <form onSubmit={sendData}>
             <Row>
               <Col md={6}>

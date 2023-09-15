@@ -30,8 +30,6 @@ public class QParentComment extends EntityPathBase<ParentComment> {
 
     public final DateTimePath<java.util.Date> commentDate = createDateTime("commentDate", java.util.Date.class);
 
-    public final DateTimePath<java.util.Date> commentEdit = createDateTime("commentEdit", java.util.Date.class);
-
     public final DateTimePath<java.util.Date> commentEditDate = createDateTime("commentEditDate", java.util.Date.class);
 
     public final NumberPath<Long> commentId = createNumber("commentId", Long.class);
