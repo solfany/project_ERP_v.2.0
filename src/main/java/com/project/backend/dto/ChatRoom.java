@@ -40,22 +40,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
+//상태를 byte stream으로 변환하여 파일에 저장하거나 네트워크로 전송할 수 있게 해주는 기능
 public class ChatRoom implements Serializable {
-
+	
+//	이전 버전과 호환성을 유지하기 위해 사용
     private static final long serialVersionUID = 6494678977089006639L;
 
-    private String roomId;
-    private String name;
-//    private List<String> senders; // 발신자 목록
-//    private List<String> messages; // 메시지 목록
-
-    //private String sender;//저장된 sender의 목록을 뽑아 내야됨
-    //private String massage;//저장된 message의 목록을 뽑아 내야됨
+    private String roomId;	//채팅방 고유 id값
+    private String name;	//채팅방 제목(이름) 
 
     public static ChatRoom create(String name) {
         ChatRoom chatRoom = new ChatRoom();
+        //UUID 값은 roomId의 값을 유일하게 보장되므로 충돌 없이 고유한 값으로 생성
         chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.name = name;	//채팅방의 제목임
+        chatRoom.name = name;	//채팅방의 제목(이름)임
 
         return chatRoom;
     }

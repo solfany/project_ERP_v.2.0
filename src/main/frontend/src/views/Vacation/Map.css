@@ -10,6 +10,7 @@ li {
 label {
   /* width: 11%;
   height: 28px; */
+
   color: black;
 }
 button {
@@ -34,4 +35,8 @@ button {
 }
 .Mmodal_btn {
   float: right;
+}
+
+.delete-button:hover {
+  font-weight: bold;
 }

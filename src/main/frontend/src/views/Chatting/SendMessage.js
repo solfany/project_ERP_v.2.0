@@ -1,13 +1,15 @@
 //          npm install @stomp/stompjs
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { useNavigate } from "react-router-dom";
+import "./Chat.css";
 
 const SendMessage = () => {
   const [room, setRoom] = useState({});
   const [sender, setSender] = useState("");
+  // const [empNum, setEmpNum] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [ws, setWs] = useState(null);
@@ -38,6 +40,9 @@ const SendMessage = () => {
   useEffect(() => {
     const roomId = localStorage.getItem("wschat.roomId");
     setSender(localStorage.getItem("wschat.sender"));
+    // const rawStaffInfo = Cookies.get("staffInfo");
+    // const staffInfo = JSON.parse(rawStaffInfo);
+    // setEmpNum(localStorage.getItem("wschat.empNum")); // empNum 설정
     findRoom(roomId);
     getMessages(roomId); // 채팅방 입장 시 초기 대화 내역 불러오기
     const websocket = connect(roomId);
@@ -64,9 +69,6 @@ const SendMessage = () => {
 
   //채팅 보내기 - backend에서 enum에 대한 type이 TALK인 경우 메시지 전송
   const sendMessage = () => {
-    if (!message) {
-      return;
-    }
     const messageData = {
       type: "TALK",
       roomId: room.roomId,
@@ -86,9 +88,11 @@ const SendMessage = () => {
 
     if (type === "ENTER") {
       recvSender = "[ 알림 ]";
+      recvMessage;
       // recvMessage = `${recv.sender}님이 입장하셨습니다.`;
     } else if (type === "QUIT") {
       recvSender = "[ 알림 ]";
+      recvMessage;
       // recvMessage = `${recv.sender}님이 퇴장하셨습니다.`;
     }
 
@@ -101,6 +105,23 @@ const SendMessage = () => {
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
   };
   //메시지 삭제
+  // const deleteMessage = (messageId) => {
+  //   console.log("Deleting message with ID:", messageId); // <-- Add this line
+
+  //   const sender = localStorage.getItem("wschat.sender");
+
+  //   axios
+  //     .delete(`/chat/message/${messageId}`, { params: { userId: sender } })
+  //     .then(() => {
+  //       alert("메시지가 성공적으로 삭제되었습니다.");
+  //       // 메시지 목록을 다시 불러옵니다.
+  //       getMessages(room.roomId);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting message:", error);
+  //     });
+  // };
+
   const deleteMessage = (messageId) => {
     console.log("Deleting message with ID:", messageId); // <-- Add this line
 
@@ -164,6 +185,7 @@ const SendMessage = () => {
         type: "ENTER",
         roomId,
         sender: localStorage.getItem("wschat.sender"),
+        // empNum:localStorage.getItem("wschat.empNum")
       };
       websocket.publish({
         destination: "/pub/chat/message",
@@ -195,12 +217,13 @@ const SendMessage = () => {
   const leaveRoom = () => {
     const roomId = localStorage.getItem("wschat.roomId");
     const sender = localStorage.getItem("wschat.sender");
-
+    // const empNum = localStorage.getItem("wschat.empNum");
     // 채팅방 퇴장 메시지를 생성하고 서버에 전송합니다.
     const quitMessage = {
       type: "QUIT",
       roomId,
       sender: localStorage.getItem("wschat.sender"),
+      // empNum: localStorage.getItem("wschat.empNum")
     };
 
     ws.publish({
@@ -259,14 +282,22 @@ const SendMessage = () => {
       </div>
       <ul className="list-group">
         {messages.map((msg, index) => (
-          <li key={index} className="list-group-item">
+          <li
+            key={index}
+            className={`list-group-item ${
+              msg.sender === sender ? "align-left" : "align-right"
+            }`}
+          >
             {msg.sender} - {msg.message}
             {/* 현재 사용자가 이 메시지의 송신자일 경우만 삭제 버튼을 표시합니다. */}
-            {msg.sender === sender && (
-              <button onClick={() => deleteMessage(msg.chat_message_id)}>
+            {/* {msg.sender === sender && (
+              <button
+                className="delete-button"
+                onClick={() => deleteMessage(msg.messageId)}
+              >
                 Delete
               </button>
-            )}
+            )} */}
           </li>
         ))}
       </ul>

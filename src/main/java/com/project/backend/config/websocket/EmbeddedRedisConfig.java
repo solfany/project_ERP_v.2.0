@@ -10,13 +10,8 @@ import redis.embedded.RedisServer;
 
 //import 생략...
 
-/**
-* 로컬 환경일경우 내장 레디스가 실행됩니다.
-*/
-
 //이 코드는 Spring Boot에서 로컬 환경에서 Redis를 사용하기 위한 설정을 하는 클래스
 //@Profile("local") 어노테이션은 이 설정이 "local" 에서만 적용
-
 @Profile("local")
 @Configuration
 public class EmbeddedRedisConfig {

@@ -26,12 +26,10 @@ public class Vacation {
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private Long id;
 
-	    // Many-to-One relationship with Staff entity
 	    @ManyToOne(fetch = FetchType.EAGER)
-	    @JoinColumn(name = "emp_num") // This specifies the foreign key column
+	    @JoinColumn(name = "emp_num") 
 	    private Staff staff;
 	    
-
 	    @Column(nullable = false)
 	    private String empName;
 

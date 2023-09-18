@@ -1,19 +1,21 @@
-
-server:
-  port: 8888
-
 jwt:
   secret: ThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExampleThisIsA_SecretKeyForJwtExample
   #expiration: 86400000
 
 spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb  # H2 데이터베이스를 메모리 모드로 사용
+    username: sa            # 기본 사용자 이름
+    password:               # 비밀번호
+  h2:
+    console:
+      enabled: true         # H2 콘솔을 사용할 수 있도록 활성화
   main:
     allow-bean-definition-overriding: true
-  datasource:
-    url: jdbc:mysql://localhost:3306/project
-    username: root
-    password: 139500
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never
   servlet:
     multipart:
       max-file-size: 20MB
@@ -29,9 +31,6 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-  sql:
-    init:
-      mode: always
   data:
     rest:
       base-path: /api
@@ -53,5 +52,4 @@ spring:
     cache: false
 
 itemImgLocation: C:/shop/item
-
 uploadPath: file:///C:/shop/
