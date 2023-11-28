@@ -5,7 +5,9 @@
 인사관리 시스템(ERP)에 관한 풀스택 웹 애플리케이션 프로젝트입니다.
 
 ## 사용자 화면
-![3ERP 메인](https://github.com/solfany/portfolio/assets/123814718/f8335bfd-a758-4e4a-828c-ee095fafe8bb)
+
+https://github.com/solfany/project_ERP_v.2.0/assets/123814718/4b75e65e-002f-46e0-83a4-164d7a5d23c2
+
 
 
 ## 프로젝트 개요
